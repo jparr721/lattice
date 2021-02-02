@@ -2,42 +2,37 @@
 //  point_mass.hpp
 //  lattice
 //
+//  Point Mass sidecars any rigid mass object and calculates
+//  all of the forces on its behalf to update.
 //  Created by Jarred Parr on 2/1/21.
 //
 
 #ifndef point_mass_hpp
 #define point_mass_hpp
 
-template<typename T>
-class vec3 {
-    union {
-        struct {
-            T x;
-            T y;
-            T z;
-        };
-    };
-    
-    vec3() : x(0), y(0), z(0) {}
-    vec3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {}
-    
-    inline vec3<T> operator +(const vec3<T>& rhs) const {
-        return vec3<T>{x + rhs.x, y + rhs.y, z + rhs.z};
-    }
-    
-    inline vec3<T> operator -(const vec3<T>& rhs) const {
-        return vec3<T>{x - rhs.x, y - rhs.y, z - rhs.z};
-    }
-    
-    // Vec -> Scalar
-    inline vec3<T> operator*(float f) const {
-        return vec3<T>{x * f, y * f, z * f};
-    }
-    
-    // Vec -> Vec
-    inline vec3<T> operator *(const vec3<T>& rhs) const {
-        return vec3<T>{x * rhs.x, y * rhs.y, z * rhs.z};
-    }
+#include "vec.hpp"
+
+class PointMass {
+  public:
+    PointMass(int k, int m, vec2 x) : spring_constant(k), mass(m), position(x) {}
+    ~PointMass() = default;
+
+    float update(float dt);
+
+    // ================================
+    const int spring_constant;
+    const int mass;
+
+    // The initial force applied on the object is calculated in the update
+    // method.
+    int force = 0;
+
+    // The position of the object at the start, respective to time.
+    // For now, this is a vec2, we will make this a template class later.
+    vec2 position;
+
+    // The velocity the object is moving at, respective to time.
+    int velocity;
 };
 
 #endif /* point_mass_hpp */

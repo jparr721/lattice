@@ -13,6 +13,7 @@
 		832BE48225C8E06500647E88 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 832BE48125C8E06500647E88 /* libGLEW.2.2.0.dylib */; };
 		83D8F4A825C8F8A500E02900 /* point_mass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D8F4A625C8F8A500E02900 /* point_mass.cpp */; };
 		83D8F4AC25C8FCE300E02900 /* window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D8F4AA25C8FCE300E02900 /* window.cpp */; };
+		83D8F4B025C9087000E02900 /* keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D8F4AE25C9087000E02900 /* keyboard.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,6 +39,9 @@
 		83D8F4A725C8F8A500E02900 /* point_mass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = point_mass.hpp; sourceTree = "<group>"; };
 		83D8F4AA25C8FCE300E02900 /* window.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = window.cpp; sourceTree = "<group>"; };
 		83D8F4AB25C8FCE300E02900 /* window.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = window.hpp; sourceTree = "<group>"; };
+		83D8F4AE25C9087000E02900 /* keyboard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = keyboard.cpp; sourceTree = "<group>"; };
+		83D8F4AF25C9087000E02900 /* keyboard.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = keyboard.hpp; sourceTree = "<group>"; };
+		83D8F4B325C909E000E02900 /* vec.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,9 @@
 				83D8F4A725C8F8A500E02900 /* point_mass.hpp */,
 				83D8F4AA25C8FCE300E02900 /* window.cpp */,
 				83D8F4AB25C8FCE300E02900 /* window.hpp */,
+				83D8F4AE25C9087000E02900 /* keyboard.cpp */,
+				83D8F4AF25C9087000E02900 /* keyboard.hpp */,
+				83D8F4B325C909E000E02900 /* vec.hpp */,
 			);
 			path = lattice;
 			sourceTree = "<group>";
@@ -152,6 +159,7 @@
 			files = (
 				83D8F4AC25C8FCE300E02900 /* window.cpp in Sources */,
 				83D8F4A825C8F8A500E02900 /* point_mass.cpp in Sources */,
+				83D8F4B025C9087000E02900 /* keyboard.cpp in Sources */,
 				832BE47525C8DF0900647E88 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -273,6 +281,7 @@
 		832BE47925C8DF0900647E88 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_ENTITLEMENTS = lattice/lattice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VYHDWL3467;
@@ -290,6 +299,7 @@
 		832BE47A25C8DF0900647E88 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_ENTITLEMENTS = lattice/lattice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VYHDWL3467;

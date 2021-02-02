@@ -20,32 +20,33 @@
 #include <GLFW/glfw3.h>
 
 class Window {
-public:
+  public:
     Window() = default;
     ~Window() = default;
-    
+
     void Initialize();
-    
+
     int Run() const;
-private:
+
+  private:
     // Window width
     constexpr static int WIDTH = 800;
-    
+
     // Window height
     constexpr static int HEIGHT = 600;
-    
+
     // Major OpenGL Version
     constexpr static int MAJOR = 3;
-    
+
     // Minor OpenGL Version
     constexpr static int MINOR = 3;
-    
+
     // Window Title
     constexpr static const char* TITLE = "Mass Sim";
-    
+
     // Flag if the class was initialized
     bool is_init = false;
-    
+
     // Window Reference
     GLFWwindow* window = nullptr;
 };
