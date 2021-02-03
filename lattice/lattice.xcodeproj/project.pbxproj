@@ -41,7 +41,6 @@
 		83D8F4AB25C8FCE300E02900 /* window.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = window.hpp; sourceTree = "<group>"; };
 		83D8F4AE25C9087000E02900 /* keyboard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = keyboard.cpp; sourceTree = "<group>"; };
 		83D8F4AF25C9087000E02900 /* keyboard.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = keyboard.hpp; sourceTree = "<group>"; };
-		83D8F4B325C909E000E02900 /* vec.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +85,6 @@
 				83D8F4AB25C8FCE300E02900 /* window.hpp */,
 				83D8F4AE25C9087000E02900 /* keyboard.cpp */,
 				83D8F4AF25C9087000E02900 /* keyboard.hpp */,
-				83D8F4B325C909E000E02900 /* vec.hpp */,
 			);
 			path = lattice;
 			sourceTree = "<group>";
@@ -286,7 +284,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VYHDWL3467;
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = /opt/homebrew/include;
+				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/include,
+					"/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/opt/homebrew/Cellar/glfw/3.3.2/lib,
@@ -304,7 +305,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VYHDWL3467;
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = /opt/homebrew/include;
+				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/include,
+					"/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/opt/homebrew/Cellar/glfw/3.3.2/lib,
