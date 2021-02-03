@@ -10,7 +10,10 @@
 #ifndef window_hpp
 #define window_hpp
 
+#include "vertex.hpp"
+
 #include <memory>
+#include <vector>
 
 // GLEW
 #define GLEW_STATIC
@@ -21,12 +24,12 @@
 
 class Window {
   public:
-    Window() = default;
+    Window(Vertex _shape) : shape(_shape) {}
     ~Window() = default;
 
     void Initialize();
 
-    int Run() const;
+    int Run();
 
   private:
     // Window width
@@ -49,6 +52,10 @@ class Window {
 
     // Window Reference
     GLFWwindow* window = nullptr;
+
+    // Shapes
+    // TODO(@jparr721) - Update this to use a base class (springs, vertices)
+    Vertex shape;
 };
 
 #endif /* window_hpp */

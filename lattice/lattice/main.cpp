@@ -10,8 +10,12 @@
 
 #include "window.hpp"
 
+#include "vertex.hpp"
+
 int main() {
-    const auto window = std::make_unique<Window>();
+    auto shape = Vertex();
+
+    const auto window = std::make_unique<Window>(shape);
     window->Initialize();
     window->Run();
 }

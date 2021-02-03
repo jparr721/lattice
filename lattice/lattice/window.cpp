@@ -7,14 +7,8 @@
 
 #include <iostream>
 
+#include "shader.hpp"
 #include "window.hpp"
-
-// GLEW
-//#define GLEW_STATIC
-//#include <GL/glew.h>
-
-// GLFW
-//#include <GLFW/glfw3.h>
 
 void Window::Initialize() {
     // Initialize GLFW
@@ -43,7 +37,7 @@ void Window::Initialize() {
     is_init = true;
 }
 
-int Window::Run() const {
+int Window::Run() {
     int screenWidth;
     int screenHeight;
 
@@ -63,6 +57,10 @@ int Window::Run() const {
     // Set viewport dimensions
     glViewport(0, 0, screenWidth, screenHeight);
 
+    // Load Shaders
+    auto shader = std::make_unique<Shader>();
+    auto program_id = shader->Initialize("core.vs", "core.frag");
+
     // Start main window loop and spawn the window
     while (!glfwWindowShouldClose(window)) {
         // Check for events being activated.
@@ -72,9 +70,19 @@ int Window::Run() const {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // Draw shapes
+        glUseProgram(program_id);
+        shape.Render();
+        glBindVertexArray(shape.vertex_array_object);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(0);
+
         // Swap the screen buffers
         glfwSwapBuffers(window);
     }
+
+    glDeleteVertexArrays(1, &shape.vertex_array_object);
+    glDeleteBuffers(1, &shape.vertex_buffer_object);
 
     glfwTerminate();
 
