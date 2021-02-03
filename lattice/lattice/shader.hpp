@@ -17,7 +17,8 @@
 
 class Shader {
   public:
-    Shader() {}
+    Shader() = default;
+    ~Shader() = default;
     
     GLuint Initialize(std::string vpath, std::string fpath) {
         GLuint v, f;
@@ -66,8 +67,5 @@ class Shader {
         glDeleteShader(f);
         return prog;
     }
-    
-    // Uses the current shader
-//    void Use() { glUseProgram(this->Program); }
 };
 #endif /* shader_hpp */

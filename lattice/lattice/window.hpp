@@ -33,10 +33,10 @@ class Window {
 
   private:
     // Window width
-    constexpr static int WIDTH = 800;
+    constexpr static int WIDTH = 1200;
 
     // Window height
-    constexpr static int HEIGHT = 600;
+    constexpr static int HEIGHT = 1000;
 
     // Major OpenGL Version
     constexpr static int MAJOR = 3;
