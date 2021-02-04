@@ -19,7 +19,7 @@ class Shader {
   public:
     Shader() = default;
     ~Shader() = default;
-    
+
     GLuint Initialize(std::string vpath, std::string fpath) {
         GLuint v, f;
         std::stringstream ss;

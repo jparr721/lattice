@@ -11,30 +11,78 @@
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtx/transform.hpp>
 
-void Transform(const glm::vec3& transform) {
-    
+// DELETE ME
+void p_vec(std::vector<GLfloat> v) {
+    for (auto vv : v) {
+        std::cout << vv << " ";
+    }
+    std::cout << std::endl;
+}
+
+// This class is mis-named for now...
+Vertex::Vertex() {
+    // Hard-Coded Triangle
+    const auto v1 = glm::vec4(-1.0f, -1.0f, 0.0f, 1.0f);
+    const auto v2 = glm::vec4(1.0f, -1.0f, 0.0f, 1.0f);
+    const auto v3 = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+
+    vertices.push_back(v1);
+    vertices.push_back(v2);
+    vertices.push_back(v3);
+
+    shape = std::vector<GLfloat>{{
+        -1.0f,
+        -1.0f,
+        0.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        1.0f,
+        -1.0f,
+        0.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+        1.0f,
+        0.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+    }};
+
+    is_init = true;
+}
+
+void Vertex::RebuildShape() {
+    for (int i = 0; i < vertices.size(); ++i) {
+        auto vertex = vertices[i];
+
+        // Stride size is 6
+        int j = i * 6;
+
+        shape[j] = vertex.x;
+        shape[j + 1] = vertex.y;
+        shape[j + 2] = vertex.z;
+    }
+}
+
+void Vertex::Transform(const glm::vec3& transform) {
+    auto transformation_matrix = glm::translate(glm::mat4(1.0f), transform);
+
+    for (auto vertex : vertices) {
+        vertex = transformation_matrix * vertex;
+    }
+
+    RebuildShape();
 }
 
 void Vertex::Render() {
-    v1 = glm::vec4(-1.0f, -1.0f, 0.0f, 1.0f);
-    v2 = glm::vec4(1.0f, -1.0f, 0.0f, 1.0f);
-    v3 = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-    
-    auto trans = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.0f, 0.0f));
-    
-    v1 = trans * v1;
-    v2 = trans * v2;
-    v3 = trans * v3;
-    
-    vertices = std::vector<GLfloat>{{
-        v1.x, v1.y, v1.z, RED[0], RED[1], RED[2], // Bottom Right
-        v2.x, v2.y, v2.z, RED[0], RED[1], RED[2], // Bottom Left
-        v3.x, v3.y, v3.z, RED[0], RED[1], RED[2] // Top
-    }};
-    
+    RebuildShape();
+
     // Load the being-used vertex objects into memory for later use
     glGenVertexArrays(1, &vertex_array_object);
-    
+
     // Initialize our class-owned vertex buffer on the GPU
     glGenBuffers(1, &vertex_buffer_object);
 
@@ -45,24 +93,23 @@ void Vertex::Render() {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
 
     // Bind Vertices and Attribute Pointers and Reserve the Memory in the GPU
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), static_cast<void*>(vertices.data()), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, shape.size() * sizeof(float),
+                 static_cast<void*>(shape.data()), GL_STATIC_DRAW);
 
     // Configure Position Attribute, pass up to the shader
     glVertexAttribPointer(
         0 /* One Vertex Buffer, first attribute location */,
         3 /* Using vec3 to represent the positions of vertices */,
-        GL_FLOAT /* Buffer type is float */,
-        GL_FALSE, 6 * sizeof(GL_FLOAT),
-                          (GLvoid*)0);
+        GL_FLOAT /* Buffer type is float */, GL_FALSE, 6 * sizeof(GL_FLOAT),
+        (GLvoid*)0);
     glEnableVertexAttribArray(0);
 
     // Configure Color Attribute, pass up to the shader
-    glVertexAttribPointer(
-        1 /* Second Attribute Location */,
-        3 /* Using a vec3 to represent the positions */,
-        GL_FLOAT /* Buffer type is float */,
-        GL_FALSE /* Do not normalize */,
-        6 * sizeof(GL_FLOAT) /* Offset between data points */,
+    glVertexAttribPointer(1 /* Second Attribute Location */,
+                          3 /* Using a vec3 to represent the positions */,
+                          GL_FLOAT /* Buffer type is float */,
+                          GL_FALSE /* Do not normalize */,
+                          6 * sizeof(GL_FLOAT) /* Offset between data points */,
                           (GLvoid*)(3 * sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
 

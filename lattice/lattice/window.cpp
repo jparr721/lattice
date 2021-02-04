@@ -7,12 +7,12 @@
 
 #include <iostream>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/transform.hpp>
-#include <glm/gtx/string_cast.hpp>
 #include "shader.hpp"
 #include "window.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
+#include <glm/gtx/transform.hpp>
 
 void Window::Initialize() {
     // Initialize GLFW
@@ -64,21 +64,25 @@ int Window::Run() {
     // Load Shaders
     auto shader = std::make_unique<Shader>();
     auto program_id = shader->Initialize("core.vs", "core.frag");
-    
+
     // Get a model view projection matrix handle, named as mvp
     GLuint matrix_id = glGetUniformLocation(program_id, "mvp");
-    
-    // Projection matrix: 45 degree FOV, 4:3 aspect, display 0.1unit to 100 units
-    glm::mat4 projection = glm::perspective(glm::radians(100.0f), 4.0f/3.0f, 0.1f, 100.0f);
-    
+
+    // Projection matrix: 45 degree FOV, 4:3 aspect, display 0.1unit to 100
+    // units
+    glm::mat4 projection =
+        glm::perspective(glm::radians(100.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+
     // Set up our camera in the frame
     // TODO(@jparr721) - Constants
-    glm::mat4 camera_view = glm::lookAt(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-    
+    glm::mat4 camera_view =
+        glm::lookAt(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
     // Matrix representing our model
     glm::mat4 model = glm::mat4(1.0f);
-    
-    // Model view projection, multiplying our projection, camera view, and the model
+
+    // Model view projection, multiplying our projection, camera view, and the
+    // model
     glm::mat4 mvp = projection * camera_view * model;
 
     // Start main window loop and spawn the window
@@ -92,15 +96,15 @@ int Window::Run() {
 
         // Configure our shaders
         glUseProgram(program_id);
-        
+
         // Configure the camera transform into the shader
         glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &mvp[0][0]);
-        
+
         auto shape = shapes[0];
-        
+
         shape.Render();
         glBindVertexArray(shape.vertex_array_object);
-        
+
         // Draw value from points 0-3
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
@@ -108,7 +112,7 @@ int Window::Run() {
         // Swap the screen buffers
         glfwSwapBuffers(window);
     }
-    
+
     for (auto shape : shapes) {
         glDeleteVertexArrays(1, &shape.vertex_array_object);
         glDeleteBuffers(1, &shape.vertex_buffer_object);

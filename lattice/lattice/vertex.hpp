@@ -28,8 +28,7 @@ class Vertex {
     GLuint vertex_array_object;
     GLuint vertex_buffer_object;
 
-    Vertex() = default;
-    //    Vertex(int k, int m, int x);
+    Vertex();
     ~Vertex() = default;
 
     void Transform(const glm::vec3& transform);
@@ -37,14 +36,15 @@ class Vertex {
     void Update(float dt);
 
   private:
-    const std::vector<float> RED{{ 1.0f, 0.0f, 0.0f }};
-    
-    // Set up vertices representing the triangle points (x, y, z w = 1)
-    glm::vec4 v1;
-    glm::vec4 v2;
-    glm::vec4 v3;
-    
-    std::vector<GLfloat> vertices;
+    void RebuildShape();
+
+    const std::vector<float> RED{{1.0f, 0.0f, 0.0f}};
+
+    // Vector of 4D points (x, y, z w = 1)
+    std::vector<glm::vec4> vertices;
+
+    // The shape constructed from the vertices
+    std::vector<GLfloat> shape;
 
     bool is_init = false;
 };
