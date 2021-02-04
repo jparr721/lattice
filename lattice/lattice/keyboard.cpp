@@ -7,10 +7,11 @@
 
 #include "keyboard.hpp"
 
-#include <iostream>
 #include <glm/glm.hpp>
+#include <iostream>
 
-void Keyboard::TakeAction(const std::unique_ptr<Vertex>& shape, int key, int action) {
+void Keyboard::TakeAction(const std::unique_ptr<Vertex>& shape, int key,
+                          int action) {
     if (action != GLFW_PRESS) {
         return;
     }

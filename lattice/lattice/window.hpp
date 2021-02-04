@@ -10,8 +10,8 @@
 #ifndef window_hpp
 #define window_hpp
 
-#include "vertex.hpp"
 #include "keyboard.hpp"
+#include "vertex.hpp"
 
 #include <memory>
 #include <vector>
@@ -57,11 +57,10 @@ class Window {
     // Shapes
     // TODO(@jparr721) - Update this to use a base class (springs, vertices)
     std::unique_ptr<Vertex> shape;
-    
+
     // Keyboard input handler
     std::unique_ptr<Keyboard> keyboard;
 };
-
 
 void OnKeyboardButtonPress(GLFWwindow* window, int key, int scancode,
                            int action, int mods);

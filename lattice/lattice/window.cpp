@@ -36,7 +36,7 @@ void Window::Initialize() {
         glfwTerminate();
         return;
     }
-    
+
     // Make a keyboard object
     keyboard = std::make_unique<Keyboard>();
 
@@ -113,7 +113,7 @@ int Window::Run() {
         // Swap the screen buffers
         glfwSwapBuffers(window);
     }
-    
+
     glDeleteVertexArrays(1, &shape->vertex_array_object);
     glDeleteBuffers(1, &shape->vertex_buffer_object);
 
