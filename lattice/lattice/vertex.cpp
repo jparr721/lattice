@@ -8,29 +8,28 @@
 #include "vertex.hpp"
 #include <iostream>
 
-// Vertex::Vertex(int k, int m, int x) {
-//    point_mass = std::make_unique<PointMass>(
-//        k /* The Spring Constant */,
-//        m /* THe Mass of the Vertex */,
-//        x /* The Initial Position of the Vertex */
-//    );
-//}
+#include <glm/gtx/string_cast.hpp>
+#include <glm/gtx/transform.hpp>
+
+void Transform(const glm::vec3& transform) {
+    
+}
 
 void Vertex::Render() {
-//    GLfloat vertices[] = {
-//        // Positions        // Colors
-//        -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f, // Bottom Right
-//        -1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
-//        -1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f,  // Top
-//        1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f, // Bottom Right
-//        -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
-//        -1.0f,  1.0f,  -1.0f, 1.0f, 0.0f, 0.0f  // Top
-//    };
+    v1 = glm::vec4(-1.0f, -1.0f, 0.0f, 1.0f);
+    v2 = glm::vec4(1.0f, -1.0f, 0.0f, 1.0f);
+    v3 = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
     
-    vertices = std::array<GLfloat, 18>{{
-        -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Right
-        1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Bottom Left
-        0.0f,  1.0f,  0.0f, 1.0f, 0.0f, 0.0f,  // Top
+    auto trans = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.0f, 0.0f));
+    
+    v1 = trans * v1;
+    v2 = trans * v2;
+    v3 = trans * v3;
+    
+    vertices = std::vector<GLfloat>{{
+        v1.x, v1.y, v1.z, RED[0], RED[1], RED[2], // Bottom Right
+        v2.x, v2.y, v2.z, RED[0], RED[1], RED[2], // Bottom Left
+        v3.x, v3.y, v3.z, RED[0], RED[1], RED[2] // Top
     }};
     
     // Load the being-used vertex objects into memory for later use
@@ -46,9 +45,9 @@ void Vertex::Render() {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
 
     // Bind Vertices and Attribute Pointers and Reserve the Memory in the GPU
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), static_cast<void*>(vertices.data()), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), static_cast<void*>(vertices.data()), GL_STATIC_DRAW);
 
-    // Configure Position Attribute
+    // Configure Position Attribute, pass up to the shader
     glVertexAttribPointer(
         0 /* One Vertex Buffer, first attribute location */,
         3 /* Using vec3 to represent the positions of vertices */,
@@ -57,7 +56,7 @@ void Vertex::Render() {
                           (GLvoid*)0);
     glEnableVertexAttribArray(0);
 
-    // Configure Color Attribute
+    // Configure Color Attribute, pass up to the shader
     glVertexAttribPointer(
         1 /* Second Attribute Location */,
         3 /* Using a vec3 to represent the positions */,

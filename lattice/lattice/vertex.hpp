@@ -10,7 +10,7 @@
 #ifndef vertex_hpp
 #define vertex_hpp
 
-#include <array>
+#include <vector>
 
 #include <memory>
 
@@ -18,6 +18,8 @@
 #include <GL/glew.h>
 
 #include <GLFW/glfw3.h>
+
+#include <glm/glm.hpp>
 
 #include "point_mass.hpp"
 
@@ -30,13 +32,19 @@ class Vertex {
     //    Vertex(int k, int m, int x);
     ~Vertex() = default;
 
+    void Transform(const glm::vec3& transform);
     void Render();
     void Update(float dt);
 
   private:
-    //    std::unique_ptr<PointMass> point_mass;
+    const std::vector<float> RED{{ 1.0f, 0.0f, 0.0f }};
     
-    std::array<GLfloat, 18> vertices;
+    // Set up vertices representing the triangle points (x, y, z w = 1)
+    glm::vec4 v1;
+    glm::vec4 v2;
+    glm::vec4 v3;
+    
+    std::vector<GLfloat> vertices;
 
     bool is_init = false;
 };
