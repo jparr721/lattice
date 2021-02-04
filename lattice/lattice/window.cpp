@@ -65,8 +65,8 @@ int Window::Run() {
     auto shader = std::make_unique<Shader>();
     auto program_id = shader->Initialize("core.vs", "core.frag");
     
-    // Get a model view projection matrix handle
-    GLuint matrix_id = glGetUniformLocation(program_id, "MVP");
+    // Get a model view projection matrix handle, named as mvp
+    GLuint matrix_id = glGetUniformLocation(program_id, "mvp");
     
     // Projection matrix: 45 degree FOV, 4:3 aspect, display 0.1unit to 100 units
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f/3.0f, 0.1f, 100.0f);
@@ -78,14 +78,8 @@ int Window::Run() {
     // Matrix representing our model
     glm::mat4 model = glm::mat4(1.0f);
     
-    std::cout << glm::to_string(projection) << std::endl;
-    std::cout << glm::to_string(camera_view) << std::endl;
-    std::cout << glm::to_string(model) << std::endl;
-    
     // Model view projection, multiplying our projection, camera view, and the model
     glm::mat4 mvp = projection * camera_view * model;
-
-    std::cout << glm::to_string(mvp) << std::endl;
 
     // Start main window loop and spawn the window
     while (!glfwWindowShouldClose(window)) {
