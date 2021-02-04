@@ -10,6 +10,8 @@
 #ifndef vertex_hpp
 #define vertex_hpp
 
+#include <array>
+
 #include <memory>
 
 #define GLEW_STATIC
@@ -33,6 +35,8 @@ class Vertex {
 
   private:
     //    std::unique_ptr<PointMass> point_mass;
+    
+    std::array<GLfloat, 18> vertices;
 
     bool is_init = false;
 };

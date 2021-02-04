@@ -62,7 +62,7 @@ class Shader {
         glAttachShader(prog, f);
         glLinkProgram(prog);
         glGetProgramInfoLog(prog, 512, nullptr, log);
-        std::cout << "Program: " << log;
+        std::cout << "Program: " << log << std::endl;
         glDeleteShader(v);
         glDeleteShader(f);
         return prog;

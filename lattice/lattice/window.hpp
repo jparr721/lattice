@@ -24,7 +24,7 @@
 
 class Window {
   public:
-    Window(Vertex _shape) : shape(_shape) {}
+    Window(std::vector<Vertex> _shapes) : shapes(_shapes) {}
     ~Window() = default;
 
     void Initialize();
@@ -55,7 +55,7 @@ class Window {
 
     // Shapes
     // TODO(@jparr721) - Update this to use a base class (springs, vertices)
-    Vertex shape;
+    std::vector<Vertex> shapes;
 };
 
 #endif /* window_hpp */

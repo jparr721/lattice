@@ -14,8 +14,9 @@
 
 int main() {
     auto shape = Vertex();
+    std::vector<Vertex> shapes{shape};
 
-    const auto window = std::make_unique<Window>(shape);
+    const auto window = std::make_unique<Window>(shapes);
     window->Initialize();
     window->Run();
 }
