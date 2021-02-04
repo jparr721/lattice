@@ -13,10 +13,9 @@
 #include "vertex.hpp"
 
 int main() {
-    auto shape = Vertex();
-    std::vector<Vertex> shapes{shape};
+    auto shape = std::make_unique<Vertex>();
 
-    const auto window = std::make_unique<Window>(shapes);
+    const auto window = std::make_unique<Window>(shape);
     window->Initialize();
     window->Run();
 }

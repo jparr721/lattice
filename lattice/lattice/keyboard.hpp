@@ -20,22 +20,16 @@
 
 class Keyboard {
   public:
-    Keyboard(GLFWwindow* window, int _key, int _action)
-        : key(_key), action(_action) {}
+    Keyboard() = default;
+    ~Keyboard() = default;
 
-    void TakeAction(Vertex& vertex);
+    void TakeAction(const std::unique_ptr<Vertex>& shape, int key, int action);
 
   private:
-    const int key;
-    const int action;
-
-    void OnUpKeyPress(Vertex& vertex);
-    void OnDownKeyPress();
-    void OnLeftKeyPress();
-    void OnRightKeyPress();
+    void OnUpKeyPress(const std::unique_ptr<Vertex>& shape) const;
+    void OnDownKeyPress(const std::unique_ptr<Vertex>& shape) const;
+    void OnLeftKeyPress(const std::unique_ptr<Vertex>& shape) const;
+    void OnRightKeyPress(const std::unique_ptr<Vertex>& shape) const;
 };
-
-void OnKeyboardButtonPress(GLFWwindow* window, int key, int scancode,
-                           int action, int mods);
 
 #endif /* keyboard_hpp */

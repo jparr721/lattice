@@ -11,14 +11,6 @@
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtx/transform.hpp>
 
-// DELETE ME
-void p_vec(std::vector<GLfloat> v) {
-    for (auto vv : v) {
-        std::cout << vv << " ";
-    }
-    std::cout << std::endl;
-}
-
 // This class is mis-named for now...
 Vertex::Vertex() {
     // Hard-Coded Triangle

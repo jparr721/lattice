@@ -8,24 +8,25 @@
 #include "keyboard.hpp"
 
 #include <iostream>
+#include <glm/glm.hpp>
 
-void Keyboard::TakeAction(Vertex& vertex) {
+void Keyboard::TakeAction(const std::unique_ptr<Vertex>& shape, int key, int action) {
     if (action != GLFW_PRESS) {
         return;
     }
 
     switch (key) {
     case GLFW_KEY_UP:
-        OnUpKeyPress(vertex);
+        OnUpKeyPress(shape);
         return;
     case GLFW_KEY_DOWN:
-        OnDownKeyPress();
+        OnDownKeyPress(shape);
         return;
     case GLFW_KEY_LEFT:
-        OnLeftKeyPress();
+        OnLeftKeyPress(shape);
         return;
     case GLFW_KEY_RIGHT:
-        OnRightKeyPress();
+        OnRightKeyPress(shape);
         return;
     default:
         std::cout << "Invalid Key Press: " << key << std::endl;
@@ -33,8 +34,20 @@ void Keyboard::TakeAction(Vertex& vertex) {
     };
 }
 
-void Keyboard::OnUpKeyPress(Vertex& vertex) {}
+void Keyboard::OnUpKeyPress(const std::unique_ptr<Vertex>& shape) const {
+    auto change = glm::vec3(0.0f, 0.5, 0.0f);
+    shape->Transform(change);
+}
 
-void Keyboard::OnDownKeyPress() {}
-void Keyboard::OnRightKeyPress() {}
-void Keyboard::OnLeftKeyPress() {}
+void Keyboard::OnDownKeyPress(const std::unique_ptr<Vertex>& shape) const {
+    auto change = glm::vec3(0.0f, -0.5, 0.0f);
+    shape->Transform(change);
+}
+void Keyboard::OnRightKeyPress(const std::unique_ptr<Vertex>& shape) const {
+    auto change = glm::vec3(0.5f, 0.0, 0.0f);
+    shape->Transform(change);
+}
+void Keyboard::OnLeftKeyPress(const std::unique_ptr<Vertex>& shape) const {
+    auto change = glm::vec3(-0.5f, 0.0, 0.0f);
+    shape->Transform(change);
+}

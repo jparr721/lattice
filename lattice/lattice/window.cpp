@@ -36,6 +36,9 @@ void Window::Initialize() {
         glfwTerminate();
         return;
     }
+    
+    // Make a keyboard object
+    keyboard = std::make_unique<Keyboard>();
 
     // If we get through, we are all set
     is_init = true;
@@ -100,10 +103,8 @@ int Window::Run() {
         // Configure the camera transform into the shader
         glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &mvp[0][0]);
 
-        auto shape = shapes[0];
-
-        shape.Render();
-        glBindVertexArray(shape.vertex_array_object);
+        shape->Render();
+        glBindVertexArray(shape->vertex_array_object);
 
         // Draw value from points 0-3
         glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -112,11 +113,9 @@ int Window::Run() {
         // Swap the screen buffers
         glfwSwapBuffers(window);
     }
-
-    for (auto shape : shapes) {
-        glDeleteVertexArrays(1, &shape.vertex_array_object);
-        glDeleteBuffers(1, &shape.vertex_buffer_object);
-    }
+    
+    glDeleteVertexArrays(1, &shape->vertex_array_object);
+    glDeleteBuffers(1, &shape->vertex_buffer_object);
 
     glfwTerminate();
 
