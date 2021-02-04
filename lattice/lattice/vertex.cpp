@@ -31,27 +31,25 @@ Vertex::Vertex() {
     vertices.push_back(v3);
 
     shape = std::vector<GLfloat>{{
+        -1.0f, /* Start First Vertex */
         -1.0f,
+        0.0f, /* End First Vertex */
+        1.0f, /* Start First Color */
+        0.0f,
+        0.0f, /* End First Color */
+        1.0f, /* Start Second Vertex */
         -1.0f,
+        0.0f, /* End Second Vertex */
+        1.0f, /* Start Second Color */
         0.0f,
+        0.0f, /* End Second Color */
+        0.0f, /* Start Third Vertex */
         1.0f,
+        0.0f, /* End Third Vertex*/
+        1.0f, /* Start Third Color */
         0.0f,
-        0.0f,
-        1.0f,
-        -1.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        0.0f,
+        0.0f, /* End Third Color */
     }};
-
-    is_init = true;
 }
 
 void Vertex::RebuildShape() {
@@ -115,6 +113,4 @@ void Vertex::Render() {
 
     // Unbind Vertex Array Object
     glBindVertexArray(0);
-
-    is_init = true;
 }

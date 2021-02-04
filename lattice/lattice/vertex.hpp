@@ -45,8 +45,6 @@ class Vertex {
 
     // The shape constructed from the vertices
     std::vector<GLfloat> shape;
-
-    bool is_init = false;
 };
 
 #endif /* vertex_hpp */
