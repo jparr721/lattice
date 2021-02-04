@@ -10,7 +10,6 @@
 #ifndef window_hpp
 #define window_hpp
 
-#include "keyboard.hpp"
 #include "vertex.hpp"
 
 #include <memory>
@@ -25,7 +24,7 @@
 
 class Window {
   public:
-    Window(std::unique_ptr<Vertex>& _shape) : shape(std::move(_shape)) {}
+    Window(std::shared_ptr<Vertex>& _shape) : shape(std::move(_shape)) {}
     ~Window() = default;
 
     void Initialize();
@@ -50,19 +49,12 @@ class Window {
 
     // Flag if the class was initialized
     bool is_init = false;
+    
+    // Our current shape
+    std::shared_ptr<Vertex> shape;
 
     // Window Reference
     GLFWwindow* window = nullptr;
-
-    // Shapes
-    // TODO(@jparr721) - Update this to use a base class (springs, vertices)
-    std::unique_ptr<Vertex> shape;
-
-    // Keyboard input handler
-    std::unique_ptr<Keyboard> keyboard;
 };
-
-void OnKeyboardButtonPress(GLFWwindow* window, int key, int scancode,
-                           int action, int mods);
 
 #endif /* window_hpp */

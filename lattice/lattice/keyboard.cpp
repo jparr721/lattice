@@ -10,8 +10,14 @@
 #include <glm/glm.hpp>
 #include <iostream>
 
-void Keyboard::TakeAction(const std::unique_ptr<Vertex>& shape, int key,
-                          int action) {
+// GLEW
+#define GLEW_STATIC
+#include <GL/glew.h>
+
+// GLFW
+#include <GLFW/glfw3.h>
+
+void TakeAction(const std::shared_ptr<Vertex>& shape, int key, int action) {
     if (action != GLFW_PRESS) {
         return;
     }
@@ -35,20 +41,20 @@ void Keyboard::TakeAction(const std::unique_ptr<Vertex>& shape, int key,
     };
 }
 
-void Keyboard::OnUpKeyPress(const std::unique_ptr<Vertex>& shape) const {
+void OnUpKeyPress(const std::shared_ptr<Vertex>& shape) {
     auto change = glm::vec3(0.0f, 0.5, 0.0f);
     shape->Transform(change);
 }
 
-void Keyboard::OnDownKeyPress(const std::unique_ptr<Vertex>& shape) const {
+void OnDownKeyPress(const std::shared_ptr<Vertex>& shape) {
     auto change = glm::vec3(0.0f, -0.5, 0.0f);
     shape->Transform(change);
 }
-void Keyboard::OnRightKeyPress(const std::unique_ptr<Vertex>& shape) const {
+void OnRightKeyPress(const std::shared_ptr<Vertex>& shape) {
     auto change = glm::vec3(0.5f, 0.0, 0.0f);
     shape->Transform(change);
 }
-void Keyboard::OnLeftKeyPress(const std::unique_ptr<Vertex>& shape) const {
+void OnLeftKeyPress(const std::shared_ptr<Vertex>& shape) {
     auto change = glm::vec3(-0.5f, 0.0, 0.0f);
     shape->Transform(change);
 }

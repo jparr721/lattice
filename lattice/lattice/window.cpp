@@ -9,6 +9,7 @@
 
 #include "shader.hpp"
 #include "window.hpp"
+#include "keyboard.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -37,9 +38,6 @@ void Window::Initialize() {
         return;
     }
 
-    // Make a keyboard object
-    keyboard = std::make_unique<Keyboard>();
-
     // If we get through, we are all set
     is_init = true;
 }
@@ -51,6 +49,16 @@ int Window::Run() {
     glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 
     glfwMakeContextCurrent(window);
+    
+    glfwSetWindowUserPointer(window, this);
+
+    auto keyboard_handler = [](GLFWwindow* w, int k, int s, int a, int m) {
+        auto ww = (Window*)glfwGetWindowUserPointer(w);
+        TakeAction(ww->shape, k, a);
+    };
+
+    // Set up to handle keybindings
+    glfwSetKeyCallback(window, keyboard_handler);
 
     // Turn on experimental so GLEW knows to use modern functionality
     glewExperimental = GL_TRUE;

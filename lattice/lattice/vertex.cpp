@@ -54,8 +54,8 @@ void Vertex::RebuildShape() {
 void Vertex::Transform(const glm::vec3& transform) {
     auto transformation_matrix = glm::translate(glm::mat4(1.0f), transform);
 
-    for (auto vertex : vertices) {
-        vertex = transformation_matrix * vertex;
+    for (int i = 0u; i < vertices.size(); ++i) {
+        vertices[i] = transformation_matrix * vertices[i];
     }
 
     RebuildShape();
