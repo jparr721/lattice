@@ -96,6 +96,8 @@ int Window::Run() {
     // model
     glm::mat4 mvp = projection * camera_view * model;
 
+    shape->Initialize();
+
     // Start main window loop and spawn the window
     while (!glfwWindowShouldClose(window)) {
         // Check for events being activated.

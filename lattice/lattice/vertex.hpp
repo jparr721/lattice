@@ -21,8 +21,6 @@
 
 #include <glm/glm.hpp>
 
-#include "point_mass.hpp"
-
 class Vertex {
   public:
     GLuint vertex_array_object;
@@ -31,6 +29,7 @@ class Vertex {
     Vertex();
     ~Vertex() = default;
 
+    void Initialize();
     void Transform(const glm::vec3& transform);
     void Render();
     void Update(float dt);

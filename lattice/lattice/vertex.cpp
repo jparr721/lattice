@@ -38,6 +38,40 @@ Vertex::Vertex() {
     }};
 }
 
+void Vertex::Initialize() {
+    // Load the being-used vertex objects into memory for later use
+    glGenVertexArrays(1, &vertex_array_object);
+
+    // Initialize our class-owned vertex buffer on the GPU
+    glGenBuffers(1, &vertex_buffer_object);
+
+    // Bind the Vertex Array Object to track the vertices
+    glBindVertexArray(vertex_array_object);
+
+    // Bind Vertex Buffer Object
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
+
+    // Configure Position Attribute, pass up to the shader
+    glVertexAttribPointer(
+        0 /* One Vertex Buffer, first attribute location */,
+        3 /* Using vec3 to represent the positions of vertices */,
+        GL_FLOAT /* Buffer type is float */, GL_FALSE, 6 * sizeof(GL_FLOAT),
+        (GLvoid*)0);
+    glEnableVertexAttribArray(0);
+
+    // Configure Color Attribute, pass up to the shader
+    glVertexAttribPointer(1 /* Second Attribute Location */,
+                          3 /* Using a vec3 to represent the positions */,
+                          GL_FLOAT /* Buffer type is float */,
+                          GL_FALSE /* Do not normalize */,
+                          6 * sizeof(GL_FLOAT) /* Offset between data points */,
+                          (GLvoid*)(3 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(1);
+
+    // Unbind Vertex Array Object
+    glBindVertexArray(0);
+}
+
 void Vertex::RebuildShape() {
     for (int i = 0; i < vertices.size(); ++i) {
         auto vertex = vertices[i];
@@ -62,41 +96,7 @@ void Vertex::Transform(const glm::vec3& transform) {
 }
 
 void Vertex::Render() {
-    RebuildShape();
-
-    // Load the being-used vertex objects into memory for later use
-    glGenVertexArrays(1, &vertex_array_object);
-
-    // Initialize our class-owned vertex buffer on the GPU
-    glGenBuffers(1, &vertex_buffer_object);
-
-    // Bind the Vertex Array Object to track the vertices
-    glBindVertexArray(vertex_array_object);
-
-    // Bind Vertex Buffer Object
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
-
     // Bind Vertices and Attribute Pointers and Reserve the Memory in the GPU
     glBufferData(GL_ARRAY_BUFFER, shape.size() * sizeof(float),
                  static_cast<void*>(shape.data()), GL_STATIC_DRAW);
-
-    // Configure Position Attribute, pass up to the shader
-    glVertexAttribPointer(
-        0 /* One Vertex Buffer, first attribute location */,
-        3 /* Using vec3 to represent the positions of vertices */,
-        GL_FLOAT /* Buffer type is float */, GL_FALSE, 6 * sizeof(GL_FLOAT),
-        (GLvoid*)0);
-    glEnableVertexAttribArray(0);
-
-    // Configure Color Attribute, pass up to the shader
-    glVertexAttribPointer(1 /* Second Attribute Location */,
-                          3 /* Using a vec3 to represent the positions */,
-                          GL_FLOAT /* Buffer type is float */,
-                          GL_FALSE /* Do not normalize */,
-                          6 * sizeof(GL_FLOAT) /* Offset between data points */,
-                          (GLvoid*)(3 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(1);
-
-    // Unbind Vertex Array Object
-    glBindVertexArray(0);
 }
