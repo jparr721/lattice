@@ -29,15 +29,13 @@ class Renderable {
     // GPU Buffer Manager.
     GLuint vertex_buffer_object;
 
-    Renderable(int size, const glm::vec3& color, GLenum render_mode)
-        : kSize(size), kColor(color), kRenderMode(render_mode) {
-        // Fill our vertices with our shape based on the values provided
-    }
+    Renderable(int size, const glm::vec3& color) : kSize(size), kColor(color) {}
     ~Renderable() = default;
 
+    virtual void Initialize();
     virtual void Translate(const glm::vec3& translation_vector) = 0;
-    virtual void Render() = 0;
-    virtual void Update(float dt) = 0;
+    virtual inline void Render() = 0;
+    virtual inline void Update(float dt) = 0;
 
   protected:
     // Always render from the first group, second group is for colors.
@@ -57,8 +55,7 @@ class Renderable {
     // When it's needed, I'll add an offset so we can diplay side-by-side
     const int kSize;
 
-    // The render mode, either GL_TRIANGLES or GL_LINES.
-    const GLenum kRenderMode;
+    bool is_init = false;
 
     // Vector of 4D points (x, y, z w = 1)
     std::vector<glm::vec4> vertices;

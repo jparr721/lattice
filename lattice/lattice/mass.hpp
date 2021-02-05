@@ -11,21 +11,69 @@
 
 #include "renderable.hpp"
 
-#include <memory>
-
-#include <glm/glm.hpp>
-
-class Mass : private Renderable {
+class Mass : public Renderable {
   public:
     Mass()
-        : Renderable(1, kRenderableColorRed, GL_TRIANGLES), kMass(1),
+        : Renderable(1, kRenderableColorRed), kMass(1),
           position(glm::vec3(0, 0, 0)) {}
     Mass(float mass, glm::vec3 starting_position)
-        : Renderable(1, kRenderableColorRed, GL_TRIANGLES), kMass(mass),
+        : Renderable(1, kRenderableColorRed), kMass(mass),
           position(starting_position) {}
     ~Mass() = default;
 
     void CalculateMassForces(float dt);
+
+    void Initialize() {
+        // Construct our vertices centered around the origin position supplied
+        // on construction
+        const auto v1 = glm::vec4(position.x - kSize, position.y - kSize,
+                                  position.z, 1.f); // Bottom Left
+        const auto v2 = glm::vec4(position.x + kSize, position.y - kSize,
+                                  position.z, 1.f); // Bottom Right
+        const auto v3 = glm::vec4(position.x, position.y + kSize, position.z,
+                                  1.f); // Top Center
+
+        vertices = std::vector<glm::vec4>{{v1, v2, v3}};
+
+        // Load the being-used vertex objects into memory for later use
+        glGenVertexArrays(1, &vertex_array_object);
+
+        // Initialize our class-owned vertex buffer on the GPU
+        glGenBuffers(1, &vertex_buffer_object);
+
+        // Bind the Vertex Array Object to track the vertices
+        glBindVertexArray(vertex_array_object);
+
+        // Bind Vertex Buffer Object
+        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
+
+        // Configure Position Attribute, pass up to the shader
+        glVertexAttribPointer(
+            0 /* One Vertex Buffer, first attribute location */,
+            3 /* Using vec3 to represent the positions of vertices */,
+            GL_FLOAT /* Buffer type is float */, GL_FALSE, 6 * sizeof(GL_FLOAT),
+            (GLvoid*)0);
+        glEnableVertexAttribArray(0);
+
+        // Configure Color Attribute, pass up to the shader
+        glVertexAttribPointer(
+            1 /* Second Attribute Location */,
+            3 /* Using a vec3 to represent the positions */,
+            GL_FLOAT /* Buffer type is float */,
+            GL_FALSE /* Do not normalize */,
+            6 * sizeof(GL_FLOAT) /* Offset between data points */,
+            (GLvoid*)(3 * sizeof(GLfloat)));
+        glEnableVertexAttribArray(1);
+
+        // Unbind Vertex Array Object
+        glBindVertexArray(0);
+
+        is_init = true;
+    }
+
+    inline void Render() { return; }
+    inline void Update(float dt) { return; }
+    void Translate(const glm::vec3& translation_vector) { return; }
 
   private:
     // The damping constant to prevent explosiveness
@@ -47,6 +95,7 @@ class Mass : private Renderable {
     glm::vec3 acceleration = glm::vec3(0, 0, 0);
 
     void CalculateAcceleration();
+    void ComputeShapeWithColor();
 };
 
 #endif /* mass_hpp */

@@ -7,6 +7,35 @@
 
 #include "mass.hpp"
 
+void Mass::ComputeShapeWithColor() {
+    // We don't want to compute the shape if we don't have our values
+    // initialized yet in memory.
+    assert(is_init);
+
+    // THIS BREAKS IF SHAPE IS < 3 VECTORS
+    shape.reserve(std::pow(vertices.size(), 2) +
+                  std::pow(sizeof(kColor) / sizeof(float), 2));
+
+    // TODO(@jparr721) - If this stays at a static 3-point shape, we can force
+    // clang to unroll this via: #pragma clang loop unroll_count(3) This will
+    // speed up computation some.
+    for (int i = 0; i < vertices.size(); ++i) {
+        auto vertex = vertices[i];
+
+        int j = i * 6;
+
+        // Insert Vertex Positions
+        shape[j] = vertex.x;
+        shape[j + 1] = vertex.y;
+        shape[j + 2] = vertex.z;
+
+        // Insert Colors
+        shape[j + 3] = kColor.r;
+        shape[j + 4] = kColor.g;
+        shape[j + 5] = kColor.b;
+    }
+}
+
 void Mass::CalculateMassForces(float dt = 0.1f) {
     CalculateAcceleration();
 
