@@ -7,9 +7,9 @@
 
 #include <iostream>
 
+#include "keyboard.hpp"
 #include "shader.hpp"
 #include "window.hpp"
-#include "keyboard.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -49,7 +49,7 @@ int Window::Run() {
     glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 
     glfwMakeContextCurrent(window);
-    
+
     glfwSetWindowUserPointer(window, this);
 
     auto keyboard_handler = [](GLFWwindow* w, int k, int s, int a, int m) {

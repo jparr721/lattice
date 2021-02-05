@@ -17,6 +17,7 @@
 		83D8F4BC25CA3F5100E02900 /* vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D8F4BA25CA3F5100E02900 /* vertex.cpp */; };
 		83D8F4CB25CA5AE500E02900 /* core.frag in CopyFiles */ = {isa = PBXBuildFile; fileRef = 83D8F4C425CA5A9E00E02900 /* core.frag */; };
 		83D8F4CC25CA5AE500E02900 /* core.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = 83D8F4C325CA5A9E00E02900 /* core.vs */; };
+		83D8F4D125CCD26E00E02900 /* mass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D8F4CF25CCD26E00E02900 /* mass.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,6 +52,8 @@
 		83D8F4BF25CA55F000E02900 /* shader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shader.hpp; sourceTree = "<group>"; };
 		83D8F4C325CA5A9E00E02900 /* core.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = core.vs; path = lattice/core.vs; sourceTree = "<group>"; };
 		83D8F4C425CA5A9E00E02900 /* core.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = core.frag; path = lattice/core.frag; sourceTree = "<group>"; };
+		83D8F4CF25CCD26E00E02900 /* mass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mass.cpp; sourceTree = "<group>"; };
+		83D8F4D025CCD26E00E02900 /* mass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mass.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +103,8 @@
 				83D8F4BA25CA3F5100E02900 /* vertex.cpp */,
 				83D8F4BB25CA3F5100E02900 /* vertex.hpp */,
 				83D8F4BF25CA55F000E02900 /* shader.hpp */,
+				83D8F4CF25CCD26E00E02900 /* mass.cpp */,
+				83D8F4D025CCD26E00E02900 /* mass.hpp */,
 			);
 			path = lattice;
 			sourceTree = "<group>";
@@ -175,6 +180,7 @@
 				83D8F4B025C9087000E02900 /* keyboard.cpp in Sources */,
 				83D8F4BC25CA3F5100E02900 /* vertex.cpp in Sources */,
 				832BE47525C8DF0900647E88 /* main.cpp in Sources */,
+				83D8F4D125CCD26E00E02900 /* mass.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

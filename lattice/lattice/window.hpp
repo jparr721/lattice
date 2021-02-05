@@ -49,7 +49,7 @@ class Window {
 
     // Flag if the class was initialized
     bool is_init = false;
-    
+
     // Our current shape
     std::shared_ptr<Vertex> shape;
 
