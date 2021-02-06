@@ -10,7 +10,7 @@
 #ifndef window_hpp
 #define window_hpp
 
-#include "vertex.hpp"
+#include "mass.hpp"
 
 #include <memory>
 #include <vector>
@@ -24,7 +24,7 @@
 
 class Window {
   public:
-    Window(std::shared_ptr<Vertex>& _shape) : shape(std::move(_shape)) {}
+    Window(std::shared_ptr<Mass>& _mass) : mass(std::move(_mass)) {}
     ~Window() = default;
 
     void Initialize();
@@ -51,7 +51,7 @@ class Window {
     bool is_init = false;
 
     // Our current shape
-    std::shared_ptr<Vertex> shape;
+    std::shared_ptr<Mass> mass;
 
     // Window Reference
     GLFWwindow* window = nullptr;

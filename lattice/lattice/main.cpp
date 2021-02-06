@@ -10,12 +10,10 @@
 
 #include "window.hpp"
 
-#include "vertex.hpp"
-
 int main() {
-    auto shape = std::make_shared<Vertex>();
+    auto mass = std::make_shared<Mass>();
 
-    const auto window = std::make_unique<Window>(shape);
+    const auto window = std::make_unique<Window>(mass);
     window->Initialize();
     window->Run();
 }

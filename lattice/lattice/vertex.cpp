@@ -8,7 +8,6 @@
 #include "vertex.hpp"
 #include <iostream>
 
-#include <glm/gtx/string_cast.hpp>
 #include <glm/gtx/transform.hpp>
 
 // This class is mis-named for now...

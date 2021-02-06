@@ -11,6 +11,8 @@
 
 #include "renderable.hpp"
 
+#include <glm/gtx/transform.hpp>
+
 class Mass : public Renderable {
   public:
     Mass()
@@ -69,11 +71,34 @@ class Mass : public Renderable {
         glBindVertexArray(0);
 
         is_init = true;
+        
+        ComputeShapeWithColor();
     }
 
-    inline void Render() { return; }
+    inline void Render() {
+        assert(is_init);
+        // Bind Vertices and Attribute Pointers and Reserve the Memory in the GPU
+        glBufferData(GL_ARRAY_BUFFER, shape.size() * sizeof(float),
+                     static_cast<void*>(shape.data()), GL_STATIC_DRAW);
+        
+    }
+    
+    // TODO(@jparr721)
     inline void Update(float dt) { return; }
-    void Translate(const glm::vec3& translation_vector) { return; }
+    
+    
+    void Translate(const glm::vec3& translation_vector) {
+        auto transformation_matrix = glm::translate(glm::mat4(1.0f), translation_vector);
+        
+        // Translate all vertices via the translation matrix.
+        for (int i = 0u; i < vertices.size(); ++i) {
+            vertices[i] = transformation_matrix * vertices[i];
+        }
+        
+        // Recompute our shape
+        // TODO(@jparr721) - Can we do this on the same vector instead of copying between them?
+        ComputeShapeWithColor();
+    }
 
   private:
     // The damping constant to prevent explosiveness

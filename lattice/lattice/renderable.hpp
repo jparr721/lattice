@@ -30,9 +30,9 @@ class Renderable {
     GLuint vertex_buffer_object;
 
     Renderable(int size, const glm::vec3& color) : kSize(size), kColor(color) {}
-    ~Renderable() = default;
+    virtual ~Renderable() = default;
 
-    virtual void Initialize();
+    virtual void Initialize() = 0;
     virtual void Translate(const glm::vec3& translation_vector) = 0;
     virtual inline void Render() = 0;
     virtual inline void Update(float dt) = 0;
