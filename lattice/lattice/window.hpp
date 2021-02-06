@@ -11,7 +11,6 @@
 #define window_hpp
 
 #include "mass.hpp"
-#include "vertex.hpp"
 
 #include <memory>
 #include <vector>
