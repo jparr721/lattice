@@ -11,6 +11,8 @@
 
 #include "renderable.hpp"
 
+#include <glm/gtx/transform.hpp>
+
 class Mass : public Renderable {
   public:
     Mass()
@@ -34,6 +36,9 @@ class Mass : public Renderable {
                                   1.f); // Top Center
 
         vertices = std::vector<glm::vec4>{{v1, v2, v3}};
+        
+        // Build our internal shape object
+        ComputeShapeWithColor();
 
         // Load the being-used vertex objects into memory for later use
         glGenVertexArrays(1, &vertex_array_object);
@@ -56,13 +61,12 @@ class Mass : public Renderable {
         glEnableVertexAttribArray(0);
 
         // Configure Color Attribute, pass up to the shader
-        glVertexAttribPointer(
-            1 /* Second Attribute Location */,
-            3 /* Using a vec3 to represent the positions */,
-            GL_FLOAT /* Buffer type is float */,
-            GL_FALSE /* Do not normalize */,
-            6 * sizeof(GL_FLOAT) /* Offset between data points */,
-            (GLvoid*)(3 * sizeof(GLfloat)));
+        glVertexAttribPointer(1 /* Second Attribute Location */,
+                              3 /* Using a vec3 to represent the positions */,
+                              GL_FLOAT /* Buffer type is float */,
+                              GL_FALSE /* Do not normalize */,
+                              6 * sizeof(GL_FLOAT) /* Offset between data points */,
+                              (GLvoid*)(3 * sizeof(GLfloat)));
         glEnableVertexAttribArray(1);
 
         // Unbind Vertex Array Object
@@ -71,9 +75,30 @@ class Mass : public Renderable {
         is_init = true;
     }
 
-    inline void Render() { return; }
+    inline void Render() {
+        assert(is_init);
+        // Bind Vertices and Attribute Pointers and Reserve the Memory in the GPU
+        glBufferData(GL_ARRAY_BUFFER, shape.size() * sizeof(float),
+                     static_cast<void*>(shape.data()), GL_STATIC_DRAW);
+        
+    }
+    
+    // TODO(@jparr721)
     inline void Update(float dt) { return; }
-    void Translate(const glm::vec3& translation_vector) { return; }
+    
+    
+    void Translate(const glm::vec3& translation_vector) {
+        auto transformation_matrix = glm::translate(glm::mat4(1.0f), translation_vector);
+        
+        // Translate all vertices via the translation matrix.
+        for (int i = 0u; i < vertices.size(); ++i) {
+            vertices[i] = transformation_matrix * vertices[i];
+        }
+        
+        // Recompute our shape
+        // TODO(@jparr721) - Can we do this on the same vector instead of copying between them?
+        ComputeShapeWithColor();
+    }
 
   private:
     // The damping constant to prevent explosiveness

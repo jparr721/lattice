@@ -54,7 +54,7 @@ int Window::Run() {
 
     auto keyboard_handler = [](GLFWwindow* w, int k, int s, int a, int m) {
         auto ww = (Window*)glfwGetWindowUserPointer(w);
-        TakeAction(ww->shape, k, a);
+        TakeAction(ww->mass, k, a);
     };
 
     // Set up to handle keybindings
@@ -96,7 +96,7 @@ int Window::Run() {
     // model
     glm::mat4 mvp = projection * camera_view * model;
 
-    shape->Initialize();
+    mass->Initialize();
 
     // Start main window loop and spawn the window
     while (!glfwWindowShouldClose(window)) {
@@ -113,19 +113,20 @@ int Window::Run() {
         // Configure the camera transform into the shader
         glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &mvp[0][0]);
 
-        shape->Render();
-        glBindVertexArray(shape->vertex_array_object);
+        mass->Render();
+        glBindVertexArray(mass->vertex_array_object);
 
         // Draw value from points 0-3
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
+        
 
         // Swap the screen buffers
         glfwSwapBuffers(window);
     }
 
-    glDeleteVertexArrays(1, &shape->vertex_array_object);
-    glDeleteBuffers(1, &shape->vertex_buffer_object);
+    glDeleteVertexArrays(1, &mass->vertex_array_object);
+    glDeleteBuffers(1, &mass->vertex_buffer_object);
 
     glfwTerminate();
 

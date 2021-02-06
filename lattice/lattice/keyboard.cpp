@@ -17,7 +17,7 @@
 // GLFW
 #include <GLFW/glfw3.h>
 
-void TakeAction(const std::shared_ptr<Vertex>& shape, int key, int action) {
+void TakeAction(const std::shared_ptr<Mass>& shape, int key, int action) {
     if (action != GLFW_PRESS) {
         return;
     }
@@ -41,20 +41,20 @@ void TakeAction(const std::shared_ptr<Vertex>& shape, int key, int action) {
     };
 }
 
-void OnUpKeyPress(const std::shared_ptr<Vertex>& shape) {
+void OnUpKeyPress(const std::shared_ptr<Mass>& shape) {
     auto change = glm::vec3(0.0f, 0.5, 0.0f);
-    shape->Transform(change);
+    shape->Translate(change);
 }
 
-void OnDownKeyPress(const std::shared_ptr<Vertex>& shape) {
+void OnDownKeyPress(const std::shared_ptr<Mass>& shape) {
     auto change = glm::vec3(0.0f, -0.5, 0.0f);
-    shape->Transform(change);
+    shape->Translate(change);
 }
-void OnRightKeyPress(const std::shared_ptr<Vertex>& shape) {
+void OnRightKeyPress(const std::shared_ptr<Mass>& shape) {
     auto change = glm::vec3(0.5f, 0.0, 0.0f);
-    shape->Transform(change);
+    shape->Translate(change);
 }
-void OnLeftKeyPress(const std::shared_ptr<Vertex>& shape) {
+void OnLeftKeyPress(const std::shared_ptr<Mass>& shape) {
     auto change = glm::vec3(-0.5f, 0.0, 0.0f);
-    shape->Transform(change);
+    shape->Translate(change);
 }
