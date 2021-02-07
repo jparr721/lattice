@@ -120,6 +120,8 @@ int Window::Run() {
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
         
+        mass->Update(simulation_timestep);
+        
 
         // Swap the screen buffers
         glfwSwapBuffers(window);

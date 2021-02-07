@@ -33,10 +33,10 @@ class Window {
 
   private:
     // Window width
-    constexpr static int WIDTH = 1200;
+    constexpr static int WIDTH = 1300;
 
     // Window height
-    constexpr static int HEIGHT = 1000;
+    constexpr static int HEIGHT = 900;
 
     // Major OpenGL Version
     constexpr static int MAJOR = 3;
@@ -55,6 +55,9 @@ class Window {
 
     // Window Reference
     GLFWwindow* window = nullptr;
+    
+    // Our update timestep
+    static constexpr float simulation_timestep = 0.01;
 };
 
 #endif /* window_hpp */
