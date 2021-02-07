@@ -11,6 +11,7 @@
 #define window_hpp
 
 #include "mass.hpp"
+#include "camera.hpp"
 
 #include <memory>
 #include <vector>
@@ -46,18 +47,30 @@ class Window {
 
     // Window Title
     constexpr static const char* TITLE = "Mass Sim";
+    
+    GLuint shader_program_id;
 
     // Flag if the class was initialized
     bool is_init = false;
 
     // Our current shape
     std::shared_ptr<Mass> mass;
+    
+    // Our camera object
+    std::unique_ptr<Camera> camera;
 
     // Window Reference
     GLFWwindow* window = nullptr;
 
     // Our update timestep
     static constexpr float simulation_timestep = 0.01;
+    
+    void DeclareGLFWConfigs();
+    void ConfigureWindowContext();
+    void SetupKeyboardHandler();
+    void LoadShaders();
+    void SetupCamera();
+    void Display();
 };
 
 #endif /* window_hpp */

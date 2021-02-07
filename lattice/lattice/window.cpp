@@ -16,6 +16,24 @@
 #include <glm/gtx/transform.hpp>
 
 void Window::Initialize() {
+    // Set up basic GLFW Parameters
+    DeclareGLFWConfigs();
+    
+    // Set up our window context variables and screen size
+    ConfigureWindowContext();
+    
+    // Set up to handle keyboard input
+    SetupKeyboardHandler();
+    
+    LoadShaders();
+    
+    SetupCamera();
+
+    // If we get through, we are all set
+    is_init = true;
+}
+
+void Window::DeclareGLFWConfigs() {
     // Initialize GLFW
     glfwInit();
 
@@ -37,19 +55,27 @@ void Window::Initialize() {
         glfwTerminate();
         return;
     }
-
-    // If we get through, we are all set
-    is_init = true;
 }
 
-int Window::Run() {
+void Window::ConfigureWindowContext() {
     int screenWidth;
     int screenHeight;
 
     glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 
     glfwMakeContextCurrent(window);
+    
+    // Turn on experimental so GLEW knows to use modern functionality
+    glewExperimental = GL_TRUE;
 
+    // Start up OpenGL/Glew
+    assert(GLEW_OK == glewInit() && "Failed to initialize GLEW");
+
+    // Set viewport dimensions
+    glViewport(0, 0, screenWidth, screenHeight);
+}
+
+void Window::SetupKeyboardHandler() {
     glfwSetWindowUserPointer(window, this);
 
     auto keyboard_handler = [](GLFWwindow* w, int k, int s, int a, int m) {
@@ -59,71 +85,51 @@ int Window::Run() {
 
     // Set up to handle keybindings
     glfwSetKeyCallback(window, keyboard_handler);
+}
 
-    // Turn on experimental so GLEW knows to use modern functionality
-    glewExperimental = GL_TRUE;
-
-    // Start up OpenGL/Glew
-    if (GLEW_OK != glewInit()) {
-        std::cout << "Failed to initialize GLEW" << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    // Set viewport dimensions
-    glViewport(0, 0, screenWidth, screenHeight);
-
+void Window::LoadShaders() {
     // Load Shaders
     auto shader = std::make_unique<Shader>();
-    auto program_id = shader->Initialize("core.vs", "core.frag");
+    shader_program_id = shader->Initialize("core.vs", "core.frag");
+}
 
-    // Get a model view projection matrix handle, named as mvp
-    GLuint matrix_id = glGetUniformLocation(program_id, "mvp");
+void Window::SetupCamera() {
+    camera = std::make_unique<Camera>(shader_program_id);
+}
 
-    // Projection matrix: 45 degree FOV, 4:3 aspect, display 0.1unit to 100
-    // units
-    glm::mat4 projection =
-        glm::perspective(glm::radians(100.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+void Window::Display() {
+    // Check for events being activated.
+    glfwPollEvents();
 
-    // Set up our camera in the frame
-    // TODO(@jparr721) - Constants
-    glm::mat4 camera_view =
-        glm::lookAt(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    // Render
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-    // Matrix representing our model
-    glm::mat4 model = glm::mat4(1.0f);
+    // Configure our shaders
+    glUseProgram(shader_program_id);
 
-    // Model view projection, multiplying our projection, camera view, and the
-    // model
-    glm::mat4 mvp = projection * camera_view * model;
+    // Configure the camera transform into the shader
+    glUniformMatrix4fv(camera->MatrixId(), 1, GL_FALSE, &camera->MVP()[0][0]);
 
+    mass->Render();
+    glBindVertexArray(mass->vertex_array_object);
+
+    // Draw value from points 0-3
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glBindVertexArray(0);
+
+    mass->Update(simulation_timestep);
+
+    // Swap the screen buffers
+    glfwSwapBuffers(window);
+}
+
+int Window::Run() {
     mass->Initialize();
 
     // Start main window loop and spawn the window
     while (!glfwWindowShouldClose(window)) {
-        // Check for events being activated.
-        glfwPollEvents();
-
-        // Render
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        // Configure our shaders
-        glUseProgram(program_id);
-
-        // Configure the camera transform into the shader
-        glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &mvp[0][0]);
-
-        mass->Render();
-        glBindVertexArray(mass->vertex_array_object);
-
-        // Draw value from points 0-3
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glBindVertexArray(0);
-
-        mass->Update(simulation_timestep);
-
-        // Swap the screen buffers
-        glfwSwapBuffers(window);
+        Display();
     }
 
     glDeleteVertexArrays(1, &mass->vertex_array_object);

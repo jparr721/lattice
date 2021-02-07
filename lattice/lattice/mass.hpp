@@ -15,12 +15,17 @@
 
 class Mass : public Renderable {
   public:
+    // The mass of the... mass...
+    const float kMass;
+    
+    const bool kFixed;
+    
     Mass()
         : Renderable(1, kRenderableColorRed), kMass(1),
-          position(glm::vec4(0, 0, 0, 1)) {}
-    Mass(float mass, glm::vec4 starting_position)
+          position(glm::vec4(0.f, 0.f, 0.f, 1.f)), kFixed(false) {}
+    Mass(float mass, bool fixed, glm::vec4 starting_position)
         : Renderable(1, kRenderableColorRed), kMass(mass),
-          position(starting_position) {}
+          position(starting_position), kFixed(fixed) {}
     ~Mass() = default;
 
     void CalculateMassForces(float dt);
@@ -96,13 +101,19 @@ class Mass : public Renderable {
         // Recompute our shape
         ComputeShapeWithColor();
     }
+    
+    /**
+        @brief Updates the acceleration of the mass object by some positive or negative delta value.
+     */
+    inline void ChangeAcceleration(const glm::vec4& delta) {
+        acceleration += delta;
+    }
+    
+    glm::vec4 Position() { return position; }
 
   private:
     // The damping constant to prevent explosiveness
     constexpr static float kDamping = 0.8f;
-
-    // The mass of the... mass...
-    const float kMass;
 
     // Gravitational constant vector, applies -9.81f pounds of negative force
     const glm::vec4 kGravity = glm::vec4(0.0f, -9.81f, 0.0f, 1.0f);

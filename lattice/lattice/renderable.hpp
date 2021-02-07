@@ -20,6 +20,7 @@
 #include <glm/glm.hpp>
 
 const glm::vec3 kRenderableColorRed = glm::vec3(1.f, 0.f, 0.f);
+const glm::vec3 kRenderableColorBlue = glm::vec3(0.f, 1.f, 0.f);
 
 class Renderable {
   public:
