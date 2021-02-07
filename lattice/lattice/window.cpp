@@ -101,7 +101,7 @@ void Window::Display() {
     // Check for events being activated.
     glfwPollEvents();
 
-    // Render
+    // Render setup with shaders
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -111,6 +111,8 @@ void Window::Display() {
     // Configure the camera transform into the shader
     glUniformMatrix4fv(camera->MatrixId(), 1, GL_FALSE, &camera->MVP()[0][0]);
 
+    // =========================
+    // Mass Object Render Loop
     mass->Render();
     glBindVertexArray(mass->vertex_array_object);
 
@@ -118,8 +120,13 @@ void Window::Display() {
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);
 
+    // Update with the simulation timestep
     mass->Update(simulation_timestep);
 
+    // =========================
+    // Spring Object Render Loop
+    
+    
     // Swap the screen buffers
     glfwSwapBuffers(window);
 }
