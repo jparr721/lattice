@@ -27,7 +27,7 @@ class Mass : public Renderable {
 
     void Initialize() {
         ComputeVertexPoints();
-        
+
         // Build our internal shape object
         ComputeShapeWithColor();
 
@@ -52,12 +52,13 @@ class Mass : public Renderable {
         glEnableVertexAttribArray(0);
 
         // Configure Color Attribute, pass up to the shader
-        glVertexAttribPointer(1 /* Second Attribute Location */,
-                              3 /* Using a vec3 to represent the positions */,
-                              GL_FLOAT /* Buffer type is float */,
-                              GL_FALSE /* Do not normalize */,
-                              6 * sizeof(GL_FLOAT) /* Offset between data points */,
-                              (GLvoid*)(3 * sizeof(GLfloat)));
+        glVertexAttribPointer(
+            1 /* Second Attribute Location */,
+            3 /* Using a vec3 to represent the positions */,
+            GL_FLOAT /* Buffer type is float */,
+            GL_FALSE /* Do not normalize */,
+            6 * sizeof(GL_FLOAT) /* Offset between data points */,
+            (GLvoid*)(3 * sizeof(GLfloat)));
         glEnableVertexAttribArray(1);
 
         // Unbind Vertex Array Object
@@ -68,25 +69,26 @@ class Mass : public Renderable {
 
     inline void Render() {
         assert(is_init);
-        // Bind Vertices and Attribute Pointers and Reserve the Memory in the GPU
+        // Bind Vertices and Attribute Pointers and Reserve the Memory in the
+        // GPU
         glBufferData(GL_ARRAY_BUFFER, shape.size() * sizeof(float),
                      static_cast<void*>(shape.data()), GL_STATIC_DRAW);
-        
     }
-    
+
     // TODO(@jparr721)
     inline void Update(float dt) { return; }
-    
-    
+
     void Translate(const glm::vec3& translation_vector) {
-        auto transformation_matrix = glm::translate(glm::mat4(1.0f), translation_vector);
-        
-        // Translate all vertices via the translation matrix by just moving the position
+        auto transformation_matrix =
+            glm::translate(glm::mat4(1.0f), translation_vector);
+
+        // Translate all vertices via the translation matrix by just moving the
+        // position
         position = transformation_matrix * position;
-        
+
         // Recompute our vertices
         ComputeVertexPoints();
-        
+
         // Recompute our shape
         ComputeShapeWithColor();
     }

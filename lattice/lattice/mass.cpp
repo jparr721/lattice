@@ -23,7 +23,8 @@ void Mass::ComputeVertexPoints() {
 void Mass::ComputeShapeWithColor() {
     // THIS BREAKS IF SHAPE IS < 3 VECTORS
     shape = std::vector<GLfloat>((std::pow(vertices.size(), 2) +
-                  std::pow(sizeof(kColor) / sizeof(float), 2)), 0);
+                                  std::pow(sizeof(kColor) / sizeof(float), 2)),
+                                 0);
 
     // TODO(@jparr721) - If this stays at a static 3-point shape, we can force
     // clang to unroll this via: #pragma clang loop unroll_count(3) This will

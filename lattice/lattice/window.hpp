@@ -55,7 +55,7 @@ class Window {
 
     // Window Reference
     GLFWwindow* window = nullptr;
-    
+
     // Our update timestep
     static constexpr float simulation_timestep = 0.01;
 };
