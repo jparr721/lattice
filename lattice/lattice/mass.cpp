@@ -7,6 +7,19 @@
 
 #include "mass.hpp"
 
+void Mass::ComputeVertexPoints() {
+    // Construct our vertices centered around the origin position supplied
+    // on construction
+    const auto v1 = glm::vec4(position.x - kSize, position.y - kSize,
+                              position.z, 1.f); // Bottom Left
+    const auto v2 = glm::vec4(position.x + kSize, position.y - kSize,
+                              position.z, 1.f); // Bottom Right
+    const auto v3 = glm::vec4(position.x, position.y + kSize, position.z,
+                              1.f); // Top Center
+
+    vertices = std::vector<glm::vec4>{{v1, v2, v3}};
+}
+
 void Mass::ComputeShapeWithColor() {
     // THIS BREAKS IF SHAPE IS < 3 VECTORS
     shape = std::vector<GLfloat>((std::pow(vertices.size(), 2) +
