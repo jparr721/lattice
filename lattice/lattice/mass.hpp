@@ -76,7 +76,11 @@ class Mass : public Renderable {
     }
 
     // TODO(@jparr721)
-    inline void Update(float dt) { return; }
+    inline void Update(float dt) {
+        CalculateMassForces(dt);
+        ComputeVertexPoints();
+        ComputeShapeWithColor();
+    }
 
     void Translate(const glm::vec3& translation_vector) {
         auto transformation_matrix =
