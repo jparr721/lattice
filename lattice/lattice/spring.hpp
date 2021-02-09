@@ -25,11 +25,14 @@ class Spring : public Fixture {
     inline void Update(float dt) { return; }
 
     inline void ComputeVertexPoints() {
-        const auto v1 = glm::vec4(position.x - 1, position.y - 1, position.z,
+        const auto lpos = left_mass->Position();
+        const auto rpos = right_mass->Position();
+
+        const auto v1 = glm::vec4(lpos.x, lpos.y, position.z,
                                   1.f); // Bottom Left
-        const auto v2 = glm::vec4(position.x + 1, position.y - 1, position.z,
+        const auto v2 = glm::vec4(rpos.x, rpos.y, position.z,
                                   1.f); // Bottom Right
-        const auto v3 = glm::vec4(position.x, position.y + 1, position.z,
+        const auto v3 = glm::vec4(rpos.x + 0.1f, rpos.y, position.z,
                                   1.f); // Top Center
 
         vertices = std::vector<glm::vec4>{{v1, v2, v3}};
