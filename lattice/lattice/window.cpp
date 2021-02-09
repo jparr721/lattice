@@ -115,7 +115,6 @@ void Window::Display() {
 
     // =========================
     // Mass Object Render Loop
-    // TODO(@jparr721) - Loop through these later when we have more masses.
     masses->Render();
     glBindVertexArray(masses->vertex_array_object);
 
@@ -126,22 +125,12 @@ void Window::Display() {
     // Update only the moving mass with the simulation timestep
     masses->Update(simulation_timestep);
 
-    // =========================
-    // Spring Object Render Loop
-    //    spring->Render();
-    //    glBindVertexArray(spring->vertex_array_object);
-    //
-    //    // Draw value from points 0-3 (x, y, z)
-    //    glDrawArrays(GL_LINES, 0, 3);
-    //    glBindVertexArray(0);
-    //
     // Swap the screen buffers
     glfwSwapBuffers(window);
 }
 
 int Window::Run() {
     masses->Initialize();
-    //    spring->Initialize();
 
     // Start main window loop and spawn the window
     while (!glfwWindowShouldClose(window)) {

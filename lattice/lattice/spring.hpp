@@ -15,24 +15,24 @@
 
 class Spring : public Fixture {
   public:
-    Spring(float stiffness, float resting_length,
+    Spring(float stiffness, float resting_length, glm::vec4 starting_position,
            std::shared_ptr<Mass>& _left_mass,
            std::shared_ptr<Mass>& _right_mass)
-        : Fixture(glm::vec4(1.f, 1.f, 1.f, 0.f), colors::kRed),
-          kStiffness(stiffness), kLength(resting_length), left_mass(_left_mass),
+        : Fixture(starting_position, colors::kGreen), kStiffness(stiffness),
+          kLength(resting_length), left_mass(_left_mass),
           right_mass(_right_mass) {}
 
     inline void Update(float dt) { return; }
 
     inline void ComputeVertexPoints() {
-        const auto v1 =
-            glm::vec4(left_mass->Position().x, left_mass->Position().y,
-                      left_mass->Position().z, 1.f);
-        const auto v2 =
-            glm::vec4(right_mass->Position().x, right_mass->Position().y,
-                      right_mass->Position().z, 1.f);
+        const auto v1 = glm::vec4(position.x - 1, position.y - 1, position.z,
+                                  1.f); // Bottom Left
+        const auto v2 = glm::vec4(position.x + 1, position.y - 1, position.z,
+                                  1.f); // Bottom Right
+        const auto v3 = glm::vec4(position.x, position.y + 1, position.z,
+                                  1.f); // Top Center
 
-        vertices = std::vector<glm::vec4>{{v1, v2}};
+        vertices = std::vector<glm::vec4>{{v1, v2, v3}};
     }
 
     void Translate(const glm::vec3& translation_vector) {
@@ -55,9 +55,6 @@ class Spring : public Fixture {
 
     std::shared_ptr<Mass> left_mass;
     std::shared_ptr<Mass> right_mass;
-
-    // The position of our rendered spring.
-    glm::vec4 position;
 
     void ApplySpringForces();
     // TODO(@jparr721) - Make this a helper.

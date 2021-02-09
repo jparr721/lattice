@@ -19,7 +19,7 @@ class Shape : public Renderable {
   public:
     Shape(std::vector<std::shared_ptr<Fixture>>& _fixtures, GLuint render_mode)
         : Renderable(render_mode), fixtures(_fixtures) {}
-    
+
     unsigned int size() { return rendered_array_size; }
 
     inline void ComputeVertexPoints() {
@@ -110,9 +110,9 @@ class Shape : public Renderable {
 
         // Unbind Vertex Array Object
         glBindVertexArray(0);
-        
+
         rendered_array_size = 0;
-        
+
         for (auto fixture : fixtures) {
             rendered_array_size += fixture->size();
         }
@@ -122,6 +122,7 @@ class Shape : public Renderable {
 
     inline void Render() {
         assert(is_init);
+
         // Bind Vertices and Attribute Pointers and Reserve the Memory in the
         // GPU
         glBufferData(GL_ARRAY_BUFFER, shapes.size() * sizeof(float),
@@ -136,7 +137,7 @@ class Shape : public Renderable {
 
   private:
     std::vector<std::shared_ptr<Fixture>>& fixtures;
-    
+
     unsigned int rendered_array_size;
 };
 

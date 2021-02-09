@@ -27,8 +27,7 @@
 
 class Window {
   public:
-    Window(std::shared_ptr<Shape>& _masses, std::shared_ptr<Shape>& _springs)
-        : masses(_masses), springs(_springs) {}
+    Window(std::shared_ptr<Shape>& _masses) : masses(_masses) {}
     ~Window() = default;
 
     void Initialize();
@@ -58,9 +57,6 @@ class Window {
 
     // Our movable mass object
     std::shared_ptr<Shape> masses;
-
-    // Our spring object
-    std::shared_ptr<Shape> springs;
 
     // Our camera object
     std::unique_ptr<Camera> camera;
