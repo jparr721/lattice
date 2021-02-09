@@ -120,7 +120,7 @@ void Window::Display() {
     glBindVertexArray(masses->vertex_array_object);
 
     // Draw value from points 0-3 (x, y z)
-    glDrawArrays(masses->RenderMode(), 0, 6);
+    glDrawArrays(masses->RenderMode(), 0, masses->size());
     glBindVertexArray(0);
 
     // Update only the moving mass with the simulation timestep
