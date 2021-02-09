@@ -10,8 +10,10 @@
 #ifndef window_hpp
 #define window_hpp
 
-#include "mass.hpp"
 #include "camera.hpp"
+#include "mass.hpp"
+#include "shape.hpp"
+#include "spring.hpp"
 
 #include <memory>
 #include <vector>
@@ -25,7 +27,8 @@
 
 class Window {
   public:
-    Window(std::shared_ptr<Mass>& _mass) : mass(std::move(_mass)) {}
+    Window(std::shared_ptr<Shape>& _masses, std::shared_ptr<Shape>& _springs)
+        : masses(_masses), springs(_springs) {}
     ~Window() = default;
 
     void Initialize();
@@ -47,15 +50,18 @@ class Window {
 
     // Window Title
     constexpr static const char* TITLE = "Mass Sim";
-    
+
     GLuint shader_program_id;
 
     // Flag if the class was initialized
     bool is_init = false;
 
-    // Our current shape
-    std::shared_ptr<Mass> mass;
-    
+    // Our movable mass object
+    std::shared_ptr<Shape> masses;
+
+    // Our spring object
+    std::shared_ptr<Shape> springs;
+
     // Our camera object
     std::unique_ptr<Camera> camera;
 
@@ -64,7 +70,7 @@ class Window {
 
     // Our update timestep
     static constexpr float simulation_timestep = 0.01;
-    
+
     void DeclareGLFWConfigs();
     void ConfigureWindowContext();
     void SetupKeyboardHandler();

@@ -11,13 +11,13 @@
 
 #include <memory>
 
-#include "mass.hpp"
+#include "shape.hpp"
 
-void TakeAction(const std::shared_ptr<Mass>& shape, int key, int action);
+void TakeAction(const std::shared_ptr<Shape>& shape, int key, int action);
 
-void OnUpKeyPress(const std::shared_ptr<Mass>& shape);
-void OnDownKeyPress(const std::shared_ptr<Mass>& shape);
-void OnLeftKeyPress(const std::shared_ptr<Mass>& shape);
-void OnRightKeyPress(const std::shared_ptr<Mass>& shape);
+void OnUpKeyPress(const std::shared_ptr<Shape>& shape);
+void OnDownKeyPress(const std::shared_ptr<Shape>& shape);
+void OnLeftKeyPress(const std::shared_ptr<Shape>& shape);
+void OnRightKeyPress(const std::shared_ptr<Shape>& shape);
 
 #endif /* keyboard_hpp */

@@ -16,13 +16,13 @@
 #include <glm/glm.hpp>
 
 class Camera {
-public:
+  public:
     Camera(GLuint shader_program_id);
-    
+
     glm::mat4 MVP() { return mvp; }
     GLuint MatrixId() { return matrix_id; }
 
-private:
+  private:
     glm::mat4 mvp;
     GLuint matrix_id;
 };

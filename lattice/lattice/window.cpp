@@ -18,15 +18,17 @@
 void Window::Initialize() {
     // Set up basic GLFW Parameters
     DeclareGLFWConfigs();
-    
+
     // Set up our window context variables and screen size
     ConfigureWindowContext();
-    
+
     // Set up to handle keyboard input
     SetupKeyboardHandler();
-    
+
+    // Load shaders from our GLSL files
     LoadShaders();
-    
+
+    // Create the camera object and position it
     SetupCamera();
 
     // If we get through, we are all set
@@ -64,7 +66,7 @@ void Window::ConfigureWindowContext() {
     glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 
     glfwMakeContextCurrent(window);
-    
+
     // Turn on experimental so GLEW knows to use modern functionality
     glewExperimental = GL_TRUE;
 
@@ -80,7 +82,7 @@ void Window::SetupKeyboardHandler() {
 
     auto keyboard_handler = [](GLFWwindow* w, int k, int s, int a, int m) {
         auto ww = (Window*)glfwGetWindowUserPointer(w);
-        TakeAction(ww->mass, k, a);
+        TakeAction(ww->masses, k, a);
     };
 
     // Set up to handle keybindings
@@ -113,34 +115,41 @@ void Window::Display() {
 
     // =========================
     // Mass Object Render Loop
-    mass->Render();
-    glBindVertexArray(mass->vertex_array_object);
+    // TODO(@jparr721) - Loop through these later when we have more masses.
+    masses->Render();
+    glBindVertexArray(masses->vertex_array_object);
 
-    // Draw value from points 0-3
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    // Draw value from points 0-3 (x, y z)
+    glDrawArrays(masses->RenderMode(), 0, 6);
     glBindVertexArray(0);
 
-    // Update with the simulation timestep
-    mass->Update(simulation_timestep);
+    // Update only the moving mass with the simulation timestep
+    masses->Update(simulation_timestep);
 
     // =========================
     // Spring Object Render Loop
-    
-    
+    //    spring->Render();
+    //    glBindVertexArray(spring->vertex_array_object);
+    //
+    //    // Draw value from points 0-3 (x, y, z)
+    //    glDrawArrays(GL_LINES, 0, 3);
+    //    glBindVertexArray(0);
+    //
     // Swap the screen buffers
     glfwSwapBuffers(window);
 }
 
 int Window::Run() {
-    mass->Initialize();
+    masses->Initialize();
+    //    spring->Initialize();
 
     // Start main window loop and spawn the window
     while (!glfwWindowShouldClose(window)) {
         Display();
     }
 
-    glDeleteVertexArrays(1, &mass->vertex_array_object);
-    glDeleteBuffers(1, &mass->vertex_buffer_object);
+    glDeleteVertexArrays(1, &masses->vertex_array_object);
+    glDeleteBuffers(1, &masses->vertex_buffer_object);
 
     glfwTerminate();
 

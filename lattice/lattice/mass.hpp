@@ -9,82 +9,55 @@
 #ifndef mass_hpp
 #define mass_hpp
 
-#include "renderable.hpp"
+#include "colors.hpp"
+#include "fixture.hpp"
 
 #include <glm/gtx/transform.hpp>
 
-class Mass : public Renderable {
+constexpr bool kFixedPosition = true;
+constexpr bool kUnfixedPosition = false;
+
+class Mass : public Fixture {
   public:
     // The mass of the... mass...
     const float kMass;
-    
-    const bool kFixed;
-    
+
+    const bool is_fixed;
+
     Mass()
-        : Renderable(1, kRenderableColorRed), kMass(1),
-          position(glm::vec4(0.f, 0.f, 0.f, 1.f)), kFixed(false) {}
-    Mass(float mass, bool fixed, glm::vec4 starting_position)
-        : Renderable(1, kRenderableColorRed), kMass(mass),
-          position(starting_position), kFixed(fixed) {}
+        : Fixture(glm::vec4(0.f, 0.f, 0.f, 0.f), colors::kBlue), kMass(1),
+          kSize(1), is_fixed(false) {}
+    Mass(bool fixed, glm::vec4 starting_position)
+        : Fixture(starting_position, colors::kBlue), kMass(1), kSize(1),
+          is_fixed(fixed) {}
+    Mass(float size, float mass, bool fixed, glm::vec3 color,
+         glm::vec4 starting_position)
+        : Fixture(starting_position, color), is_fixed(fixed), kMass(mass),
+          kSize(size) {}
     ~Mass() = default;
 
     void CalculateMassForces(float dt);
 
-    void Initialize() {
-        ComputeVertexPoints();
-
-        // Build our internal shape object
-        ComputeShapeWithColor();
-
-        // Load the being-used vertex objects into memory for later use
-        glGenVertexArrays(1, &vertex_array_object);
-
-        // Initialize our class-owned vertex buffer on the GPU
-        glGenBuffers(1, &vertex_buffer_object);
-
-        // Bind the Vertex Array Object to track the vertices
-        glBindVertexArray(vertex_array_object);
-
-        // Bind Vertex Buffer Object
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
-
-        // Configure Position Attribute, pass up to the shader
-        glVertexAttribPointer(
-            0 /* One Vertex Buffer, first attribute location */,
-            3 /* Using vec3 to represent the positions of vertices */,
-            GL_FLOAT /* Buffer type is float */, GL_FALSE, 6 * sizeof(GL_FLOAT),
-            (GLvoid*)0);
-        glEnableVertexAttribArray(0);
-
-        // Configure Color Attribute, pass up to the shader
-        glVertexAttribPointer(
-            1 /* Second Attribute Location */,
-            3 /* Using a vec3 to represent the positions */,
-            GL_FLOAT /* Buffer type is float */,
-            GL_FALSE /* Do not normalize */,
-            6 * sizeof(GL_FLOAT) /* Offset between data points */,
-            (GLvoid*)(3 * sizeof(GLfloat)));
-        glEnableVertexAttribArray(1);
-
-        // Unbind Vertex Array Object
-        glBindVertexArray(0);
-
-        is_init = true;
-    }
-
-    inline void Render() {
-        assert(is_init);
-        // Bind Vertices and Attribute Pointers and Reserve the Memory in the
-        // GPU
-        glBufferData(GL_ARRAY_BUFFER, shape.size() * sizeof(float),
-                     static_cast<void*>(shape.data()), GL_STATIC_DRAW);
-    }
-
     // TODO(@jparr721)
     inline void Update(float dt) {
+        if (is_fixed) {
+            return;
+        }
         CalculateMassForces(dt);
         ComputeVertexPoints();
-        ComputeShapeWithColor();
+    }
+
+    inline void ComputeVertexPoints() {
+        // Construct our vertices centered around the origin position supplied
+        // on construction
+        const auto v1 = glm::vec4(position.x - kSize, position.y - kSize,
+                                  position.z, 1.f); // Bottom Left
+        const auto v2 = glm::vec4(position.x + kSize, position.y - kSize,
+                                  position.z, 1.f); // Bottom Right
+        const auto v3 = glm::vec4(position.x, position.y + kSize, position.z,
+                                  1.f); // Top Center
+
+        vertices = std::vector<glm::vec4>{{v1, v2, v3}};
     }
 
     void Translate(const glm::vec3& translation_vector) {
@@ -97,29 +70,26 @@ class Mass : public Renderable {
 
         // Recompute our vertices
         ComputeVertexPoints();
-
-        // Recompute our shape
-        ComputeShapeWithColor();
     }
-    
+
     /**
-        @brief Updates the acceleration of the mass object by some positive or negative delta value.
+        @brief Updates the acceleration of the mass object by some positive or
+       negative delta value.
      */
     inline void ChangeAcceleration(const glm::vec4& delta) {
         acceleration += delta;
     }
-    
-    glm::vec4 Position() { return position; }
 
   private:
     // The damping constant to prevent explosiveness
     constexpr static float kDamping = 0.8f;
 
-    // Gravitational constant vector, applies -9.81f pounds of negative force
-    const glm::vec4 kGravity = glm::vec4(0.0f, -9.81f, 0.0f, 1.0f);
+    // The size of the object centered around the current position.
+    const float kSize;
 
-    // The position of the object currently with respect to time.
-    glm::vec4 position;
+    // Gravitational constant vector, applies -9.81f
+    // pounds of negative force
+    const glm::vec4 kGravity = glm::vec4(0.0f, -9.81f, 0.0f, 1.0f);
 
     // The velocity the object is moving at with respect to time.
     glm::vec4 velocity = glm::vec4(0.f, 0.f, 0.f, 0.f);
@@ -128,8 +98,6 @@ class Mass : public Renderable {
     glm::vec4 acceleration = glm::vec4(0.f, 0.f, 0.f, 0.f);
 
     void CalculateAcceleration();
-    void ComputeShapeWithColor();
-    void ComputeVertexPoints();
 };
 
 #endif /* mass_hpp */

@@ -10,6 +10,7 @@
 #ifndef renderable_hpp
 #define renderable_hpp
 
+#include <unordered_map>
 #include <vector>
 
 #define GLEW_STATIC
@@ -19,50 +20,52 @@
 
 #include <glm/glm.hpp>
 
-const glm::vec3 kRenderableColorRed = glm::vec3(1.f, 0.f, 0.f);
-const glm::vec3 kRenderableColorBlue = glm::vec3(0.f, 1.f, 0.f);
-
 class Renderable {
   public:
-    // Vertex Manager.
+    // Vertex Memory Pointer.
     GLuint vertex_array_object;
 
-    // GPU Buffer Manager.
+    // GPU Buffer Pointer.
     GLuint vertex_buffer_object;
 
-    Renderable(int size, const glm::vec3& color) : kSize(size), kColor(color) {}
+    Renderable(GLuint render_mode) : kRenderMode(render_mode) {}
     virtual ~Renderable() = default;
 
+    // Initialize this renderable object.
     virtual void Initialize() = 0;
-    virtual void Translate(const glm::vec3& translation_vector) = 0;
+
+    // Render this renderable object.
     virtual inline void Render() = 0;
+
+    // Update this renderable object.
     virtual inline void Update(float dt) = 0;
 
+    GLuint RenderMode() { return kRenderMode; }
+
   protected:
-    // Always render from the first group, second group is for colors.
-    constexpr static int kStartingIndex = 0;
-
-    // The ending index, this is usually the object vector size * num objects
-    constexpr static int kEndingIndex = 3;
-
-    // The color of the shape
-    const glm::vec3 kColor;
-
-    // The "size" of the object, so for a triangle with size 1 it'd be:
-    // [-1, -1, 0]  -> Bottom Left
-    // [1, -1, 0]   -> Bottom Right
-    // [0, 1, 0]    -> Top Center
-    // Centered around the origin position in whatever class uses this.
-    // When it's needed, I'll add an offset so we can diplay side-by-side
-    const int kSize;
+    struct BijectionCoordinateBounds {
+        unsigned long start;
+        unsigned long end;
+    };
 
     bool is_init = false;
+
+    // The render mode of the object, like GL_TRIANGLES or GL_LINES
+    const GLuint kRenderMode;
 
     // Vector of 4D points (x, y, z w = 1)
     std::vector<glm::vec4> vertices;
 
     // The shape constructed from the vertices
-    std::vector<GLfloat> shape;
+    std::vector<GLfloat> shapes;
+
+    // The element buffer tracking the rendering order
+    std::vector<GLuint> element_buffer;
+
+    // Bijection mapping for sizes to their start-end coordinates
+    // so, element 0 might have 6 values (rectangle), so it'd map
+    // as 0 -> (Pair)(0, 5) inclusive.
+    std::unordered_map<GLuint, BijectionCoordinateBounds> buffer_mapping;
 };
 
 #endif /* renderable_hpp */

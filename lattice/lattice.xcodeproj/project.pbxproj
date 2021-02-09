@@ -13,6 +13,8 @@
 		832BE48225C8E06500647E88 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 832BE48125C8E06500647E88 /* libGLEW.2.2.0.dylib */; };
 		83D2771225CF88C100D95FB6 /* spring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D2771025CF88C100D95FB6 /* spring.cpp */; };
 		83D2771725D077E800D95FB6 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D2771525D077E800D95FB6 /* camera.cpp */; };
+		83D2771B25D0B80A00D95FB6 /* shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D2771925D0B80A00D95FB6 /* shape.cpp */; };
+		83D2772425D219A400D95FB6 /* colors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D2772225D219A400D95FB6 /* colors.cpp */; };
 		83D8F4AC25C8FCE300E02900 /* window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D8F4AA25C8FCE300E02900 /* window.cpp */; };
 		83D8F4B025C9087000E02900 /* keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D8F4AE25C9087000E02900 /* keyboard.cpp */; };
 		83D8F4CB25CA5AE500E02900 /* core.frag in CopyFiles */ = {isa = PBXBuildFile; fileRef = 83D8F4C425CA5A9E00E02900 /* core.frag */; };
@@ -45,6 +47,11 @@
 		83D2771125CF88C100D95FB6 /* spring.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = spring.hpp; sourceTree = "<group>"; };
 		83D2771525D077E800D95FB6 /* camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = camera.cpp; sourceTree = "<group>"; };
 		83D2771625D077E800D95FB6 /* camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = camera.hpp; sourceTree = "<group>"; };
+		83D2771925D0B80A00D95FB6 /* shape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shape.cpp; sourceTree = "<group>"; };
+		83D2771A25D0B80A00D95FB6 /* shape.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shape.hpp; sourceTree = "<group>"; };
+		83D2771E25D0BECC00D95FB6 /* fixture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = fixture.hpp; sourceTree = "<group>"; };
+		83D2772225D219A400D95FB6 /* colors.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = colors.cpp; sourceTree = "<group>"; };
+		83D2772325D219A400D95FB6 /* colors.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = colors.hpp; sourceTree = "<group>"; };
 		83D8F4AA25C8FCE300E02900 /* window.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = window.cpp; sourceTree = "<group>"; };
 		83D8F4AB25C8FCE300E02900 /* window.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = window.hpp; sourceTree = "<group>"; };
 		83D8F4AE25C9087000E02900 /* keyboard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = keyboard.cpp; sourceTree = "<group>"; };
@@ -104,6 +111,11 @@
 				83D8F4BF25CA55F000E02900 /* shader.hpp */,
 				83D8F4CF25CCD26E00E02900 /* mass.cpp */,
 				83D8F4D025CCD26E00E02900 /* mass.hpp */,
+				83D2772225D219A400D95FB6 /* colors.cpp */,
+				83D2772325D219A400D95FB6 /* colors.hpp */,
+				83D2771925D0B80A00D95FB6 /* shape.cpp */,
+				83D2771A25D0B80A00D95FB6 /* shape.hpp */,
+				83D2771E25D0BECC00D95FB6 /* fixture.hpp */,
 				83D8F4D525CCDC3000E02900 /* renderable.hpp */,
 				83D2771025CF88C100D95FB6 /* spring.cpp */,
 				83D2771125CF88C100D95FB6 /* spring.hpp */,
@@ -182,6 +194,8 @@
 				83D8F4B025C9087000E02900 /* keyboard.cpp in Sources */,
 				832BE47525C8DF0900647E88 /* main.cpp in Sources */,
 				83D2771725D077E800D95FB6 /* camera.cpp in Sources */,
+				83D2772425D219A400D95FB6 /* colors.cpp in Sources */,
+				83D2771B25D0B80A00D95FB6 /* shape.cpp in Sources */,
 				83D8F4D125CCD26E00E02900 /* mass.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
