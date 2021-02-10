@@ -10,7 +10,10 @@
 #ifndef window_hpp
 #define window_hpp
 
-#include "vertex.hpp"
+#include "camera.hpp"
+#include "mass.hpp"
+#include "shape.hpp"
+#include "spring.hpp"
 
 #include <memory>
 #include <vector>
@@ -24,7 +27,7 @@
 
 class Window {
   public:
-    Window(Vertex _shape) : shape(_shape) {}
+    Window(std::shared_ptr<Shape>& _masses) : masses(_masses) {}
     ~Window() = default;
 
     void Initialize();
@@ -33,10 +36,10 @@ class Window {
 
   private:
     // Window width
-    constexpr static int WIDTH = 1200;
+    constexpr static int WIDTH = 1300;
 
     // Window height
-    constexpr static int HEIGHT = 1000;
+    constexpr static int HEIGHT = 900;
 
     // Major OpenGL Version
     constexpr static int MAJOR = 3;
@@ -47,15 +50,29 @@ class Window {
     // Window Title
     constexpr static const char* TITLE = "Mass Sim";
 
+    GLuint shader_program_id;
+
     // Flag if the class was initialized
     bool is_init = false;
+
+    // Our movable mass object
+    std::shared_ptr<Shape> masses;
+
+    // Our camera object
+    std::unique_ptr<Camera> camera;
 
     // Window Reference
     GLFWwindow* window = nullptr;
 
-    // Shapes
-    // TODO(@jparr721) - Update this to use a base class (springs, vertices)
-    Vertex shape;
+    // Our update timestep
+    static constexpr float simulation_timestep = 0.01;
+
+    void DeclareGLFWConfigs();
+    void ConfigureWindowContext();
+    void SetupKeyboardHandler();
+    void LoadShaders();
+    void SetupCamera();
+    void Display();
 };
 
 #endif /* window_hpp */
