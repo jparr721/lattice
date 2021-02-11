@@ -11,6 +11,7 @@
 #include "fixture.hpp"
 #include "renderable.hpp"
 
+#include <iostream>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -19,6 +20,8 @@ class Shape : public Renderable {
   public:
     Shape(std::vector<std::shared_ptr<Fixture>>& _fixtures, GLuint render_mode)
         : Renderable(render_mode), fixtures(_fixtures) {}
+
+    void MoveFixtureAtIndex(int index, const glm::vec3& translation_vector);
 
     unsigned int size() { return rendered_array_size; }
 
@@ -58,22 +61,38 @@ class Shape : public Renderable {
 
     inline void ComputeShapes() {
         for (const auto& fixture : fixtures) {
-            for (const auto vertex : fixture->Vertices()) {
-                // Push back our vertices
-                shapes.push_back(vertex.x);
-                shapes.push_back(vertex.y);
-                shapes.push_back(vertex.z);
+            const auto vertices = fixture->Vertices();
+            for (int i = 0; i < vertices.size(); ++i) {
+                const auto vertex = vertices[i];
+                const auto color = fixture->Color();
 
-                // Push back the color associated with this shape
-                shapes.push_back(fixture->Color().r);
-                shapes.push_back(fixture->Color().g);
-                shapes.push_back(fixture->Color().b);
+                // Our j index mapping our stride
+                int j = i * 6;
+
+                // Update our vertices
+                shapes[j] = vertex.x;
+                shapes[j + 1] = vertex.y;
+                shapes[j + 2] = vertex.z;
+
+                // Update the color associated with this shape
+                shapes[j + 3] = color.r;
+                shapes[j + 4] = color.g;
+                shapes[j + 5] = color.b;
             }
         }
     }
 
     void Initialize() {
         ComputeVertexPoints();
+
+        // Calculate our total shape size of vertices
+        for (auto fixture : fixtures) {
+            rendered_array_size += fixture->size();
+        }
+
+        n_vertices = rendered_array_size * 6;
+
+        shapes = std::vector<GLfloat>(n_vertices, 0.0);
 
         // Build our internal shape object
         ComputeShapes();
@@ -111,12 +130,6 @@ class Shape : public Renderable {
         // Unbind Vertex Array Object
         glBindVertexArray(0);
 
-        rendered_array_size = 0;
-
-        for (auto fixture : fixtures) {
-            rendered_array_size += fixture->size();
-        }
-
         is_init = true;
     }
 
@@ -133,12 +146,16 @@ class Shape : public Renderable {
         for (auto fixture : fixtures) {
             fixture->Update(dt);
         }
+        ComputeVertexPoints();
+        ComputeShapes();
     }
 
   private:
     std::vector<std::shared_ptr<Fixture>>& fixtures;
 
-    unsigned int rendered_array_size;
+    unsigned int rendered_array_size = 0;
+
+    unsigned int n_vertices = 0;
 };
 
 #endif /* shape_hpp */

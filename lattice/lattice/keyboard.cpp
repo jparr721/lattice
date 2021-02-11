@@ -8,7 +8,6 @@
 #include "keyboard.hpp"
 
 #include <glm/glm.hpp>
-#include <iostream>
 
 // GLEW
 #define GLEW_STATIC
@@ -43,14 +42,18 @@ void TakeAction(const std::shared_ptr<Shape>& shape, int key, int action) {
 
 void OnUpKeyPress(const std::shared_ptr<Shape>& shape) {
     auto change = glm::vec3(0.0f, 0.5, 0.0f);
+    shape->MoveFixtureAtIndex(0, change);
 }
 
 void OnDownKeyPress(const std::shared_ptr<Shape>& shape) {
     auto change = glm::vec3(0.0f, -0.5, 0.0f);
+    shape->MoveFixtureAtIndex(0, change);
 }
 void OnRightKeyPress(const std::shared_ptr<Shape>& shape) {
     auto change = glm::vec3(0.5f, 0.0, 0.0f);
+    shape->MoveFixtureAtIndex(0, change);
 }
 void OnLeftKeyPress(const std::shared_ptr<Shape>& shape) {
     auto change = glm::vec3(-0.5f, 0.0, 0.0f);
+    shape->MoveFixtureAtIndex(0, change);
 }

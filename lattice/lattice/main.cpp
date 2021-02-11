@@ -17,7 +17,7 @@ int main() {
                                glm::vec4(0.f, 0.f, 0.f, 0.f));
 
     auto fixed_mass = std::make_shared<Mass>(
-        0.2f, 5.f, kUnfixedPosition, colors::kRed,
+        0.2f, 5.f, kFixedPosition, colors::kRed,
         glm::vec4(movable_mass->Position().x + 1.f,
                   movable_mass->Position().y + 1.f, 0.f, 0.f));
 

@@ -9,9 +9,12 @@
 #ifndef mass_hpp
 #define mass_hpp
 
+#include <iostream>
+
 #include "colors.hpp"
 #include "fixture.hpp"
 
+#include <glm/gtx/string_cast.hpp>
 #include <glm/gtx/transform.hpp>
 
 constexpr bool kFixedPosition = true;
@@ -38,7 +41,6 @@ class Mass : public Fixture {
 
     void CalculateMassForces(float dt);
 
-    // TODO(@jparr721)
     inline void Update(float dt) {
         if (is_fixed) {
             return;
