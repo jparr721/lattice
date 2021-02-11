@@ -60,24 +60,28 @@ class Shape : public Renderable {
     }
 
     inline void ComputeShapes() {
-        for (const auto& fixture : fixtures) {
+        for (int i = 0; i < fixtures.size(); ++i) {
+            // Only works when rendering triangles!!!
+            int starting_index = i * 18; // 6 vertices x 3 points
+            const auto fixture = fixtures[i];
             const auto vertices = fixture->Vertices();
-            for (int i = 0; i < vertices.size(); ++i) {
-                const auto vertex = vertices[i];
+
+            for (int j = 0; j < vertices.size(); ++j) {
+                const auto vertex = vertices[j];
                 const auto color = fixture->Color();
 
                 // Our j index mapping our stride
-                int j = i * 6;
+                int k = starting_index + j * 6; // 6 spaces between entries
 
                 // Update our vertices
-                shapes[j] = vertex.x;
-                shapes[j + 1] = vertex.y;
-                shapes[j + 2] = vertex.z;
+                shapes[k] = vertex.x;
+                shapes[k + 1] = vertex.y;
+                shapes[k + 2] = vertex.z;
 
                 // Update the color associated with this shape
-                shapes[j + 3] = color.r;
-                shapes[j + 4] = color.g;
-                shapes[j + 5] = color.b;
+                shapes[k + 3] = color.r;
+                shapes[k + 4] = color.g;
+                shapes[k + 5] = color.b;
             }
         }
     }
