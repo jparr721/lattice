@@ -10,6 +10,9 @@
 void Shape::MoveFixtureAtIndex(int index, const glm::vec3& translation_vector) {
     assert(index < fixtures.size());
     fixtures[index]->Translate(translation_vector);
+
+    // Inefficient, I need to change this later to recompute only changed
+    // shapes.
     ComputeVertexPoints();
     ComputeShapes();
 }

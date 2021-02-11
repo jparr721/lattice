@@ -22,7 +22,7 @@ class Spring : public Fixture {
           kLength(resting_length), left_mass(_left_mass),
           right_mass(_right_mass) {}
 
-    inline void Update(float dt) { return; }
+    inline void Update(float dt) { ApplySpringForces(); }
 
     inline void ComputeVertexPoints() {
         const auto lpos = left_mass->Position();
