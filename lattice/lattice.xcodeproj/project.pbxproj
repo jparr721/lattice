@@ -11,9 +11,77 @@
 		832BE47E25C8DF9A00647E88 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 832BE47D25C8DF9A00647E88 /* OpenGL.framework */; };
 		832BE48025C8E04600647E88 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 832BE47F25C8E04600647E88 /* libglfw.3.3.dylib */; };
 		832BE48225C8E06500647E88 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 832BE48125C8E06500647E88 /* libGLEW.2.2.0.dylib */; };
+		8364B50825D7177B00822CC8 /* QtOpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B50225D7108200822CC8 /* QtOpenGL.framework */; };
+		8364B50925D7177B00822CC8 /* QtWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B50525D7114600822CC8 /* QtWidgets.framework */; };
+		8364B55025D7177E00822CC8 /* QtPositioning.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B50A25D7177B00822CC8 /* QtPositioning.framework */; };
+		8364B55125D7177E00822CC8 /* QtLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B50B25D7177B00822CC8 /* QtLocation.framework */; };
+		8364B55225D7177E00822CC8 /* Qt3DQuickExtras.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B50C25D7177B00822CC8 /* Qt3DQuickExtras.framework */; };
+		8364B55325D7177E00822CC8 /* QtGui.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B50D25D7177B00822CC8 /* QtGui.framework */; };
+		8364B55425D7177E00822CC8 /* QtDesignerComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B50E25D7177B00822CC8 /* QtDesignerComponents.framework */; };
+		8364B55525D7177E00822CC8 /* QtCharts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B50F25D7177B00822CC8 /* QtCharts.framework */; };
+		8364B55625D7177E00822CC8 /* Qt3DExtras.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51025D7177B00822CC8 /* Qt3DExtras.framework */; };
+		8364B55725D7177E00822CC8 /* QtTextToSpeech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51125D7177B00822CC8 /* QtTextToSpeech.framework */; };
+		8364B55825D7177E00822CC8 /* QtQuickParticles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51225D7177B00822CC8 /* QtQuickParticles.framework */; };
+		8364B55925D7177E00822CC8 /* Qt3DCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51325D7177B00822CC8 /* Qt3DCore.framework */; };
+		8364B55A25D7177E00822CC8 /* Qt3DQuickAnimation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51425D7177B00822CC8 /* Qt3DQuickAnimation.framework */; };
+		8364B55B25D7177E00822CC8 /* QtXmlPatterns.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51525D7177B00822CC8 /* QtXmlPatterns.framework */; };
+		8364B55C25D7177E00822CC8 /* Qt3DQuickScene2D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51625D7177B00822CC8 /* Qt3DQuickScene2D.framework */; };
+		8364B55D25D7177E00822CC8 /* QtQuick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51725D7177B00822CC8 /* QtQuick.framework */; };
+		8364B55E25D7177E00822CC8 /* QtSvg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51825D7177B00822CC8 /* QtSvg.framework */; };
+		8364B56025D7177E00822CC8 /* QtQuickWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51A25D7177B00822CC8 /* QtQuickWidgets.framework */; };
+		8364B56125D7177E00822CC8 /* QtNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51B25D7177B00822CC8 /* QtNetwork.framework */; };
+		8364B56225D7177E00822CC8 /* QtConcurrent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51C25D7177B00822CC8 /* QtConcurrent.framework */; };
+		8364B56325D7177E00822CC8 /* Qt3DQuick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51D25D7177B00822CC8 /* Qt3DQuick.framework */; };
+		8364B56425D7177E00822CC8 /* QtMultimedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51E25D7177B00822CC8 /* QtMultimedia.framework */; };
+		8364B56525D7177E00822CC8 /* QtVirtualKeyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B51F25D7177C00822CC8 /* QtVirtualKeyboard.framework */; };
+		8364B56625D7177E00822CC8 /* QtNetworkAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52025D7177C00822CC8 /* QtNetworkAuth.framework */; };
+		8364B56725D7177E00822CC8 /* Qt3DQuickRender.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52125D7177C00822CC8 /* Qt3DQuickRender.framework */; };
+		8364B56825D7177E00822CC8 /* QtNfc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52225D7177C00822CC8 /* QtNfc.framework */; };
+		8364B56925D7177E00822CC8 /* QtScript.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52325D7177C00822CC8 /* QtScript.framework */; };
+		8364B56A25D7177E00822CC8 /* QtXml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52425D7177C00822CC8 /* QtXml.framework */; };
+		8364B56B25D7177E00822CC8 /* QtScxml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52525D7177C00822CC8 /* QtScxml.framework */; };
+		8364B56C25D7177E00822CC8 /* QtQmlModels.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52625D7177C00822CC8 /* QtQmlModels.framework */; };
+		8364B56D25D7177E00822CC8 /* QtTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52725D7177C00822CC8 /* QtTest.framework */; };
+		8364B56E25D7177E00822CC8 /* QtMultimediaQuick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52825D7177C00822CC8 /* QtMultimediaQuick.framework */; };
+		8364B56F25D7177E00822CC8 /* QtBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52925D7177C00822CC8 /* QtBluetooth.framework */; };
+		8364B57025D7177E00822CC8 /* QtBodymovin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52A25D7177C00822CC8 /* QtBodymovin.framework */; };
+		8364B57125D7177E00822CC8 /* QtPurchasing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52B25D7177C00822CC8 /* QtPurchasing.framework */; };
+		8364B57225D7177E00822CC8 /* QtMultimediaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52C25D7177C00822CC8 /* QtMultimediaWidgets.framework */; };
+		8364B57325D7177E00822CC8 /* QtSerialPort.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52D25D7177C00822CC8 /* QtSerialPort.framework */; };
+		8364B57425D7177E00822CC8 /* QtQuickTemplates2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52E25D7177C00822CC8 /* QtQuickTemplates2.framework */; };
+		8364B57525D7177E00822CC8 /* QtWebChannel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B52F25D7177C00822CC8 /* QtWebChannel.framework */; };
+		8364B57625D7177E00822CC8 /* Qt3DLogic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53025D7177C00822CC8 /* Qt3DLogic.framework */; };
+		8364B57725D7177E00822CC8 /* QtSensors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53125D7177C00822CC8 /* QtSensors.framework */; };
+		8364B57825D7177E00822CC8 /* QtWebSockets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53225D7177C00822CC8 /* QtWebSockets.framework */; };
+		8364B57925D7177E00822CC8 /* QtWebView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53325D7177C00822CC8 /* QtWebView.framework */; };
+		8364B57A25D7177E00822CC8 /* QtSerialBus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53425D7177C00822CC8 /* QtSerialBus.framework */; };
+		8364B57B25D7177E00822CC8 /* Qt3DAnimation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53525D7177C00822CC8 /* Qt3DAnimation.framework */; };
+		8364B57C25D7177E00822CC8 /* Qt3DQuickInput.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53625D7177C00822CC8 /* Qt3DQuickInput.framework */; };
+		8364B57D25D7177E00822CC8 /* QtQuickShapes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53725D7177C00822CC8 /* QtQuickShapes.framework */; };
+		8364B57E25D7177E00822CC8 /* Qt3DInput.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53825D7177C00822CC8 /* Qt3DInput.framework */; };
+		8364B57F25D7177E00822CC8 /* QtCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53925D7177D00822CC8 /* QtCore.framework */; };
+		8364B58025D7177E00822CC8 /* QtQuick3DAssetImport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53A25D7177D00822CC8 /* QtQuick3DAssetImport.framework */; };
+		8364B58125D7177E00822CC8 /* QtDataVisualization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53B25D7177D00822CC8 /* QtDataVisualization.framework */; };
+		8364B58225D7177E00822CC8 /* QtQuick3DRuntimeRender.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53C25D7177D00822CC8 /* QtQuick3DRuntimeRender.framework */; };
+		8364B58325D7177E00822CC8 /* QtPositioningQuick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53D25D7177D00822CC8 /* QtPositioningQuick.framework */; };
+		8364B58425D7177E00822CC8 /* Qt3DRender.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53E25D7177D00822CC8 /* Qt3DRender.framework */; };
+		8364B58525D7177E00822CC8 /* QtMacExtras.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B53F25D7177D00822CC8 /* QtMacExtras.framework */; };
+		8364B58725D7177E00822CC8 /* QtHelp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B54125D7177D00822CC8 /* QtHelp.framework */; };
+		8364B58825D7177E00822CC8 /* QtDesigner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B54225D7177D00822CC8 /* QtDesigner.framework */; };
+		8364B58925D7177E00822CC8 /* QtQmlWorkerScript.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B54325D7177D00822CC8 /* QtQmlWorkerScript.framework */; };
+		8364B58B25D7177E00822CC8 /* QtPrintSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B54525D7177D00822CC8 /* QtPrintSupport.framework */; };
+		8364B58E25D7177E00822CC8 /* QtQuick3DUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B54825D7177D00822CC8 /* QtQuick3DUtils.framework */; };
+		8364B58F25D7177E00822CC8 /* QtScriptTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B54925D7177E00822CC8 /* QtScriptTools.framework */; };
+		8364B59025D7177E00822CC8 /* QtQuickControls2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B54A25D7177E00822CC8 /* QtQuickControls2.framework */; };
+		8364B59225D7177E00822CC8 /* QtQuick3D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B54C25D7177E00822CC8 /* QtQuick3D.framework */; };
+		8364B59325D7177E00822CC8 /* QtQuickTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B54D25D7177E00822CC8 /* QtQuickTest.framework */; };
+		8364B59425D7177E00822CC8 /* QtGamepad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B54E25D7177E00822CC8 /* QtGamepad.framework */; };
+		8364B59525D7177E00822CC8 /* QtQuick3DRender.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8364B54F25D7177E00822CC8 /* QtQuick3DRender.framework */; };
+		8364B59B25D7207400822CC8 /* gl_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8364B59925D7207400822CC8 /* gl_widget.cpp */; };
+		83B8C78F25D7407E00D1B297 /* mass_spring_system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83B8C78D25D7407E00D1B297 /* mass_spring_system.cpp */; };
+		83B8C79025D7407E00D1B297 /* mass_spring_system.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 83B8C78E25D7407E00D1B297 /* mass_spring_system.hpp */; };
 		83D2771225CF88C100D95FB6 /* spring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D2771025CF88C100D95FB6 /* spring.cpp */; };
 		83D2771725D077E800D95FB6 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D2771525D077E800D95FB6 /* camera.cpp */; };
-		83D2771B25D0B80A00D95FB6 /* shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D2771925D0B80A00D95FB6 /* shape.cpp */; };
 		83D2772425D219A400D95FB6 /* colors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D2772225D219A400D95FB6 /* colors.cpp */; };
 		83D8F4AC25C8FCE300E02900 /* window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D8F4AA25C8FCE300E02900 /* window.cpp */; };
 		83D8F4B025C9087000E02900 /* keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D8F4AE25C9087000E02900 /* keyboard.cpp */; };
@@ -43,12 +111,86 @@
 		832BE47F25C8E04600647E88 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../opt/homebrew/Cellar/glfw/3.3.2/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
 		832BE48125C8E06500647E88 /* libGLEW.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.2.0.dylib; path = ../../../../../opt/homebrew/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.0.dylib; sourceTree = "<group>"; };
 		832BE48425C8E18700647E88 /* lattice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = lattice.entitlements; sourceTree = "<group>"; };
+		8364B50225D7108200822CC8 /* QtOpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtOpenGL.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtOpenGL.framework; sourceTree = "<group>"; };
+		8364B50525D7114600822CC8 /* QtWidgets.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtWidgets.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtWidgets.framework; sourceTree = "<group>"; };
+		8364B50A25D7177B00822CC8 /* QtPositioning.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtPositioning.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtPositioning.framework; sourceTree = "<group>"; };
+		8364B50B25D7177B00822CC8 /* QtLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtLocation.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtLocation.framework; sourceTree = "<group>"; };
+		8364B50C25D7177B00822CC8 /* Qt3DQuickExtras.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DQuickExtras.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DQuickExtras.framework; sourceTree = "<group>"; };
+		8364B50D25D7177B00822CC8 /* QtGui.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtGui.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtGui.framework; sourceTree = "<group>"; };
+		8364B50E25D7177B00822CC8 /* QtDesignerComponents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtDesignerComponents.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtDesignerComponents.framework; sourceTree = "<group>"; };
+		8364B50F25D7177B00822CC8 /* QtCharts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtCharts.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtCharts.framework; sourceTree = "<group>"; };
+		8364B51025D7177B00822CC8 /* Qt3DExtras.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DExtras.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DExtras.framework; sourceTree = "<group>"; };
+		8364B51125D7177B00822CC8 /* QtTextToSpeech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtTextToSpeech.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtTextToSpeech.framework; sourceTree = "<group>"; };
+		8364B51225D7177B00822CC8 /* QtQuickParticles.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuickParticles.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuickParticles.framework; sourceTree = "<group>"; };
+		8364B51325D7177B00822CC8 /* Qt3DCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DCore.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DCore.framework; sourceTree = "<group>"; };
+		8364B51425D7177B00822CC8 /* Qt3DQuickAnimation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DQuickAnimation.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DQuickAnimation.framework; sourceTree = "<group>"; };
+		8364B51525D7177B00822CC8 /* QtXmlPatterns.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtXmlPatterns.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtXmlPatterns.framework; sourceTree = "<group>"; };
+		8364B51625D7177B00822CC8 /* Qt3DQuickScene2D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DQuickScene2D.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DQuickScene2D.framework; sourceTree = "<group>"; };
+		8364B51725D7177B00822CC8 /* QtQuick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuick.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuick.framework; sourceTree = "<group>"; };
+		8364B51825D7177B00822CC8 /* QtSvg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtSvg.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtSvg.framework; sourceTree = "<group>"; };
+		8364B51925D7177B00822CC8 /* QtUiPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtUiPlugin.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtUiPlugin.framework; sourceTree = "<group>"; };
+		8364B51A25D7177B00822CC8 /* QtQuickWidgets.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuickWidgets.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuickWidgets.framework; sourceTree = "<group>"; };
+		8364B51B25D7177B00822CC8 /* QtNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtNetwork.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtNetwork.framework; sourceTree = "<group>"; };
+		8364B51C25D7177B00822CC8 /* QtConcurrent.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtConcurrent.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtConcurrent.framework; sourceTree = "<group>"; };
+		8364B51D25D7177B00822CC8 /* Qt3DQuick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DQuick.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DQuick.framework; sourceTree = "<group>"; };
+		8364B51E25D7177B00822CC8 /* QtMultimedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtMultimedia.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtMultimedia.framework; sourceTree = "<group>"; };
+		8364B51F25D7177C00822CC8 /* QtVirtualKeyboard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtVirtualKeyboard.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtVirtualKeyboard.framework; sourceTree = "<group>"; };
+		8364B52025D7177C00822CC8 /* QtNetworkAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtNetworkAuth.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtNetworkAuth.framework; sourceTree = "<group>"; };
+		8364B52125D7177C00822CC8 /* Qt3DQuickRender.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DQuickRender.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DQuickRender.framework; sourceTree = "<group>"; };
+		8364B52225D7177C00822CC8 /* QtNfc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtNfc.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtNfc.framework; sourceTree = "<group>"; };
+		8364B52325D7177C00822CC8 /* QtScript.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtScript.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtScript.framework; sourceTree = "<group>"; };
+		8364B52425D7177C00822CC8 /* QtXml.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtXml.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtXml.framework; sourceTree = "<group>"; };
+		8364B52525D7177C00822CC8 /* QtScxml.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtScxml.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtScxml.framework; sourceTree = "<group>"; };
+		8364B52625D7177C00822CC8 /* QtQmlModels.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQmlModels.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQmlModels.framework; sourceTree = "<group>"; };
+		8364B52725D7177C00822CC8 /* QtTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtTest.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtTest.framework; sourceTree = "<group>"; };
+		8364B52825D7177C00822CC8 /* QtMultimediaQuick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtMultimediaQuick.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtMultimediaQuick.framework; sourceTree = "<group>"; };
+		8364B52925D7177C00822CC8 /* QtBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtBluetooth.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtBluetooth.framework; sourceTree = "<group>"; };
+		8364B52A25D7177C00822CC8 /* QtBodymovin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtBodymovin.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtBodymovin.framework; sourceTree = "<group>"; };
+		8364B52B25D7177C00822CC8 /* QtPurchasing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtPurchasing.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtPurchasing.framework; sourceTree = "<group>"; };
+		8364B52C25D7177C00822CC8 /* QtMultimediaWidgets.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtMultimediaWidgets.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtMultimediaWidgets.framework; sourceTree = "<group>"; };
+		8364B52D25D7177C00822CC8 /* QtSerialPort.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtSerialPort.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtSerialPort.framework; sourceTree = "<group>"; };
+		8364B52E25D7177C00822CC8 /* QtQuickTemplates2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuickTemplates2.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuickTemplates2.framework; sourceTree = "<group>"; };
+		8364B52F25D7177C00822CC8 /* QtWebChannel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtWebChannel.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtWebChannel.framework; sourceTree = "<group>"; };
+		8364B53025D7177C00822CC8 /* Qt3DLogic.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DLogic.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DLogic.framework; sourceTree = "<group>"; };
+		8364B53125D7177C00822CC8 /* QtSensors.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtSensors.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtSensors.framework; sourceTree = "<group>"; };
+		8364B53225D7177C00822CC8 /* QtWebSockets.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtWebSockets.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtWebSockets.framework; sourceTree = "<group>"; };
+		8364B53325D7177C00822CC8 /* QtWebView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtWebView.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtWebView.framework; sourceTree = "<group>"; };
+		8364B53425D7177C00822CC8 /* QtSerialBus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtSerialBus.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtSerialBus.framework; sourceTree = "<group>"; };
+		8364B53525D7177C00822CC8 /* Qt3DAnimation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DAnimation.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DAnimation.framework; sourceTree = "<group>"; };
+		8364B53625D7177C00822CC8 /* Qt3DQuickInput.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DQuickInput.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DQuickInput.framework; sourceTree = "<group>"; };
+		8364B53725D7177C00822CC8 /* QtQuickShapes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuickShapes.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuickShapes.framework; sourceTree = "<group>"; };
+		8364B53825D7177C00822CC8 /* Qt3DInput.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DInput.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DInput.framework; sourceTree = "<group>"; };
+		8364B53925D7177D00822CC8 /* QtCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtCore.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtCore.framework; sourceTree = "<group>"; };
+		8364B53A25D7177D00822CC8 /* QtQuick3DAssetImport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuick3DAssetImport.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuick3DAssetImport.framework; sourceTree = "<group>"; };
+		8364B53B25D7177D00822CC8 /* QtDataVisualization.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtDataVisualization.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtDataVisualization.framework; sourceTree = "<group>"; };
+		8364B53C25D7177D00822CC8 /* QtQuick3DRuntimeRender.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuick3DRuntimeRender.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuick3DRuntimeRender.framework; sourceTree = "<group>"; };
+		8364B53D25D7177D00822CC8 /* QtPositioningQuick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtPositioningQuick.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtPositioningQuick.framework; sourceTree = "<group>"; };
+		8364B53E25D7177D00822CC8 /* Qt3DRender.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qt3DRender.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/Qt3DRender.framework; sourceTree = "<group>"; };
+		8364B53F25D7177D00822CC8 /* QtMacExtras.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtMacExtras.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtMacExtras.framework; sourceTree = "<group>"; };
+		8364B54025D7177D00822CC8 /* QtRemoteObjects.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtRemoteObjects.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtRemoteObjects.framework; sourceTree = "<group>"; };
+		8364B54125D7177D00822CC8 /* QtHelp.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtHelp.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtHelp.framework; sourceTree = "<group>"; };
+		8364B54225D7177D00822CC8 /* QtDesigner.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtDesigner.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtDesigner.framework; sourceTree = "<group>"; };
+		8364B54325D7177D00822CC8 /* QtQmlWorkerScript.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQmlWorkerScript.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQmlWorkerScript.framework; sourceTree = "<group>"; };
+		8364B54425D7177D00822CC8 /* QtDBus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtDBus.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtDBus.framework; sourceTree = "<group>"; };
+		8364B54525D7177D00822CC8 /* QtPrintSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtPrintSupport.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtPrintSupport.framework; sourceTree = "<group>"; };
+		8364B54625D7177D00822CC8 /* QtQml.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQml.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQml.framework; sourceTree = "<group>"; };
+		8364B54725D7177D00822CC8 /* QtSql.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtSql.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtSql.framework; sourceTree = "<group>"; };
+		8364B54825D7177D00822CC8 /* QtQuick3DUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuick3DUtils.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuick3DUtils.framework; sourceTree = "<group>"; };
+		8364B54925D7177E00822CC8 /* QtScriptTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtScriptTools.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtScriptTools.framework; sourceTree = "<group>"; };
+		8364B54A25D7177E00822CC8 /* QtQuickControls2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuickControls2.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuickControls2.framework; sourceTree = "<group>"; };
+		8364B54B25D7177E00822CC8 /* QtRepParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtRepParser.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtRepParser.framework; sourceTree = "<group>"; };
+		8364B54C25D7177E00822CC8 /* QtQuick3D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuick3D.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuick3D.framework; sourceTree = "<group>"; };
+		8364B54D25D7177E00822CC8 /* QtQuickTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuickTest.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuickTest.framework; sourceTree = "<group>"; };
+		8364B54E25D7177E00822CC8 /* QtGamepad.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtGamepad.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtGamepad.framework; sourceTree = "<group>"; };
+		8364B54F25D7177E00822CC8 /* QtQuick3DRender.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuick3DRender.framework; path = ../../../../../opt/homebrew/Cellar/qt/5.15.2/lib/QtQuick3DRender.framework; sourceTree = "<group>"; };
+		8364B59925D7207400822CC8 /* gl_widget.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gl_widget.cpp; sourceTree = "<group>"; };
+		8364B59A25D7207400822CC8 /* gl_widget.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gl_widget.hpp; sourceTree = "<group>"; };
+		83B8C78D25D7407E00D1B297 /* mass_spring_system.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mass_spring_system.cpp; sourceTree = "<group>"; };
+		83B8C78E25D7407E00D1B297 /* mass_spring_system.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mass_spring_system.hpp; sourceTree = "<group>"; };
 		83D2771025CF88C100D95FB6 /* spring.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = spring.cpp; sourceTree = "<group>"; };
 		83D2771125CF88C100D95FB6 /* spring.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = spring.hpp; sourceTree = "<group>"; };
 		83D2771525D077E800D95FB6 /* camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = camera.cpp; sourceTree = "<group>"; };
 		83D2771625D077E800D95FB6 /* camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = camera.hpp; sourceTree = "<group>"; };
-		83D2771925D0B80A00D95FB6 /* shape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shape.cpp; sourceTree = "<group>"; };
-		83D2771A25D0B80A00D95FB6 /* shape.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shape.hpp; sourceTree = "<group>"; };
 		83D2771E25D0BECC00D95FB6 /* fixture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = fixture.hpp; sourceTree = "<group>"; };
 		83D2772225D219A400D95FB6 /* colors.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = colors.cpp; sourceTree = "<group>"; };
 		83D2772325D219A400D95FB6 /* colors.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = colors.hpp; sourceTree = "<group>"; };
@@ -69,6 +211,72 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8364B55025D7177E00822CC8 /* QtPositioning.framework in Frameworks */,
+				8364B55125D7177E00822CC8 /* QtLocation.framework in Frameworks */,
+				8364B55225D7177E00822CC8 /* Qt3DQuickExtras.framework in Frameworks */,
+				8364B55325D7177E00822CC8 /* QtGui.framework in Frameworks */,
+				8364B55425D7177E00822CC8 /* QtDesignerComponents.framework in Frameworks */,
+				8364B55525D7177E00822CC8 /* QtCharts.framework in Frameworks */,
+				8364B55625D7177E00822CC8 /* Qt3DExtras.framework in Frameworks */,
+				8364B55725D7177E00822CC8 /* QtTextToSpeech.framework in Frameworks */,
+				8364B55825D7177E00822CC8 /* QtQuickParticles.framework in Frameworks */,
+				8364B55925D7177E00822CC8 /* Qt3DCore.framework in Frameworks */,
+				8364B55A25D7177E00822CC8 /* Qt3DQuickAnimation.framework in Frameworks */,
+				8364B55B25D7177E00822CC8 /* QtXmlPatterns.framework in Frameworks */,
+				8364B55C25D7177E00822CC8 /* Qt3DQuickScene2D.framework in Frameworks */,
+				8364B55D25D7177E00822CC8 /* QtQuick.framework in Frameworks */,
+				8364B55E25D7177E00822CC8 /* QtSvg.framework in Frameworks */,
+				8364B56025D7177E00822CC8 /* QtQuickWidgets.framework in Frameworks */,
+				8364B56125D7177E00822CC8 /* QtNetwork.framework in Frameworks */,
+				8364B56225D7177E00822CC8 /* QtConcurrent.framework in Frameworks */,
+				8364B56325D7177E00822CC8 /* Qt3DQuick.framework in Frameworks */,
+				8364B56425D7177E00822CC8 /* QtMultimedia.framework in Frameworks */,
+				8364B56525D7177E00822CC8 /* QtVirtualKeyboard.framework in Frameworks */,
+				8364B56625D7177E00822CC8 /* QtNetworkAuth.framework in Frameworks */,
+				8364B56725D7177E00822CC8 /* Qt3DQuickRender.framework in Frameworks */,
+				8364B56825D7177E00822CC8 /* QtNfc.framework in Frameworks */,
+				8364B56925D7177E00822CC8 /* QtScript.framework in Frameworks */,
+				8364B56A25D7177E00822CC8 /* QtXml.framework in Frameworks */,
+				8364B56B25D7177E00822CC8 /* QtScxml.framework in Frameworks */,
+				8364B56C25D7177E00822CC8 /* QtQmlModels.framework in Frameworks */,
+				8364B56D25D7177E00822CC8 /* QtTest.framework in Frameworks */,
+				8364B56E25D7177E00822CC8 /* QtMultimediaQuick.framework in Frameworks */,
+				8364B56F25D7177E00822CC8 /* QtBluetooth.framework in Frameworks */,
+				8364B57025D7177E00822CC8 /* QtBodymovin.framework in Frameworks */,
+				8364B57125D7177E00822CC8 /* QtPurchasing.framework in Frameworks */,
+				8364B57225D7177E00822CC8 /* QtMultimediaWidgets.framework in Frameworks */,
+				8364B57325D7177E00822CC8 /* QtSerialPort.framework in Frameworks */,
+				8364B57425D7177E00822CC8 /* QtQuickTemplates2.framework in Frameworks */,
+				8364B57525D7177E00822CC8 /* QtWebChannel.framework in Frameworks */,
+				8364B57625D7177E00822CC8 /* Qt3DLogic.framework in Frameworks */,
+				8364B57725D7177E00822CC8 /* QtSensors.framework in Frameworks */,
+				8364B57825D7177E00822CC8 /* QtWebSockets.framework in Frameworks */,
+				8364B57925D7177E00822CC8 /* QtWebView.framework in Frameworks */,
+				8364B57A25D7177E00822CC8 /* QtSerialBus.framework in Frameworks */,
+				8364B57B25D7177E00822CC8 /* Qt3DAnimation.framework in Frameworks */,
+				8364B57C25D7177E00822CC8 /* Qt3DQuickInput.framework in Frameworks */,
+				8364B57D25D7177E00822CC8 /* QtQuickShapes.framework in Frameworks */,
+				8364B57E25D7177E00822CC8 /* Qt3DInput.framework in Frameworks */,
+				8364B57F25D7177E00822CC8 /* QtCore.framework in Frameworks */,
+				8364B58025D7177E00822CC8 /* QtQuick3DAssetImport.framework in Frameworks */,
+				8364B58125D7177E00822CC8 /* QtDataVisualization.framework in Frameworks */,
+				8364B58225D7177E00822CC8 /* QtQuick3DRuntimeRender.framework in Frameworks */,
+				8364B58325D7177E00822CC8 /* QtPositioningQuick.framework in Frameworks */,
+				8364B58425D7177E00822CC8 /* Qt3DRender.framework in Frameworks */,
+				8364B58525D7177E00822CC8 /* QtMacExtras.framework in Frameworks */,
+				8364B58725D7177E00822CC8 /* QtHelp.framework in Frameworks */,
+				8364B58825D7177E00822CC8 /* QtDesigner.framework in Frameworks */,
+				8364B58925D7177E00822CC8 /* QtQmlWorkerScript.framework in Frameworks */,
+				8364B58B25D7177E00822CC8 /* QtPrintSupport.framework in Frameworks */,
+				8364B58E25D7177E00822CC8 /* QtQuick3DUtils.framework in Frameworks */,
+				8364B58F25D7177E00822CC8 /* QtScriptTools.framework in Frameworks */,
+				8364B59025D7177E00822CC8 /* QtQuickControls2.framework in Frameworks */,
+				8364B59225D7177E00822CC8 /* QtQuick3D.framework in Frameworks */,
+				8364B59325D7177E00822CC8 /* QtQuickTest.framework in Frameworks */,
+				8364B59425D7177E00822CC8 /* QtGamepad.framework in Frameworks */,
+				8364B59525D7177E00822CC8 /* QtQuick3DRender.framework in Frameworks */,
+				8364B50825D7177B00822CC8 /* QtOpenGL.framework in Frameworks */,
+				8364B50925D7177B00822CC8 /* QtWidgets.framework in Frameworks */,
 				832BE48225C8E06500647E88 /* libGLEW.2.2.0.dylib in Frameworks */,
 				832BE48025C8E04600647E88 /* libglfw.3.3.dylib in Frameworks */,
 				832BE47E25C8DF9A00647E88 /* OpenGL.framework in Frameworks */,
@@ -100,6 +308,8 @@
 		832BE47325C8DF0900647E88 /* lattice */ = {
 			isa = PBXGroup;
 			children = (
+				83B8C78D25D7407E00D1B297 /* mass_spring_system.cpp */,
+				83B8C78E25D7407E00D1B297 /* mass_spring_system.hpp */,
 				832BE48425C8E18700647E88 /* lattice.entitlements */,
 				832BE47425C8DF0900647E88 /* main.cpp */,
 				83D8F4AA25C8FCE300E02900 /* window.cpp */,
@@ -113,12 +323,12 @@
 				83D8F4D025CCD26E00E02900 /* mass.hpp */,
 				83D2772225D219A400D95FB6 /* colors.cpp */,
 				83D2772325D219A400D95FB6 /* colors.hpp */,
-				83D2771925D0B80A00D95FB6 /* shape.cpp */,
-				83D2771A25D0B80A00D95FB6 /* shape.hpp */,
 				83D2771E25D0BECC00D95FB6 /* fixture.hpp */,
 				83D8F4D525CCDC3000E02900 /* renderable.hpp */,
 				83D2771025CF88C100D95FB6 /* spring.cpp */,
 				83D2771125CF88C100D95FB6 /* spring.hpp */,
+				8364B59925D7207400822CC8 /* gl_widget.cpp */,
+				8364B59A25D7207400822CC8 /* gl_widget.hpp */,
 			);
 			path = lattice;
 			sourceTree = "<group>";
@@ -126,6 +336,78 @@
 		832BE47C25C8DF9A00647E88 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8364B53525D7177C00822CC8 /* Qt3DAnimation.framework */,
+				8364B51325D7177B00822CC8 /* Qt3DCore.framework */,
+				8364B51025D7177B00822CC8 /* Qt3DExtras.framework */,
+				8364B53825D7177C00822CC8 /* Qt3DInput.framework */,
+				8364B53025D7177C00822CC8 /* Qt3DLogic.framework */,
+				8364B51D25D7177B00822CC8 /* Qt3DQuick.framework */,
+				8364B51425D7177B00822CC8 /* Qt3DQuickAnimation.framework */,
+				8364B50C25D7177B00822CC8 /* Qt3DQuickExtras.framework */,
+				8364B53625D7177C00822CC8 /* Qt3DQuickInput.framework */,
+				8364B52125D7177C00822CC8 /* Qt3DQuickRender.framework */,
+				8364B51625D7177B00822CC8 /* Qt3DQuickScene2D.framework */,
+				8364B53E25D7177D00822CC8 /* Qt3DRender.framework */,
+				8364B52925D7177C00822CC8 /* QtBluetooth.framework */,
+				8364B52A25D7177C00822CC8 /* QtBodymovin.framework */,
+				8364B50F25D7177B00822CC8 /* QtCharts.framework */,
+				8364B51C25D7177B00822CC8 /* QtConcurrent.framework */,
+				8364B53925D7177D00822CC8 /* QtCore.framework */,
+				8364B53B25D7177D00822CC8 /* QtDataVisualization.framework */,
+				8364B54425D7177D00822CC8 /* QtDBus.framework */,
+				8364B54225D7177D00822CC8 /* QtDesigner.framework */,
+				8364B50E25D7177B00822CC8 /* QtDesignerComponents.framework */,
+				8364B54E25D7177E00822CC8 /* QtGamepad.framework */,
+				8364B50D25D7177B00822CC8 /* QtGui.framework */,
+				8364B54125D7177D00822CC8 /* QtHelp.framework */,
+				8364B50B25D7177B00822CC8 /* QtLocation.framework */,
+				8364B53F25D7177D00822CC8 /* QtMacExtras.framework */,
+				8364B51E25D7177B00822CC8 /* QtMultimedia.framework */,
+				8364B52825D7177C00822CC8 /* QtMultimediaQuick.framework */,
+				8364B52C25D7177C00822CC8 /* QtMultimediaWidgets.framework */,
+				8364B51B25D7177B00822CC8 /* QtNetwork.framework */,
+				8364B52025D7177C00822CC8 /* QtNetworkAuth.framework */,
+				8364B52225D7177C00822CC8 /* QtNfc.framework */,
+				8364B50A25D7177B00822CC8 /* QtPositioning.framework */,
+				8364B53D25D7177D00822CC8 /* QtPositioningQuick.framework */,
+				8364B54525D7177D00822CC8 /* QtPrintSupport.framework */,
+				8364B52B25D7177C00822CC8 /* QtPurchasing.framework */,
+				8364B54625D7177D00822CC8 /* QtQml.framework */,
+				8364B52625D7177C00822CC8 /* QtQmlModels.framework */,
+				8364B54325D7177D00822CC8 /* QtQmlWorkerScript.framework */,
+				8364B51725D7177B00822CC8 /* QtQuick.framework */,
+				8364B54C25D7177E00822CC8 /* QtQuick3D.framework */,
+				8364B53A25D7177D00822CC8 /* QtQuick3DAssetImport.framework */,
+				8364B54F25D7177E00822CC8 /* QtQuick3DRender.framework */,
+				8364B53C25D7177D00822CC8 /* QtQuick3DRuntimeRender.framework */,
+				8364B54825D7177D00822CC8 /* QtQuick3DUtils.framework */,
+				8364B54A25D7177E00822CC8 /* QtQuickControls2.framework */,
+				8364B51225D7177B00822CC8 /* QtQuickParticles.framework */,
+				8364B53725D7177C00822CC8 /* QtQuickShapes.framework */,
+				8364B52E25D7177C00822CC8 /* QtQuickTemplates2.framework */,
+				8364B54D25D7177E00822CC8 /* QtQuickTest.framework */,
+				8364B51A25D7177B00822CC8 /* QtQuickWidgets.framework */,
+				8364B54025D7177D00822CC8 /* QtRemoteObjects.framework */,
+				8364B54B25D7177E00822CC8 /* QtRepParser.framework */,
+				8364B52325D7177C00822CC8 /* QtScript.framework */,
+				8364B54925D7177E00822CC8 /* QtScriptTools.framework */,
+				8364B52525D7177C00822CC8 /* QtScxml.framework */,
+				8364B53125D7177C00822CC8 /* QtSensors.framework */,
+				8364B53425D7177C00822CC8 /* QtSerialBus.framework */,
+				8364B52D25D7177C00822CC8 /* QtSerialPort.framework */,
+				8364B54725D7177D00822CC8 /* QtSql.framework */,
+				8364B51825D7177B00822CC8 /* QtSvg.framework */,
+				8364B52725D7177C00822CC8 /* QtTest.framework */,
+				8364B51125D7177B00822CC8 /* QtTextToSpeech.framework */,
+				8364B51925D7177B00822CC8 /* QtUiPlugin.framework */,
+				8364B51F25D7177C00822CC8 /* QtVirtualKeyboard.framework */,
+				8364B52F25D7177C00822CC8 /* QtWebChannel.framework */,
+				8364B53225D7177C00822CC8 /* QtWebSockets.framework */,
+				8364B53325D7177C00822CC8 /* QtWebView.framework */,
+				8364B52425D7177C00822CC8 /* QtXml.framework */,
+				8364B51525D7177B00822CC8 /* QtXmlPatterns.framework */,
+				8364B50525D7114600822CC8 /* QtWidgets.framework */,
+				8364B50225D7108200822CC8 /* QtOpenGL.framework */,
 				832BE48125C8E06500647E88 /* libGLEW.2.2.0.dylib */,
 				832BE47F25C8E04600647E88 /* libglfw.3.3.dylib */,
 				832BE47D25C8DF9A00647E88 /* OpenGL.framework */,
@@ -189,13 +471,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83B8C78F25D7407E00D1B297 /* mass_spring_system.cpp in Sources */,
+				83B8C79025D7407E00D1B297 /* mass_spring_system.hpp in Sources */,
 				83D2771225CF88C100D95FB6 /* spring.cpp in Sources */,
 				83D8F4AC25C8FCE300E02900 /* window.cpp in Sources */,
 				83D8F4B025C9087000E02900 /* keyboard.cpp in Sources */,
 				832BE47525C8DF0900647E88 /* main.cpp in Sources */,
 				83D2771725D077E800D95FB6 /* camera.cpp in Sources */,
+				8364B59B25D7207400822CC8 /* gl_widget.cpp in Sources */,
 				83D2772425D219A400D95FB6 /* colors.cpp in Sources */,
-				83D2771B25D0B80A00D95FB6 /* shape.cpp in Sources */,
 				83D8F4D125CCD26E00E02900 /* mass.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,6 +607,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VYHDWL3467;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/homebrew/Cellar/qt/5.15.2/lib,
+				);
 				HEADER_SEARCH_PATHS = (
 					/opt/homebrew/include,
 					"/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include",
@@ -345,6 +633,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VYHDWL3467;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/homebrew/Cellar/qt/5.15.2/lib,
+				);
 				HEADER_SEARCH_PATHS = (
 					/opt/homebrew/include,
 					"/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include/opt/homebrew/Cellar/glm/0.9.9.8/include\n/opt/homebrew/Cellar/glm/0.9.9.8/include",

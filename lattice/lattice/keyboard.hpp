@@ -11,13 +11,14 @@
 
 #include <memory>
 
-#include "shape.hpp"
+#include "mass_spring_system.hpp"
 
-void TakeAction(const std::shared_ptr<Shape>& shape, int key, int action);
+void TakeAction(const std::shared_ptr<MassSpringSystem>& shape, int key,
+                int action);
 
-void OnUpKeyPress(const std::shared_ptr<Shape>& shape);
-void OnDownKeyPress(const std::shared_ptr<Shape>& shape);
-void OnLeftKeyPress(const std::shared_ptr<Shape>& shape);
-void OnRightKeyPress(const std::shared_ptr<Shape>& shape);
+void OnUpKeyPress(const std::shared_ptr<MassSpringSystem>& shape);
+void OnDownKeyPress(const std::shared_ptr<MassSpringSystem>& shape);
+void OnLeftKeyPress(const std::shared_ptr<MassSpringSystem>& shape);
+void OnRightKeyPress(const std::shared_ptr<MassSpringSystem>& shape);
 
 #endif /* keyboard_hpp */

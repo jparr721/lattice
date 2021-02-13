@@ -60,8 +60,6 @@ class Spring : public Fixture {
     std::shared_ptr<Mass> right_mass;
 
     void ApplySpringForces();
-    // TODO(@jparr721) - Make this a helper.
-    float ComputeVectorDistance();
 };
 
 #endif /* spring_hpp */

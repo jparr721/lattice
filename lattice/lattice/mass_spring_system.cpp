@@ -5,9 +5,10 @@
 //  Created by Jarred Parr on 2/7/21.
 //
 
-#include "shape.hpp"
+#include "mass_spring_system.hpp"
 
-void Shape::MoveFixtureAtIndex(int index, const glm::vec3& translation_vector) {
+void MassSpringSystem::MoveFixtureAtIndex(int index,
+                                          const glm::vec3& translation_vector) {
     assert(index < fixtures.size());
     fixtures[index]->Translate(translation_vector);
 

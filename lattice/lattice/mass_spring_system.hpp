@@ -16,9 +16,10 @@
 #include <utility>
 #include <vector>
 
-class Shape : public Renderable {
+class MassSpringSystem : public Renderable {
   public:
-    Shape(std::vector<std::shared_ptr<Fixture>>& _fixtures, GLuint render_mode)
+    MassSpringSystem(std::vector<std::shared_ptr<Fixture>>& _fixtures,
+                     GLuint render_mode)
         : Renderable(render_mode), fixtures(_fixtures) {}
 
     void MoveFixtureAtIndex(int index, const glm::vec3& translation_vector);
@@ -26,36 +27,10 @@ class Shape : public Renderable {
     unsigned int size() { return rendered_array_size; }
 
     inline void ComputeVertexPoints() {
-        // First, initialize all of our vertex positions
         for (auto fixture : fixtures) {
             // Compute vertex points so that way it has an internal vertex
             // structure
             fixture->ComputeVertexPoints();
-
-            const auto next_object_mapping_idx = element_buffer.size();
-
-            // Fill out the elements object mapping.
-            element_buffer.push_back(next_object_mapping_idx);
-
-            // Fill out the bijection with the fixture size
-            // Get the vertex position of the last vertex
-            if (next_object_mapping_idx > 0) {
-                const auto last_object_mapping_idx =
-                    next_object_mapping_idx - 1;
-                const auto highest_vertex_option =
-                    buffer_mapping[last_object_mapping_idx].end;
-                const auto bijection_pair =
-                    std::make_pair(highest_vertex_option, fixture->size());
-
-                const auto bijection_coordinate_bounds =
-                    BijectionCoordinateBounds{
-                        .start = highest_vertex_option,
-                        .end = highest_vertex_option + fixture->size(),
-                    };
-
-                buffer_mapping.insert(std::make_pair(
-                    next_object_mapping_idx, bijection_coordinate_bounds));
-            }
         }
     }
 

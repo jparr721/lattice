@@ -16,7 +16,8 @@
 // GLFW
 #include <GLFW/glfw3.h>
 
-void TakeAction(const std::shared_ptr<Shape>& shape, int key, int action) {
+void TakeAction(const std::shared_ptr<MassSpringSystem>& shape, int key,
+                int action) {
     if (action != GLFW_PRESS) {
         return;
     }
@@ -40,20 +41,20 @@ void TakeAction(const std::shared_ptr<Shape>& shape, int key, int action) {
     };
 }
 
-void OnUpKeyPress(const std::shared_ptr<Shape>& shape) {
+void OnUpKeyPress(const std::shared_ptr<MassSpringSystem>& shape) {
     auto change = glm::vec3(0.0f, 0.5, 0.0f);
     shape->MoveFixtureAtIndex(0, change);
 }
 
-void OnDownKeyPress(const std::shared_ptr<Shape>& shape) {
+void OnDownKeyPress(const std::shared_ptr<MassSpringSystem>& shape) {
     auto change = glm::vec3(0.0f, -0.5, 0.0f);
     shape->MoveFixtureAtIndex(0, change);
 }
-void OnRightKeyPress(const std::shared_ptr<Shape>& shape) {
+void OnRightKeyPress(const std::shared_ptr<MassSpringSystem>& shape) {
     auto change = glm::vec3(0.5f, 0.0, 0.0f);
     shape->MoveFixtureAtIndex(0, change);
 }
-void OnLeftKeyPress(const std::shared_ptr<Shape>& shape) {
+void OnLeftKeyPress(const std::shared_ptr<MassSpringSystem>& shape) {
     auto change = glm::vec3(-0.5f, 0.0, 0.0f);
     shape->MoveFixtureAtIndex(0, change);
 }
