@@ -1,63 +1,55 @@
 #include "window.h"
 
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <vector>
 
 std::string Window::ReadVertexShader() {
-    const std::string path = "./shaders/core.vs";
     std::ostringstream sstr;
-    auto stream = std::ifstream{path.data()};
+    auto stream = std::ifstream{"core.vs"};
     sstr << stream.rdbuf();
     return sstr.str();
 }
 
 std::string Window::ReadFragmentShader() {
-    const std::string path = "./shaders/core.frag";
     std::ostringstream sstr;
-    auto stream = std::ifstream{path.data()};
+    auto stream = std::ifstream{"core.frag"};
     sstr << stream.rdbuf();
     return sstr.str();
 }
 
 void Window::initialize() {
-    const auto vertex_shader_string = ReadVertexShader();
-    const auto fragment_shader_string = ReadFragmentShader();
+    const auto vertex_shader = ReadVertexShader();
+    const auto fragment_shader = ReadFragmentShader();
 
-    program = new QOpenGLShaderProgram(this);
-    program->addShaderFromSourceCode(QOpenGLShader::Vertex,
-                                     vertex_shader_string.c_str());
-    program->addShaderFromSourceCode(QOpenGLShader::Fragment,
-                                     fragment_shader_string.c_str());
-
-    program->link();
-    position = program->attributeLocation("position_attribute");
+    program_id = new QOpenGLShaderProgram(this);
+    program_id->addShaderFromSourceCode(QOpenGLShader::Vertex,
+                                        vertex_shader.data());
+    program_id->addShaderFromSourceCode(QOpenGLShader::Fragment,
+                                        fragment_shader.data());
+    program_id->link();
+    position = program_id->attributeLocation("position_attribute");
     Q_ASSERT(position != -1);
-
-    color = program->attributeLocation("color_attribute");
+    color = program_id->attributeLocation("color_attribute");
     Q_ASSERT(color != -1);
-
-    matrix_uniform = program->attributeLocation("projection_matrix");
+    matrix_uniform = program_id->uniformLocation("projection_matrix");
     Q_ASSERT(matrix_uniform != -1);
 }
 
 void Window::render() {
-    const qreal retina_scale = devicePixelRatio();
-    glViewport(0, 0, width() * retina_scale, height() * retina_scale);
+    const qreal retinaScale = devicePixelRatio();
+    glViewport(0, 0, width() * retinaScale, height() * retinaScale);
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    program->bind();
+    program_id->bind();
 
     QMatrix4x4 matrix;
-
-    // 4:3 aspect ratio, display 0.1 unit to 100 units
     matrix.perspective(60.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+    matrix.translate(0, 0, -2);
 
-    // Move back 5 units so we can have a bigger FOV
-    matrix.translate(0, 0, -5);
-
-    program->setUniformValue(matrix_uniform, matrix);
+    program_id->setUniformValue(matrix_uniform, matrix);
 
     std::vector<GLfloat> vertices{{
         -.2f, -.2f, 0.f, // Bottom Left
@@ -95,4 +87,16 @@ void Window::render() {
                           static_cast<void*>(vertices.data()));
     glVertexAttribPointer(color, 3, GL_FLOAT, GL_FALSE, 0,
                           static_cast<void*>(colors.data()));
+
+    glEnableVertexAttribArray(position);
+    glEnableVertexAttribArray(color);
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glDisableVertexAttribArray(color);
+    glDisableVertexAttribArray(position);
+
+    program_id->release();
+
+    ++frame;
 }

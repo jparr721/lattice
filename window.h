@@ -1,3 +1,5 @@
+#pragma once
+
 #include "gl_window.h"
 
 #include <QGuiApplication>
@@ -8,6 +10,8 @@
 
 class Window : public GLWindow {
   public:
+    using GLWindow::GLWindow;
+
     void initialize() override;
     void render() override;
 
@@ -16,8 +20,7 @@ class Window : public GLWindow {
     GLint color = 0;
     GLint matrix_uniform = 0;
 
-    QOpenGLShaderProgram* program = nullptr;
-
+    QOpenGLShaderProgram* program_id = nullptr;
     int frame = 0;
 
     std::string ReadVertexShader();

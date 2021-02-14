@@ -1,3 +1,5 @@
+#pragma once
+
 #include <QOpenGLFunctions>
 #include <QWindow>
 
@@ -7,7 +9,6 @@ class QOpenGLContext;
 class QOpenGLPaintDevice;
 QT_END_NAMESPACE
 
-//! [1]
 class GLWindow : public QWindow, protected QOpenGLFunctions {
     Q_OBJECT
   public:
@@ -36,4 +37,3 @@ class GLWindow : public QWindow, protected QOpenGLFunctions {
     QOpenGLContext* m_context = nullptr;
     QOpenGLPaintDevice* m_device = nullptr;
 };
-//! [1]
