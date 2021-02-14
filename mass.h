@@ -40,26 +40,36 @@ class Mass : public Fixture {
         position = position + velocity * dt;
     }
 
+    void Initialize() {
+        ComputeVertexPoints();
+
+        colors = std::vector<QVector3D>{{kColor, kColor, kColor}};
+
+        is_init = true;
+    }
+
     inline void Update(float dt) {
         if (is_fixed) {
             return;
         }
+
+        qDebug() << "Before: " << position;
         CalculateMassForces(dt);
         ComputeVertexPoints();
+        qDebug() << "After: " << position;
     }
 
     inline void ComputeVertexPoints() {
         // Construct our vertices centered around the origin position supplied
         // on construction
-        const auto v1 = QVector4D(position.x() - kSize, position.y() - kSize,
-                                  position.z(), 1.f); // Bottom Left
-        const auto v2 = QVector4D(position.x() + kSize, position.y() - kSize,
-                                  position.z(), 1.f); // Bottom Right
-        const auto v3 =
-            QVector4D(position.x(), position.y() + kSize, position.z(),
-                      1.f); // Top Center
+        const auto v1 = QVector3D(position.x() - kSize, position.y() - kSize,
+                                  position.z()); // Bottom Left
+        const auto v2 = QVector3D(position.x() + kSize, position.y() - kSize,
+                                  position.z()); // Bottom Right
+        const auto v3 = QVector3D(position.x(), position.y() + kSize,
+                                  position.z()); // Top Center
 
-        vertices = std::vector<QVector4D>{{v1, v2, v3}};
+        vertices = std::vector<QVector3D>{{v1, v2, v3}};
     }
 
     void Translate(const QVector3D& translation_vector) {

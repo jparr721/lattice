@@ -1,10 +1,9 @@
 #include "window.h"
-#include "mass.h"
+#include "colors.h"
 
 #include <QVector3D>
 #include <fstream>
 #include <iostream>
-#include <memory>
 #include <sstream>
 #include <vector>
 
@@ -38,6 +37,10 @@ void Window::initialize() {
     Q_ASSERT(color != -1);
     matrix_uniform = program_id->uniformLocation("projection_matrix");
     Q_ASSERT(matrix_uniform != -1);
+
+    mass = std::make_unique<Mass>(0.2, 1.f, kUnfixedPosition, colors::kBlue,
+                                  QVector4D(0.f, 1.f, 0.f, 1.f));
+    mass->Initialize();
 }
 
 void Window::render() {
@@ -54,27 +57,10 @@ void Window::render() {
 
     program_id->setUniformValue(matrix_uniform, matrix);
 
-    auto mass = std::make_unique<Mass>();
-    mass->Translate(QVector3D(1.f, 1.f, 0.f));
+    auto vertices = mass->Vertices();
+    auto colors = mass->Colors();
 
-    std::vector<QVector3D> vertices{{
-        QVector3D(-.2f, -.2f, 0.f),
-        QVector3D(.2f, -.2f, 0.f),
-        QVector3D(0.f, .2f, 0.f),
-        QVector3D(-1.2f, 1.2f, 0.f),
-        QVector3D(-1.f, 1.f, 0.f),
-        QVector3D(0.f, 1.4f, 0.f),
-    }};
-
-    std::vector<QVector3D> colors{{
-        QVector3D(1.0f, 0.f, 0.f),
-        QVector3D(1.0f, 0.f, 0.f),
-        QVector3D(1.0f, 0.f, 0.f),
-
-        QVector3D(0.0f, 1.f, 0.f),
-        QVector3D(0.0f, 1.f, 0.f),
-        QVector3D(0.0f, 1.f, 0.f),
-    }};
+    mass->Update(0.1);
 
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0,
                           static_cast<void*>(vertices.data()));
@@ -91,5 +77,6 @@ void Window::render() {
 
     program_id->release();
 
+    std::cout << "Frame: " << frame << std::endl;
     ++frame;
 }

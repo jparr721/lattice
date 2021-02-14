@@ -1,7 +1,9 @@
 #pragma once
 
 #include "gl_window.h"
+#include "mass.h"
 
+#include <memory>
 #include <QGuiApplication>
 #include <QMatrix4x4>
 #include <QOpenGLShaderProgram>
@@ -22,6 +24,8 @@ class Window : public GLWindow {
 
     QOpenGLShaderProgram* program_id = nullptr;
     int frame = 0;
+
+    std::unique_ptr<Mass> mass;
 
     std::string ReadVertexShader();
     std::string ReadFragmentShader();
