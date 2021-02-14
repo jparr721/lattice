@@ -2,13 +2,13 @@
 
 #include "gl_window.h"
 #include "mass.h"
+#include "mass_spring_system.h"
 
-#include <memory>
 #include <QGuiApplication>
 #include <QMatrix4x4>
 #include <QOpenGLShaderProgram>
 #include <QScreen>
-#include <QtMath>
+#include <memory>
 
 class Window : public GLWindow {
   public:
@@ -25,7 +25,7 @@ class Window : public GLWindow {
     QOpenGLShaderProgram* program_id = nullptr;
     int frame = 0;
 
-    std::unique_ptr<Mass> mass;
+    std::shared_ptr<MassSpringSystem> mass_spring_system;
 
     std::string ReadVertexShader();
     std::string ReadFragmentShader();

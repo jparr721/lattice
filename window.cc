@@ -38,9 +38,12 @@ void Window::initialize() {
     matrix_uniform = program_id->uniformLocation("projection_matrix");
     Q_ASSERT(matrix_uniform != -1);
 
-    mass = std::make_unique<Mass>(0.2, 1.f, kUnfixedPosition, colors::kBlue,
-                                  QVector4D(0.f, 1.f, 0.f, 1.f));
-    mass->Initialize();
+    const auto mass =
+        std::make_shared<Mass>(0.2, 0.2f, kUnfixedPosition, colors::kBlue,
+                               QVector4D(0.f, 1.f, 0.f, 1.f));
+    mass_spring_system = std::make_unique<MassSpringSystem>();
+    mass_spring_system->AddFixture(mass);
+    mass_spring_system->Initialize();
 }
 
 void Window::render() {
@@ -57,26 +60,25 @@ void Window::render() {
 
     program_id->setUniformValue(matrix_uniform, matrix);
 
-    auto vertices = mass->Vertices();
-    auto colors = mass->Colors();
+    auto shapes = mass_spring_system->Shapes();
+    auto colors = mass_spring_system->Colors();
 
-    mass->Update(0.1);
+    // mass->Update(0.1);
 
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0,
-                          static_cast<void*>(vertices.data()));
+                          static_cast<void*>(shapes.data()));
     glVertexAttribPointer(color, 3, GL_FLOAT, GL_FALSE, 0,
                           static_cast<void*>(colors.data()));
 
     glEnableVertexAttribArray(position);
     glEnableVertexAttribArray(color);
 
-    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+    glDrawArrays(GL_TRIANGLES, 0, shapes.size());
 
     glDisableVertexAttribArray(color);
     glDisableVertexAttribArray(position);
 
     program_id->release();
 
-    std::cout << "Frame: " << frame << std::endl;
     ++frame;
 }

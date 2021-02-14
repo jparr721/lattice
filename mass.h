@@ -53,10 +53,8 @@ class Mass : public Fixture {
             return;
         }
 
-        qDebug() << "Before: " << position;
         CalculateMassForces(dt);
         ComputeVertexPoints();
-        qDebug() << "After: " << position;
     }
 
     inline void ComputeVertexPoints() {
