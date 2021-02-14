@@ -1,6 +1,6 @@
 #include "window.h"
-#include "fixture.h"
 
+#include <QVector3D>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -63,26 +63,14 @@ void Window::render() {
         QVector3D(0.f, 1.4f, 0.f),
     }};
 
-    std::vector<GLfloat> colors{{
-        1.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        1.0f,
+    std::vector<QVector3D> colors{{
+        QVector3D(1.0f, 0.f, 0.f),
+        QVector3D(1.0f, 0.f, 0.f),
+        QVector3D(1.0f, 0.f, 0.f),
 
-        1.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        1.0f,
+        QVector3D(0.0f, 1.f, 0.f),
+        QVector3D(0.0f, 1.f, 0.f),
+        QVector3D(0.0f, 1.f, 0.f),
     }};
 
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0,
@@ -93,7 +81,7 @@ void Window::render() {
     glEnableVertexAttribArray(position);
     glEnableVertexAttribArray(color);
 
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
     glDisableVertexAttribArray(color);
     glDisableVertexAttribArray(position);
