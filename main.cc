@@ -4,7 +4,6 @@
 #include <QMatrix4x4>
 #include <QOpenGLShaderProgram>
 #include <QScreen>
-#include <QtMath>
 #include <iostream>
 
 int main(int argc, char** argv) {

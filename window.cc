@@ -1,8 +1,10 @@
 #include "window.h"
+#include "mass.h"
 
 #include <QVector3D>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <vector>
 
@@ -52,8 +54,9 @@ void Window::render() {
 
     program_id->setUniformValue(matrix_uniform, matrix);
 
-    /*
-     */
+    auto mass = std::make_unique<Mass>();
+    mass->Translate(QVector3D(1.f, 1.f, 0.f));
+
     std::vector<QVector3D> vertices{{
         QVector3D(-.2f, -.2f, 0.f),
         QVector3D(.2f, -.2f, 0.f),
