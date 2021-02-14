@@ -1,13 +1,13 @@
 #pragma once
 
 #include "gl_window.h"
-#include "mass.h"
 #include "mass_spring_system.h"
 
 #include <QGuiApplication>
 #include <QMatrix4x4>
 #include <QOpenGLShaderProgram>
 #include <QScreen>
+#include <cmath>
 #include <memory>
 
 class Window : public GLWindow {

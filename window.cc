@@ -1,5 +1,7 @@
 #include "window.h"
 #include "colors.h"
+#include "mass.h"
+#include "spring.h"
 
 #include <QVector3D>
 #include <fstream>
@@ -38,11 +40,20 @@ void Window::initialize() {
     matrix_uniform = program_id->uniformLocation("projection_matrix");
     Q_ASSERT(matrix_uniform != -1);
 
-    const auto mass =
-        std::make_shared<Mass>(0.2, 0.2f, kUnfixedPosition, colors::kBlue,
+    auto fixed_mass =
+        std::make_shared<Mass>(0.1, 0.2f, kFixedPosition, colors::kBlue,
                                QVector4D(0.f, 1.f, 0.f, 1.f));
+    auto movable_mass =
+        std::make_shared<Mass>(0.1, 0.2f, kUnfixedPosition, colors::kRed,
+                               QVector4D(0.f, 0.f, 0.f, 1.f));
+
+    auto spring = std::make_shared<Spring>(0.5f, 1.f, colors::kGreen,
+                                           fixed_mass, movable_mass);
+
     mass_spring_system = std::make_unique<MassSpringSystem>();
-    mass_spring_system->AddFixture(mass);
+    mass_spring_system->AddFixture(fixed_mass);
+    mass_spring_system->AddFixture(movable_mass);
+    mass_spring_system->AddFixture(spring);
     mass_spring_system->Initialize();
 }
 
@@ -63,7 +74,7 @@ void Window::render() {
     auto shapes = mass_spring_system->Shapes();
     auto colors = mass_spring_system->Colors();
 
-    // mass->Update(0.1);
+    mass_spring_system->Update(0.1f);
 
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0,
                           static_cast<void*>(shapes.data()));

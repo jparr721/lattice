@@ -18,6 +18,8 @@ void MassSpringSystem::Update(float dt) {
     for (auto fixture : fixtures) {
         fixture->Update(dt);
     }
+    ComputeVertexPoints();
+    ComputeShapes();
 }
 
 void MassSpringSystem::AddFixture(const std::shared_ptr<Fixture>& fixture) {
