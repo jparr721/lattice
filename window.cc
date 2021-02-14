@@ -1,4 +1,5 @@
 #include "window.h"
+#include "fixture.h"
 
 #include <fstream>
 #include <iostream>
@@ -51,14 +52,15 @@ void Window::render() {
 
     program_id->setUniformValue(matrix_uniform, matrix);
 
-    std::vector<GLfloat> vertices{{
-        -.2f, -.2f, 0.f, // Bottom Left
-        .2f, -.2f, 0.f,  // Bottom Right
-        0.f, .2f, 0.f,   // Top Center
-
-        -1.2f, 1.2f, 0.f, // Bottom Left
-        -1.f, 1.f, 0.f,   // Bottom Right
-        0.f, 1.4f, 0.f    // Top Center
+    /*
+     */
+    std::vector<QVector3D> vertices{{
+        QVector3D(-.2f, -.2f, 0.f),
+        QVector3D(.2f, -.2f, 0.f),
+        QVector3D(0.f, .2f, 0.f),
+        QVector3D(-1.2f, 1.2f, 0.f),
+        QVector3D(-1.f, 1.f, 0.f),
+        QVector3D(0.f, 1.4f, 0.f),
     }};
 
     std::vector<GLfloat> colors{{
