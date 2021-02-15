@@ -1,39 +1,84 @@
 #pragma once
 
+#include "mass_spring_system.h"
+
 #include <QOpenGLFunctions>
-#include <QWindow>
+#include <QOpenGLWidget>
+#include <memory>
+#include <string>
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QOpenGLContext;
-class QOpenGLPaintDevice;
-QT_END_NAMESPACE
+QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 
-class GLWindow : public QWindow, protected QOpenGLFunctions {
+class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
   public:
-    explicit GLWindow(QWindow* parent = nullptr);
-    ~GLWindow();
+    explicit GLWidget(QWidget* parent = nullptr);
+    ~GLWidget();
 
-    virtual void render(QPainter* painter);
-    virtual void render();
-
-    virtual void initialize();
-
-    void setAnimating(bool animating);
+    QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
 
   public slots:
-    void renderLater();
-    void renderNow();
+    void Update();
+
+    void SetMass(float value);
+    void SetSpringConstant(float value);
+    void SetSpringDampingConstant(float value);
+    void SetSpringRestLength(float value);
+    void SetTimeStep(float value);
+
+  signals:
+    void OnMassChange(float value);
+    void OnSpringConstantChange(float value);
+    void OnSpringDampingChange(float value);
+    void OnSpringRestLengthChange(float value);
+    void OnTimeStepChange(float value);
 
   protected:
-    bool event(QEvent* event) override;
+    void initializeGL() override;
+    void paintGL() override;
+    void resizeGL(int width, int height) override;
 
-    void exposeEvent(QExposeEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
 
   private:
-    bool m_animating = false;
+    QOpenGLShaderProgram* program_id = nullptr;
 
-    QOpenGLContext* m_context = nullptr;
-    QOpenGLPaintDevice* m_device = nullptr;
+    // Window Parameters
+    constexpr static int kWidth = 1200;
+    constexpr static int kHeight = 1000;
+
+    // Slider Data
+    float slider_mass_value = kMinimumMassSliderValue;
+    float slider_spring_constant_value = kMinimumSpringConstantSliderValue;
+    float slider_damping_constant_value = kMinimumDampingSliderValue;
+    float slider_rest_length_value = kMinimumSpringRestLengthSliderValue;
+    float slider_time_step_value = kMinimumTimeStepChangeSliderValue;
+
+    // Slider Minimum Values
+    constexpr static float kMinimumMassSliderValue = 0.5f;
+    constexpr static float kMinimumSpringConstantSliderValue = 1.0f;
+    constexpr static float kMinimumDampingSliderValue = 0.5;
+    constexpr static float kMinimumSpringRestLengthSliderValue = 0.5f;
+    constexpr static float kMinimumTimeStepChangeSliderValue = 0.0001;
+
+    // Slider Maxmum Values
+    constexpr static float kMaximumMassSliderValue = 10.0f;
+    constexpr static float kMaximumSpringConstantSliderValue = 50.0f;
+    constexpr static float kMaximumDampingSliderValue = 5.0f;
+    constexpr static float kMaximumSpringRestLengthSliderValue = 10.0f;
+    constexpr static float kMaximumTimeStepChangeSliderValue = 1.0f;
+
+    // Simulation Params
+    std::shared_ptr<MassSpringSystem> mass_spring_system;
+
+    // Other misc params
+    GLint position = 0;
+    GLint color = 0;
+    GLint matrix_uniform = 0;
+    int frame = 0;
+
+    std::string ReadVertexShader();
+    std::string ReadFragmentShader();
 };
