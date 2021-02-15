@@ -5,8 +5,10 @@
 #include <memory>
 #include <string>
 
+#include <QElapsedTimer>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
+#include <QTimer>
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 
@@ -72,6 +74,11 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     float slider_damping_constant_value = kMinimumDampingSliderValue;
     float slider_rest_length_value = kMinimumSpringRestLengthSliderValue;
     float slider_time_step_value = kMinimumTimeStepChangeSliderValue;
+
+    // Draw Timers for the sim time step
+    QTimer* draw_timer;
+    QTimer* update_timer;
+    QElapsedTimer delta_timer;
 
     // Simulation Params
     std::shared_ptr<MassSpringSystem> mass_spring_system;

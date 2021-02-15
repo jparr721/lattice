@@ -15,7 +15,37 @@
 #include <QPainter>
 #include <QVector3D>
 
-GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {}
+GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {
+    auto fixed_mass =
+        std::make_shared<Mass>(0.1, 0.2f, kFixedPosition, colors::kBlue,
+                               QVector4D(0.f, 1.f, 0.f, 1.f));
+    auto movable_mass =
+        std::make_shared<Mass>(0.1, 0.2f, kUnfixedPosition, colors::kRed,
+                               QVector4D(0.f, 0.f, 0.f, 1.f));
+
+    auto spring = std::make_shared<Spring>(0.5f, 1.f, colors::kGreen,
+                                           fixed_mass, movable_mass);
+
+    mass_spring_system = std::make_unique<MassSpringSystem>();
+    mass_spring_system->AddFixture(fixed_mass);
+    mass_spring_system->AddFixture(movable_mass);
+    mass_spring_system->AddFixture(spring);
+    mass_spring_system->Initialize();
+
+    float updates_per_second = 120;
+    float draws_per_second = 30;
+
+    draw_timer = new QTimer(this);
+    connect(draw_timer, &QTimer::timeout, this,
+            QOverload<>::of(&GLWidget::update));
+    draw_timer->start(1000.0 / draws_per_second);
+
+    update_timer = new QTimer(this);
+    connect(update_timer, &QTimer::timeout, this, &GLWidget::Update);
+    update_timer->start(1000.0 / updates_per_second);
+
+    delta_timer.start();
+}
 
 void GLWidget::Cleanup() { delete program_id; }
 
@@ -23,7 +53,12 @@ QSize GLWidget::minimumSizeHint() const { return QSize(kWidth, kHeight); }
 
 QSize GLWidget::sizeHint() const { return QSize(kWidth, kHeight); }
 
-void GLWidget::Update() { return; }
+void GLWidget::Update() {
+    float dt = (float)delta_timer.elapsed() / 1000;
+
+    delta_timer.restart();
+    mass_spring_system->Update(dt);
+}
 
 void GLWidget::SetMass(float value) {
     assert(value >= kMinimumMassSliderValue && "Invalid Mass Value");
@@ -92,22 +127,6 @@ void GLWidget::initializeGL() {
     Q_ASSERT(color != -1);
     matrix_uniform = program_id->uniformLocation("projection_matrix");
     Q_ASSERT(matrix_uniform != -1);
-
-    auto fixed_mass =
-        std::make_shared<Mass>(0.1, 0.2f, kFixedPosition, colors::kBlue,
-                               QVector4D(0.f, 1.f, 0.f, 1.f));
-    auto movable_mass =
-        std::make_shared<Mass>(0.1, 0.2f, kUnfixedPosition, colors::kRed,
-                               QVector4D(0.f, 0.f, 0.f, 1.f));
-
-    auto spring = std::make_shared<Spring>(0.5f, 1.f, colors::kGreen,
-                                           fixed_mass, movable_mass);
-
-    mass_spring_system = std::make_unique<MassSpringSystem>();
-    mass_spring_system->AddFixture(fixed_mass);
-    mass_spring_system->AddFixture(movable_mass);
-    mass_spring_system->AddFixture(spring);
-    mass_spring_system->Initialize();
 
     is_init = true;
 }

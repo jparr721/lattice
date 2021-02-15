@@ -2,8 +2,6 @@
 #include "gl_widget.h"
 #include "main_window.h"
 
-#include <iostream>
-
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QLabel>
