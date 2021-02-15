@@ -1,10 +1,9 @@
-#include "gl_window.h"
 #include "colors.h"
+#include "gl_widget.h"
 #include "mass.h"
 #include "spring.h"
 #include "window.h"
 
-#include <QVector3D>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -14,6 +13,7 @@
 #include <QOpenGLPaintDevice>
 #include <QOpenGLShaderProgram>
 #include <QPainter>
+#include <QVector3D>
 
 GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {}
 GLWidget::~GLWidget() { delete program_id; }

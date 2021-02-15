@@ -2,10 +2,11 @@
 
 #include "mass_spring_system.h"
 
-#include <QOpenGLFunctions>
-#include <QOpenGLWidget>
 #include <memory>
 #include <string>
+
+#include <QOpenGLFunctions>
+#include <QOpenGLWidget>
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 
