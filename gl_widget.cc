@@ -1,5 +1,5 @@
-#include "colors.h"
 #include "gl_widget.h"
+#include "colors.h"
 #include "mass.h"
 #include "spring.h"
 #include "window.h"
@@ -16,7 +16,8 @@
 #include <QVector3D>
 
 GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {}
-GLWidget::~GLWidget() { delete program_id; }
+
+void GLWidget::Cleanup() { delete program_id; }
 
 QSize GLWidget::minimumSizeHint() const { return QSize(kWidth, kHeight); }
 
@@ -25,15 +26,15 @@ QSize GLWidget::sizeHint() const { return QSize(kWidth, kHeight); }
 void GLWidget::Update() { return; }
 
 void GLWidget::SetMass(float value) {
-    assert(value > kMinimumMassSliderValue && "Invalid Mass Value");
+    assert(value >= kMinimumMassSliderValue && "Invalid Mass Value");
     slider_mass_value = value;
     emit OnMassChange(value);
     Update();
 }
 
 void GLWidget::SetSpringConstant(float value) {
-    assert(value > kMinimumSpringConstantSliderValue && "Invalid K Value");
-    assert(value < kMaximumSpringConstantSliderValue && "Invalid K Value");
+    assert(value >= kMinimumSpringConstantSliderValue && "Invalid K Value");
+    assert(value <= kMaximumSpringConstantSliderValue && "Invalid K Value");
 
     slider_spring_constant_value = value;
     emit OnSpringConstantChange(value);
@@ -41,8 +42,8 @@ void GLWidget::SetSpringConstant(float value) {
 }
 
 void GLWidget::SetSpringDampingConstant(float value) {
-    assert(value > kMinimumDampingSliderValue && "Invalid Damping Value");
-    assert(value < kMaximumDampingSliderValue && "Invalid Damping Value");
+    assert(value >= kMinimumDampingSliderValue && "Invalid Damping Value");
+    assert(value <= kMaximumDampingSliderValue && "Invalid Damping Value");
 
     slider_damping_constant_value = value;
     emit OnSpringDampingChange(value);
@@ -50,9 +51,9 @@ void GLWidget::SetSpringDampingConstant(float value) {
 }
 
 void GLWidget::SetSpringRestLength(float value) {
-    assert(value > kMinimumSpringRestLengthSliderValue &&
+    assert(value >= kMinimumSpringRestLengthSliderValue &&
            "Invalid Spring Rest Length Value");
-    assert(value < kMaximumSpringRestLengthSliderValue &&
+    assert(value <= kMaximumSpringRestLengthSliderValue &&
            "Invalid Spring Rest Length Value");
 
     slider_rest_length_value = value;
@@ -61,9 +62,9 @@ void GLWidget::SetSpringRestLength(float value) {
 }
 
 void GLWidget::SetTimeStep(float value) {
-    assert(value > kMinimumTimeStepChangeSliderValue &&
+    assert(value >= kMinimumTimeStepChangeSliderValue &&
            "Invalid Time Step Value");
-    assert(value < kMaximumTimeStepChangeSliderValue &&
+    assert(value <= kMaximumTimeStepChangeSliderValue &&
            "Invalid Time Step Value");
 
     slider_time_step_value = value;
@@ -72,6 +73,10 @@ void GLWidget::SetTimeStep(float value) {
 }
 
 void GLWidget::initializeGL() {
+    connect(context(), &QOpenGLContext::aboutToBeDestroyed, this,
+            &GLWidget::Cleanup);
+    initializeOpenGLFunctions();
+
     const auto vertex_shader = ReadVertexShader();
     const auto fragment_shader = ReadFragmentShader();
 
@@ -103,25 +108,22 @@ void GLWidget::initializeGL() {
     mass_spring_system->AddFixture(movable_mass);
     mass_spring_system->AddFixture(spring);
     mass_spring_system->Initialize();
+
+    is_init = true;
 }
 
 void GLWidget::paintGL() {
-    const qreal retinaScale = devicePixelRatio();
-    glViewport(0, 0, width() * retinaScale, height() * retinaScale);
-
-    glClear(GL_COLOR_BUFFER_BIT);
+    assert(is_init && "Not Initialized");
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     program_id->bind();
-
     QMatrix4x4 matrix;
     matrix.perspective(60.0f, 4.0f / 3.0f, 0.1f, 100.0f);
     matrix.translate(0, 0, -2);
 
     program_id->setUniformValue(matrix_uniform, matrix);
-
     auto shapes = mass_spring_system->Shapes();
     auto colors = mass_spring_system->Colors();
-
     mass_spring_system->Update(0.1f);
 
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0,
@@ -138,7 +140,6 @@ void GLWidget::paintGL() {
     glDisableVertexAttribArray(position);
 
     program_id->release();
-
     ++frame;
 }
 

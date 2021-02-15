@@ -13,8 +13,22 @@ QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
   public:
+    // Slider Minimum Values
+    constexpr static float kMinimumMassSliderValue = 0.5f;
+    constexpr static float kMinimumSpringConstantSliderValue = 1.0f;
+    constexpr static float kMinimumDampingSliderValue = 0.5;
+    constexpr static float kMinimumSpringRestLengthSliderValue = 0.5f;
+    constexpr static float kMinimumTimeStepChangeSliderValue = 0.0001;
+
+    // Slider Maxmum Values
+    constexpr static float kMaximumMassSliderValue = 10.0f;
+    constexpr static float kMaximumSpringConstantSliderValue = 50.0f;
+    constexpr static float kMaximumDampingSliderValue = 5.0f;
+    constexpr static float kMaximumSpringRestLengthSliderValue = 10.0f;
+    constexpr static float kMaximumTimeStepChangeSliderValue = 1.0f;
+
     explicit GLWidget(QWidget* parent = nullptr);
-    ~GLWidget();
+    ~GLWidget() = default;
 
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
@@ -27,6 +41,8 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     void SetSpringDampingConstant(float value);
     void SetSpringRestLength(float value);
     void SetTimeStep(float value);
+
+    void Cleanup();
 
   signals:
     void OnMassChange(float value);
@@ -57,20 +73,6 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     float slider_rest_length_value = kMinimumSpringRestLengthSliderValue;
     float slider_time_step_value = kMinimumTimeStepChangeSliderValue;
 
-    // Slider Minimum Values
-    constexpr static float kMinimumMassSliderValue = 0.5f;
-    constexpr static float kMinimumSpringConstantSliderValue = 1.0f;
-    constexpr static float kMinimumDampingSliderValue = 0.5;
-    constexpr static float kMinimumSpringRestLengthSliderValue = 0.5f;
-    constexpr static float kMinimumTimeStepChangeSliderValue = 0.0001;
-
-    // Slider Maxmum Values
-    constexpr static float kMaximumMassSliderValue = 10.0f;
-    constexpr static float kMaximumSpringConstantSliderValue = 50.0f;
-    constexpr static float kMaximumDampingSliderValue = 5.0f;
-    constexpr static float kMaximumSpringRestLengthSliderValue = 10.0f;
-    constexpr static float kMaximumTimeStepChangeSliderValue = 1.0f;
-
     // Simulation Params
     std::shared_ptr<MassSpringSystem> mass_spring_system;
 
@@ -79,6 +81,8 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     GLint color = 0;
     GLint matrix_uniform = 0;
     int frame = 0;
+
+    bool is_init = false;
 
     std::string ReadVertexShader();
     std::string ReadFragmentShader();

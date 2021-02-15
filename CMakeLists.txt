@@ -4,6 +4,8 @@ project(lattice LANGUAGES CXX)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 set(triple arm64-apple-macos11)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /opt/homebrew/include)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

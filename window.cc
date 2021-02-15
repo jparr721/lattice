@@ -2,6 +2,8 @@
 #include "gl_widget.h"
 #include "main_window.h"
 
+#include <iostream>
+
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QLabel>
@@ -69,17 +71,18 @@ Window::Window(MainWindow* _main_window) : main_window(_main_window) {
 
     setLayout(main_layout);
 
-    mass_slider->setValue(10);
-    spring_constant_slider->setValue(10);
-    damping_constant_slider->setValue(10);
-    rest_length_slider->setValue(10);
-    time_step_slider->setValue(10);
+    mass_slider->setValue(GLWidget::kMinimumMassSliderValue);
+    spring_constant_slider->setValue(
+        GLWidget::kMinimumSpringConstantSliderValue);
+    damping_constant_slider->setValue(GLWidget::kMinimumDampingSliderValue);
+    rest_length_slider->setValue(GLWidget::kMinimumSpringRestLengthSliderValue);
+    time_step_slider->setValue(GLWidget::kMinimumTimeStepChangeSliderValue);
 
-    setWindowTitle(kWindowTitle);
+    setWindowTitle(tr(kWindowTitle));
 }
 
 QSlider* Window::CreateSlider() {
-    auto slider = new QSlider(Qt::Vertical);
+    auto slider = new QSlider(Qt::Horizontal);
     slider->setRange(0, 100);
     slider->setSingleStep(5);
     slider->setPageStep(5);
