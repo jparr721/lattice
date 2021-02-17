@@ -21,9 +21,6 @@ class Window : public QWidget {
   protected:
     void keyPressEvent(QKeyEvent* event) override;
 
-  private slots:
-    void EndSimulation();
-
   private:
     constexpr static const char* kWindowTitle = "Lattice Sim";
 

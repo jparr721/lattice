@@ -1,6 +1,8 @@
 #pragma once
 
 #include "mass_spring_system.h"
+#include "keyboard.h"
+#include "camera.h"
 
 #include <memory>
 #include <string>
@@ -82,6 +84,9 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
 
     // Simulation Params
     std::shared_ptr<MassSpringSystem> mass_spring_system;
+
+    // Camera Controller
+    Camera camera;
 
     // Other misc params
     GLint position = 0;

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "fixture.h"
+#include "plotter.h"
 
 class MassSpringSystem {
   public:

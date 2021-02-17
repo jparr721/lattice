@@ -16,6 +16,7 @@
 #include <QVector3D>
 
 GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {
+    setFocusPolicy(Qt::ClickFocus);
     auto fixed_mass =
         std::make_shared<Mass>(0.1, 0.2f, kFixedPosition, colors::kBlue,
                                QVector4D(0.f, 1.f, 0.f, 1.f));
@@ -137,8 +138,8 @@ void GLWidget::paintGL() {
 
     program_id->bind();
     QMatrix4x4 matrix;
-    matrix.perspective(60.0f, 4.0f / 3.0f, 0.1f, 100.0f);
-    matrix.translate(0, 0, -2);
+    matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 10.0f);
+    matrix.translate(camera.x, camera.y, camera.z);
 
     program_id->setUniformValue(matrix_uniform, matrix);
     auto shapes = mass_spring_system->Shapes();
@@ -165,7 +166,10 @@ void GLWidget::paintGL() {
 // Don't allow resizing for now.
 void GLWidget::resizeGL(int width, int height) { return; }
 
-void GLWidget::keyPressEvent(QKeyEvent* event) { return; }
+void GLWidget::keyPressEvent(QKeyEvent* event) {
+    camera.OnKeyPress(event);
+}
+
 void GLWidget::keyReleaseEvent(QKeyEvent* event) { return; }
 
 std::string GLWidget::ReadVertexShader() {

@@ -2,6 +2,8 @@
 #include "gl_widget.h"
 #include "main_window.h"
 
+#include <iostream>
+
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QLabel>
@@ -29,7 +31,7 @@ Window::Window(MainWindow* _main_window) : main_window(_main_window) {
     QLabel* time_step_label = new QLabel("Time Step");
     time_step_slider = CreateSlider();
 
-    end_sim_button = new QPushButton(tr("End"), this);
+    // end_sim_button = new QPushButton(tr("End"), this);
 
     connect(mass_slider, &QSlider::valueChanged, widget, &GLWidget::SetMass);
     connect(spring_constant_slider, &QSlider::valueChanged, widget,
@@ -40,12 +42,12 @@ Window::Window(MainWindow* _main_window) : main_window(_main_window) {
             &GLWidget::SetSpringRestLength);
     connect(time_step_slider, &QSlider::valueChanged, widget,
             &GLWidget::SetTimeStep);
-    connect(end_sim_button, &QPushButton::clicked, this,
-            &Window::EndSimulation);
+    // connect(end_sim_button, &QPushButton::clicked, this,
+    //         &Window::EndSimulation);
 
     QVBoxLayout* main_layout = new QVBoxLayout;
     main_layout->addWidget(widget);
-    main_layout->addWidget(end_sim_button, 0, Qt::AlignTop);
+    // main_layout->addWidget(end_sim_button, 0, Qt::AlignTop);
 
     /** Mass Label and Slider **/
     main_layout->addWidget(mass_label, 0, Qt::AlignTop);
@@ -77,6 +79,7 @@ Window::Window(MainWindow* _main_window) : main_window(_main_window) {
     time_step_slider->setValue(GLWidget::kMinimumTimeStepChangeSliderValue);
 
     setWindowTitle(tr(kWindowTitle));
+    setFocus();
 }
 
 QSlider* Window::CreateSlider() {
@@ -88,32 +91,6 @@ QSlider* Window::CreateSlider() {
     slider->setTickPosition(QSlider::TicksRight);
 
     return slider;
-}
-
-void Window::EndSimulation() {
-    if (parent()) {
-        setParent(nullptr);
-        setAttribute(Qt::WA_DeleteOnClose);
-        move(QGuiApplication::primaryScreen()->size().width() / 2 - width() / 2,
-             QGuiApplication::primaryScreen()->size().height() / 2 -
-                 height() / 2);
-        end_sim_button->setText(tr("Start Simulation"));
-        show();
-    } else {
-        if (!main_window->centralWidget()) {
-            if (main_window->isVisible()) {
-                setAttribute(Qt::WA_DeleteOnClose, false);
-                end_sim_button->setText(tr("End Simulation"));
-                main_window->setCentralWidget(this);
-            } else {
-                QMessageBox::information(nullptr, tr("Cannot Start"),
-                                         tr("Main Window Already Closed"));
-            }
-        } else {
-            QMessageBox::information(nullptr, tr("Cannot Start"),
-                                     tr("Simulation Already Running"));
-        }
-    }
 }
 
 void Window::keyPressEvent(QKeyEvent* event) {
