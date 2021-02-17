@@ -10,21 +10,19 @@ constexpr bool kUnfixedPosition = false;
 
 class Mass : public Fixture {
   public:
-    // The mass of the... mass...
-    const float kMass;
 
     const bool is_fixed;
 
     Mass()
-        : Fixture(QVector4D(0.f, 0.f, 0.f, 0.f), colors::kBlue), kMass(1),
-          kSize(1), is_fixed(false) {}
+        : Fixture(QVector4D(0.f, 0.f, 0.f, 0.f), colors::kBlue), mass_weight(1),
+          mass_size(1), is_fixed(false) {}
     Mass(bool fixed, QVector4D starting_position)
-        : Fixture(starting_position, colors::kBlue), kMass(1), kSize(1),
+        : Fixture(starting_position, colors::kBlue), mass_weight(1), mass_size(1),
           is_fixed(fixed) {}
     Mass(float size, float mass, bool fixed, QVector3D color,
          QVector4D starting_position)
-        : Fixture(starting_position, color), is_fixed(fixed), kMass(mass),
-          kSize(size) {}
+        : Fixture(starting_position, color), is_fixed(fixed), mass_weight(mass),
+          mass_size(size) {}
     ~Mass() = default;
 
     void CalculateMassForces(float dt = 0.1f) {
@@ -60,11 +58,11 @@ class Mass : public Fixture {
     inline void ComputeVertexPoints() {
         // Construct our vertices centered around the origin position supplied
         // on construction
-        const auto v1 = QVector3D(position.x() - kSize, position.y() - kSize,
+        const auto v1 = QVector3D(position.x() - mass_size, position.y() - mass_size,
                                   position.z()); // Bottom Left
-        const auto v2 = QVector3D(position.x() + kSize, position.y() - kSize,
+        const auto v2 = QVector3D(position.x() + mass_size, position.y() - mass_size,
                                   position.z()); // Bottom Right
-        const auto v3 = QVector3D(position.x(), position.y() + kSize,
+        const auto v3 = QVector3D(position.x(), position.y() + mass_size,
                                   position.z()); // Top Center
 
         vertices = std::vector<QVector3D>{{v1, v2, v3}};
@@ -90,12 +88,20 @@ class Mass : public Fixture {
         acceleration += delta;
     }
 
+    void SetWeight(float value) { mass_weight = value; }
+    void SetDampingConstant(float value) { damping_constant = value; }
+    float Weight() { return mass_weight; }
+    float DampingConstant() { return damping_constant; }
+
   private:
+    // The mass of the... mass...
+    float mass_weight;
+
     // The damping constant to prevent explosiveness
-    constexpr static float kDamping = 0.8f;
+    float damping_constant = 0.8f;
 
     // The size of the object centered around the current position.
-    const float kSize;
+    float mass_size;
 
     // Gravitational constant vector, applies -9.81f
     // pounds of negative force
@@ -111,7 +117,7 @@ class Mass : public Fixture {
         // Calculate damping dynamically based on how fast the object is moving.
         // Flip the sign of damping since we're adding it to the acceleration
         // value.
-        auto damping = (-1 * kDamping * velocity) / kMass;
+        auto damping = (-1 * damping_constant * velocity) / mass_weight;
 
         // Calculate our acceleration with gravity doing gravity things and
         // damping to prevent explosion.

@@ -28,9 +28,9 @@ GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {
                                            fixed_mass, movable_mass);
 
     mass_spring_system = std::make_unique<MassSpringSystem>();
-    mass_spring_system->AddFixture(fixed_mass);
-    mass_spring_system->AddFixture(movable_mass);
-    mass_spring_system->AddFixture(spring);
+    mass_spring_system->AddMass(fixed_mass);
+    mass_spring_system->AddMass(movable_mass);
+    mass_spring_system->AddSpring(spring);
     mass_spring_system->Initialize();
 
     float updates_per_second = 120;

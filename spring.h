@@ -11,7 +11,7 @@ class Spring : public Fixture {
            std::shared_ptr<Mass>& _left_mass,
            std::shared_ptr<Mass>& _right_mass)
         : Fixture(QVector4D(0.f, 0.f, 0.f, 1.f), colors::kGreen),
-          kStiffness(stiffness), kLength(resting_length), left_mass(_left_mass),
+          stiffness(stiffness), rest_length(resting_length), left_mass(_left_mass),
           right_mass(_right_mass) {}
 
     void Initialize() {
@@ -37,12 +37,20 @@ class Spring : public Fixture {
 
     void Translate(const QVector3D& translation_vector) { return; }
 
+    void SetStiffness(float value) {
+      stiffness = value;
+    }
+
+    void SetRestLength(float value) {
+      rest_length = value;
+    }
+
   private:
     // The spring k value.
-    const float kStiffness;
+    float stiffness;
 
     // The resting length of the spring in the Y direction.
-    const float kLength;
+    float rest_length;
 
     std::shared_ptr<Mass> left_mass;
     std::shared_ptr<Mass> right_mass;
@@ -55,8 +63,8 @@ class Spring : public Fixture {
         const auto lr_diff = left_mass->Position() - right_mass->Position();
         auto mass_norm = lr_diff.normalized();
 
-        auto force = kStiffness * (current_spring_length - kLength) * mass_norm;
-        QVector4D mass_acceleration_delta = force / right_mass->kMass;
+        auto force = stiffness * (current_spring_length - rest_length) * mass_norm;
+        QVector4D mass_acceleration_delta = force / right_mass->Weight();
 
         right_mass->ChangeAcceleration(mass_acceleration_delta);
     }
