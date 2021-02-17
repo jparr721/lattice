@@ -1,27 +1,26 @@
 #pragma once
 
 #include "colors.h"
-#include "fixture.h"
+#include "sim_object.h"
 #include <QDebug>
 #include <QMatrix4x4>
 
 constexpr bool kFixedPosition = true;
 constexpr bool kUnfixedPosition = false;
 
-class Mass : public Fixture {
+class Mass : public SimObject {
   public:
-
     const bool is_fixed;
 
     Mass()
-        : Fixture(QVector4D(0.f, 0.f, 0.f, 0.f), colors::kBlue), mass_weight(1),
+        : SimObject(QVector4D(0.f, 0.f, 0.f, 0.f), colors::kBlue), mass_weight(1),
           mass_size(1), is_fixed(false) {}
     Mass(bool fixed, QVector4D starting_position)
-        : Fixture(starting_position, colors::kBlue), mass_weight(1), mass_size(1),
-          is_fixed(fixed) {}
+        : SimObject(starting_position, colors::kBlue), mass_weight(1),
+          mass_size(1), is_fixed(fixed) {}
     Mass(float size, float mass, bool fixed, QVector3D color,
          QVector4D starting_position)
-        : Fixture(starting_position, color), is_fixed(fixed), mass_weight(mass),
+        : SimObject(starting_position, color), is_fixed(fixed), mass_weight(mass),
           mass_size(size) {}
     ~Mass() = default;
 
@@ -58,10 +57,12 @@ class Mass : public Fixture {
     inline void ComputeVertexPoints() {
         // Construct our vertices centered around the origin position supplied
         // on construction
-        const auto v1 = QVector3D(position.x() - mass_size, position.y() - mass_size,
-                                  position.z()); // Bottom Left
-        const auto v2 = QVector3D(position.x() + mass_size, position.y() - mass_size,
-                                  position.z()); // Bottom Right
+        const auto v1 =
+            QVector3D(position.x() - mass_size, position.y() - mass_size,
+                      position.z()); // Bottom Left
+        const auto v2 =
+            QVector3D(position.x() + mass_size, position.y() - mass_size,
+                      position.z()); // Bottom Right
         const auto v3 = QVector3D(position.x(), position.y() + mass_size,
                                   position.z()); // Top Center
 

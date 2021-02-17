@@ -17,21 +17,8 @@
 
 GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
-    auto fixed_mass =
-        std::make_shared<Mass>(0.1, 0.2f, kFixedPosition, colors::kBlue,
-                               QVector4D(0.f, 1.f, 0.f, 1.f));
-    auto movable_mass =
-        std::make_shared<Mass>(0.1, 0.2f, kUnfixedPosition, colors::kRed,
-                               QVector4D(0.f, 0.f, 0.f, 1.f));
 
-    auto spring = std::make_shared<Spring>(0.5f, 1.f, colors::kGreen,
-                                           fixed_mass, movable_mass);
-
-    mass_spring_system = std::make_unique<MassSpringSystem>();
-    mass_spring_system->AddMass(fixed_mass);
-    mass_spring_system->AddMass(movable_mass);
-    mass_spring_system->AddSpring(spring);
-    mass_spring_system->Initialize();
+    InitializeSimulation();
 
     float updates_per_second = 120;
     float draws_per_second = 30;
@@ -62,50 +49,47 @@ void GLWidget::Update() {
 }
 
 void GLWidget::SetMass(float value) {
-    assert(value >= kMinimumMassSliderValue && "Invalid Mass Value");
-    slider_mass_value = value;
+    slider_mass_value =
+        Interpolate(kMinimumMassSliderValue, kMaximumMassSliderValue,
+                    (float)value / 100.0f);
+
+    mass_spring_system->SetMassWeight(slider_mass_value);
+
     emit OnMassChange(value);
-    Update();
+    InitializeSimulation();
 }
 
 void GLWidget::SetSpringConstant(float value) {
-    assert(value >= kMinimumSpringConstantSliderValue && "Invalid K Value");
-    assert(value <= kMaximumSpringConstantSliderValue && "Invalid K Value");
-
-    slider_spring_constant_value = value;
+    slider_spring_constant_value =
+        Interpolate(kMinimumSpringConstantSliderValue,
+                    kMaximumSpringConstantSliderValue, (float)value / 100.f);
+    mass_spring_system->SetSpringStiffness(slider_spring_constant_value);
     emit OnSpringConstantChange(value);
-    Update();
+    InitializeSimulation();
 }
 
 void GLWidget::SetSpringDampingConstant(float value) {
-    assert(value >= kMinimumDampingSliderValue && "Invalid Damping Value");
-    assert(value <= kMaximumDampingSliderValue && "Invalid Damping Value");
-
-    slider_damping_constant_value = value;
+    slider_damping_constant_value =
+        Interpolate(kMinimumDampingSliderValue, kMaximumDampingSliderValue,
+                    (float)value / 100.f);
+    mass_spring_system->SetMassDampingConstant(slider_damping_constant_value);
     emit OnSpringDampingChange(value);
-    Update();
+    InitializeSimulation();
 }
 
 void GLWidget::SetSpringRestLength(float value) {
-    assert(value >= kMinimumSpringRestLengthSliderValue &&
-           "Invalid Spring Rest Length Value");
-    assert(value <= kMaximumSpringRestLengthSliderValue &&
-           "Invalid Spring Rest Length Value");
-
-    slider_rest_length_value = value;
+    slider_rest_length_value =
+        Interpolate(kMinimumSpringRestLengthSliderValue,
+                    kMaximumSpringRestLengthSliderValue, (float)value / 100.f);
+    mass_spring_system->SetSpringRestLength(value);
     emit OnSpringRestLengthChange(value);
-    Update();
+    InitializeSimulation();
 }
 
 void GLWidget::SetTimeStep(float value) {
-    assert(value >= kMinimumTimeStepChangeSliderValue &&
-           "Invalid Time Step Value");
-    assert(value <= kMaximumTimeStepChangeSliderValue &&
-           "Invalid Time Step Value");
-
     slider_time_step_value = value;
     emit OnTimeStepChange(value);
-    Update();
+    InitializeSimulation();
 }
 
 void GLWidget::initializeGL() {
@@ -168,9 +152,19 @@ void GLWidget::resizeGL(int width, int height) { return; }
 
 void GLWidget::keyPressEvent(QKeyEvent* event) {
     camera.OnKeyPress(event);
+    int key = keyboard.OnKeyPressed(event->key());
+    if (key > 0) {
+        if (key == Keyboard::kPrint) {
+            PrintParameters();
+        } else if (key == Keyboard::kRestart) {
+            InitializeSimulation();
+        }
+    }
 }
 
-void GLWidget::keyReleaseEvent(QKeyEvent* event) { return; }
+void GLWidget::keyReleaseEvent(QKeyEvent* event) {
+    keyboard.OnKeyReleased(event->key());
+ }
 
 std::string GLWidget::ReadVertexShader() {
     std::ostringstream sstr;
@@ -185,3 +179,36 @@ std::string GLWidget::ReadFragmentShader() {
     sstr << stream.rdbuf();
     return sstr.str();
 }
+
+float GLWidget::Interpolate(float v0, float v1, float t) {
+    return v0 + t * (v1 - v0);
+}
+
+void GLWidget::InitializeSimulation() {
+    auto fixed_mass =
+        std::make_shared<Mass>(0.1, 0.2f, kFixedPosition, colors::kBlue,
+                               QVector4D(0.f, 1.f, 0.f, 1.f));
+    auto movable_mass =
+        std::make_shared<Mass>(0.1, 0.2f, kUnfixedPosition, colors::kRed,
+                               QVector4D(0.f, 0.f, 0.f, 1.f));
+
+    auto spring = std::make_shared<Spring>(0.5f, 1.f, colors::kGreen,
+                                           fixed_mass, movable_mass);
+
+    mass_spring_system = std::make_unique<MassSpringSystem>();
+    mass_spring_system->AddMass(fixed_mass);
+    mass_spring_system->AddMass(movable_mass);
+    mass_spring_system->AddSpring(spring);
+    mass_spring_system->Initialize();
+}
+
+void GLWidget::PrintParameters() {
+    std::cout << "Current Parameters ==============================" << std::endl;
+    std::cout << "Mass: " << slider_mass_value << std::endl;
+    std::cout << "K: " << slider_spring_constant_value << std::endl;
+    std::cout << "Damping: " << slider_damping_constant_value << std::endl;
+    std::cout << "Rest Length: " << slider_rest_length_value << std::endl;
+    std::cout << "==============================" << std::endl;
+}
+
+float GLWidget::CurrentSimObjectMass() { return slider_mass_value; }

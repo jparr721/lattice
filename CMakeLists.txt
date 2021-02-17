@@ -27,7 +27,9 @@ find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt5 COMPONENTS Gui REQUIRED)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS OpenGL REQUIRED)
+find_package(Qt5 COMPONENTS Charts REQUIRED)
+find_package(Qt5 COMPONENTS Quick REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Gui Qt5::OpenGL Qt5::Core)
+target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Gui Qt5::OpenGL Qt5::Core Qt5::Charts Qt5::Quick)

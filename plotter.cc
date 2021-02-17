@@ -3,9 +3,9 @@
 #include <fstream>
 
 namespace plotter {
-void Plotter::AddVelocity(float velocity) { velocities.push_back(velocity);  }
+void Plotter::AddVelocity(float velocity) { velocities.push_back(velocity); }
 void Plotter::AddPosition(Position pos) { positions.push_back(pos); }
-void Plotter::AddForce(float force) { forces.push_back(force);  }
+void Plotter::AddForce(float force) { forces.push_back(force); }
 void Plotter::Serialize() {
     s_forces.clear();
     s_velocities.clear();

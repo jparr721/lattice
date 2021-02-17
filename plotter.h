@@ -1,11 +1,11 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
 /**
- * @brief Plotter is for keeping track of the force, velocity, and position values
- * over time and writing them to a file for plotting in python.
+ * @brief Plotter is for keeping track of the force, velocity, and position
+ * values over time and writing them to a file for plotting in python.
  *
  */
 namespace plotter {
@@ -17,7 +17,9 @@ class Plotter {
 
         Position(float _x, float _y) : x(_x), y(_y) {}
 
-        std::string to_string() { return "(" + std::to_string(x) + "," + std::to_string(y) + ")"; }
+        std::string to_string() {
+            return "(" + std::to_string(x) + "," + std::to_string(y) + ")";
+        }
     };
 
     Plotter() = default;

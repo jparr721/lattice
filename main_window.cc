@@ -17,6 +17,4 @@ MainWindow::MainWindow() {
     OnAddNew();
 }
 
-void MainWindow::OnAddNew() {
-    setCentralWidget(new Window(this));
-}
+void MainWindow::OnAddNew() { setCentralWidget(new Window(this)); }

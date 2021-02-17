@@ -5,15 +5,15 @@
 #include <vector>
 
 /**
- @brief Fixture represents a type of object which can be loaded and interacted
+ @brief SimObject represents a type of object which can be loaded and interacted
  with in a simulation.
  */
-class Fixture {
+class SimObject {
   public:
-    Fixture(QVector4D _position, QVector3D color)
+    SimObject(QVector4D _position, QVector3D color)
         : position(_position), kColor(color) {}
 
-    virtual ~Fixture() = default;
+    virtual ~SimObject() = default;
     virtual void Initialize() = 0;
     virtual inline void Update(float dt) = 0;
     virtual void Translate(const QVector3D& translation_vector) = 0;

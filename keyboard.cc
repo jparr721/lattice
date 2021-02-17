@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-
 bool Keyboard::IsValidKey(int key) {
     if (key_states.find(key) == key_states.end()) {
         std::cout << "Invalid key press: " << key << std::endl;

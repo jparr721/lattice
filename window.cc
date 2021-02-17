@@ -4,13 +4,18 @@
 
 #include <iostream>
 
+#include <QChart>
+#include <QChartView>
 #include <QGuiApplication>
+#include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QLabel>
+#include <QLineSeries>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QScreen>
 #include <QSlider>
+#include <QStringLiteral>
 #include <QVBoxLayout>
 
 Window::Window(MainWindow* _main_window) : main_window(_main_window) {
@@ -46,8 +51,33 @@ Window::Window(MainWindow* _main_window) : main_window(_main_window) {
     //         &Window::EndSimulation);
 
     QVBoxLayout* main_layout = new QVBoxLayout;
-    main_layout->addWidget(widget);
-    // main_layout->addWidget(end_sim_button, 0, Qt::AlignTop);
+
+    QHBoxLayout* data_layout = new QHBoxLayout;
+
+    QVBoxLayout* parameters_layout = new QVBoxLayout;
+    QLabel* parameters = new QLabel(tr("Parameters"));
+    QtCharts::QLineSeries* series = new QtCharts::QLineSeries();
+    series->append(0, 6);
+    series->append(2, 4);
+    QtCharts::QChart* chart = new QtCharts::QChart();
+    chart->legend()->hide();
+    chart->addSeries(series);
+    chart->createDefaultAxes();
+    chart->setTitle("Foo");
+    QtCharts::QChartView* chart_view = new QtCharts::QChartView(chart);
+    series->append(4, 6);
+    series->append(6, 4);
+
+    parameters_layout->addWidget(parameters);
+    parameters_layout->addWidget(chart_view);
+
+    data_layout->addWidget(widget);
+    data_layout->addLayout(parameters_layout);
+
+    data_layout->setStretchFactor(parameters_layout, 1);
+    data_layout->setStretchFactor(widget, 2);
+
+    main_layout->addLayout(data_layout);
 
     /** Mass Label and Slider **/
     main_layout->addWidget(mass_label, 0, Qt::AlignTop);

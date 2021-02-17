@@ -3,10 +3,9 @@
 #include <QVector3D>
 #include <vector>
 
-#include "fixture.h"
+#include "mass.h"
 #include "plotter.h"
 #include "spring.h"
-#include "mass.h"
 
 class MassSpringSystem {
   public:

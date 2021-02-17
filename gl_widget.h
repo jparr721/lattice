@@ -1,8 +1,8 @@
 #pragma once
 
-#include "mass_spring_system.h"
-#include "keyboard.h"
 #include "camera.h"
+#include "keyboard.h"
+#include "mass_spring_system.h"
 
 #include <memory>
 #include <string>
@@ -36,6 +36,8 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
 
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
+
+    float CurrentSimObjectMass();
 
   public slots:
     void Update();
@@ -88,6 +90,9 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     // Camera Controller
     Camera camera;
 
+    // Keyboard Controller
+    Keyboard keyboard;
+
     // Other misc params
     GLint position = 0;
     GLint color = 0;
@@ -98,4 +103,9 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
 
     std::string ReadVertexShader();
     std::string ReadFragmentShader();
+
+    float Interpolate(float v0, float v1, float t);
+
+    void InitializeSimulation();
+    void PrintParameters();
 };
