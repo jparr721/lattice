@@ -13,15 +13,15 @@ class Mass : public SimObject {
     const bool is_fixed;
 
     Mass()
-        : SimObject(QVector4D(0.f, 0.f, 0.f, 0.f), colors::kBlue), mass_weight(1),
-          mass_size(1), is_fixed(false) {}
+        : SimObject(QVector4D(0.f, 0.f, 0.f, 0.f), colors::kBlue),
+          mass_weight(1), mass_size(1), is_fixed(false) {}
     Mass(bool fixed, QVector4D starting_position)
         : SimObject(starting_position, colors::kBlue), mass_weight(1),
           mass_size(1), is_fixed(fixed) {}
     Mass(float size, float mass, bool fixed, QVector3D color,
          QVector4D starting_position)
-        : SimObject(starting_position, color), is_fixed(fixed), mass_weight(mass),
-          mass_size(size) {}
+        : SimObject(starting_position, color), is_fixed(fixed),
+          mass_weight(mass), mass_size(size) {}
     ~Mass() = default;
 
     void CalculateMassForces(float dt = 0.1f) {

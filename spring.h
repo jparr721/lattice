@@ -1,8 +1,8 @@
 #pragma once
 
 #include "colors.h"
-#include "sim_object.h"
 #include "mass.h"
+#include "sim_object.h"
 #include <memory>
 
 class Spring : public SimObject {

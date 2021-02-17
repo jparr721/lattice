@@ -28,7 +28,7 @@ class Keyboard {
     std::unordered_map<int, bool> key_states = {
         {kForward, false}, {kBackward, false}, {kLeft, false},
         {kRight, false},   {kUp, false},       {kDown, false},
-        {kRestart, false},   {kPrint, false},
+        {kRestart, false}, {kPrint, false},
     };
 
     bool IsValidKey(int key);

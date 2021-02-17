@@ -164,7 +164,7 @@ void GLWidget::keyPressEvent(QKeyEvent* event) {
 
 void GLWidget::keyReleaseEvent(QKeyEvent* event) {
     keyboard.OnKeyReleased(event->key());
- }
+}
 
 std::string GLWidget::ReadVertexShader() {
     std::ostringstream sstr;
@@ -203,7 +203,8 @@ void GLWidget::InitializeSimulation() {
 }
 
 void GLWidget::PrintParameters() {
-    std::cout << "Current Parameters ==============================" << std::endl;
+    std::cout << "Current Parameters =============================="
+              << std::endl;
     std::cout << "Mass: " << slider_mass_value << std::endl;
     std::cout << "K: " << slider_spring_constant_value << std::endl;
     std::cout << "Damping: " << slider_damping_constant_value << std::endl;
