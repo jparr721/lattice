@@ -1,3 +1,8 @@
 #!/bin/bash
 
+mkdir build
+cd build
+cmake -GNinja -DCMAKE_APPLE_SILICON_PROCESSOR=arm64 ..
+cd ..
+
 cp shaders/* build/bin

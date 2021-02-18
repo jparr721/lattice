@@ -1,23 +1,18 @@
-#include "window.h"
+#include "main_window.h"
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QMatrix4x4>
 #include <QOpenGLShaderProgram>
 #include <QScreen>
 #include <iostream>
 
 int main(int argc, char** argv) {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
-    QSurfaceFormat format;
-    format.setSamples(16);
+    MainWindow main_window;
 
-    Window window;
-    window.setFormat(format);
-    window.resize(1920, 1080);
-    window.show();
-
-    window.setAnimating(true);
+    main_window.resize(main_window.sizeHint());
+    main_window.showMaximized();
 
     return app.exec();
 }

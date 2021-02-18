@@ -3,8 +3,12 @@
 void MassSpringSystem::Initialize() {
     assert(size() > 0 && "Must add fixtures for simulation");
 
-    for (auto fixture : fixtures) {
-        fixture->Initialize();
+    for (auto mass : masses) {
+        mass->Initialize();
+    }
+
+    for (auto spring : springs) {
+        spring->Initialize();
     }
 
     ComputeVertexPoints();
@@ -15,30 +19,50 @@ void MassSpringSystem::Initialize() {
 }
 
 void MassSpringSystem::Update(float dt) {
-    for (auto fixture : fixtures) {
-        fixture->Update(dt);
+    for (auto mass : masses) {
+        mass->Update(dt);
+    }
+
+    for (auto spring : springs) {
+        spring->Update(dt);
     }
     ComputeVertexPoints();
     ComputeShapes();
 }
 
-void MassSpringSystem::AddFixture(const std::shared_ptr<Fixture>& fixture) {
+void MassSpringSystem::AddSpring(const std::shared_ptr<Spring>& spring) {
     assert(!is_init && "Cannot change an initialized system");
-    fixtures.push_back(std::move(fixture));
+    springs.push_back(std::move(spring));
+}
+
+void MassSpringSystem::AddMass(const std::shared_ptr<Mass>& mass) {
+    assert(!is_init && "Cannot change an initialized system");
+    masses.push_back(std::move(mass));
 }
 
 void MassSpringSystem::ComputeColors() {
-    for (auto fixture : fixtures) {
-        for (auto _colors : fixture->Colors()) {
+    for (auto mass : masses) {
+        for (auto _colors : mass->Colors()) {
+            colors.push_back(_colors);
+        }
+    }
+
+    for (auto spring : springs) {
+        for (auto _colors : spring->Colors()) {
             colors.push_back(_colors);
         }
     }
 }
 
 void MassSpringSystem::ComputeVertexPoints() {
-    for (auto fixture : fixtures) {
+    for (auto mass : masses) {
         // TODO(@jparr721) - Collision detection
-        fixture->ComputeVertexPoints();
+        mass->ComputeVertexPoints();
+    }
+
+    for (auto spring : springs) {
+        // TODO(@jparr721) - Collision detection
+        spring->ComputeVertexPoints();
     }
 }
 
@@ -53,10 +77,67 @@ void MassSpringSystem::ComputeShapes() {
     if (shapes_size > 0)
         shapes.reserve(shapes_size);
 
-    for (auto fixture : fixtures) {
-        for (auto vertices : fixture->Vertices()) {
-            // Append all of the vertices to the shape object.
+    for (auto mass : masses) {
+        for (auto vertices : mass->Vertices()) {
             shapes.push_back(vertices);
         }
     }
+
+    for (auto spring : springs) {
+        for (auto vertices : spring->Vertices()) {
+            shapes.push_back(vertices);
+        }
+    }
+}
+
+void MassSpringSystem::SetSpringStiffness(float value) {
+    for (auto spring : springs) {
+        spring->SetStiffness(value);
+    }
+}
+
+void MassSpringSystem::SetSpringRestLength(float value) {
+    for (auto spring : springs) {
+        spring->SetRestLength(value);
+    }
+}
+
+void MassSpringSystem::SetMassWeight(float value) {
+    for (auto mass : masses) {
+        mass->SetWeight(value);
+    }
+}
+
+void MassSpringSystem::SetMassDampingConstant(float value) {
+    for (auto mass : masses) {
+        mass->SetDampingConstant(value);
+    }
+}
+
+QVector4D MassSpringSystem::GetFirstMovingMassVelocity() {
+    for (auto mass : masses) {
+        if (!mass->is_fixed) {
+            return mass->Velocity();
+        }
+    }
+
+    return QVector4D(0, 0, 0, 0);
+}
+
+QVector4D MassSpringSystem::GetFirstMovingMassAcceleration() {
+    for (auto mass : masses) {
+        if (!mass->is_fixed) {
+            return mass->Acceleration();
+        }
+    }
+
+    return QVector4D(0, 0, 0, 0);
+}
+
+QVector4D MassSpringSystem::GetFirstSpringForce() {
+    assert(is_init && "Must be initialized");
+    assert(springs.size() > 0);
+    const auto spring = springs[0];
+
+    return spring->Force();
 }
