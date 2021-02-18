@@ -30,13 +30,14 @@ class Window : public QWidget {
 
   public slots:
     void UpdatePlots();
+    void ResetPlots();
 
   protected:
     void keyPressEvent(QKeyEvent* event) override;
 
   private:
     constexpr static int kMinFrame = 0;
-    constexpr static int kMaxFrame = 250;
+    constexpr static int kMaxFrame = 300;
     constexpr static const char* kWindowTitle = "Lattice Sim";
 
     GLWidget* widget = new GLWidget;
@@ -103,6 +104,9 @@ class Window : public QWidget {
     // Time for polling glWidget for the latest force values
     QTimer* widget_poll_timeout;
 
+    // Time for polling glWidget for reset status for updating plots
+    QTimer* plot_poll_timeout;
+
     // A reference to our management window instance.
     MainWindow* main_window;
 
@@ -118,6 +122,12 @@ class Window : public QWidget {
 
     void CreateSimLayout();
 
+    // Plot Reset
+    void ResetForcePlot();
+    void ResetAccelerationPlot();
+    void ResetVelocityPlot();
+
+    // Plot Updates
     void UpdateForcePlot();
     void UpdateAccelerationPlot();
     void UpdateVelocityPlot();

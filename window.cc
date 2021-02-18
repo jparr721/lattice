@@ -160,6 +160,10 @@ void Window::CreateTimer() {
     widget_poll_timeout = new QTimer(this);
     connect(widget_poll_timeout, &QTimer::timeout, this, &Window::UpdatePlots);
     widget_poll_timeout->start(1);
+
+    plot_poll_timeout = new QTimer(this);
+    connect(plot_poll_timeout, &QTimer::timeout, this, &Window::ResetPlots);
+    plot_poll_timeout->start(1);
 }
 
 void Window::UpdatePlots() {
@@ -173,14 +177,36 @@ void Window::UpdatePlots() {
     ++frame;
 }
 
+void Window::ResetPlots() {
+  if (widget->IsRestarted()) {
+      ResetForcePlot();
+      ResetAccelerationPlot();
+      ResetVelocityPlot();
+
+      frame = 0;
+  }
+}
+
+void Window::ResetForcePlot() {
+    force_y_line->clear();
+}
+
 void Window::UpdateForcePlot() {
     const auto current_force_vector = widget->CurrentSimSpringForce();
     force_y_line->append(frame, current_force_vector.y());
 }
 
+void Window::ResetAccelerationPlot() {
+    acceleration_y_line->clear();
+}
+
 void Window::UpdateAccelerationPlot() {
     const auto current_acceleration_vector = widget->CurrentSimObjectAcceleration();
     acceleration_y_line->append(frame, current_acceleration_vector.y());
+}
+
+void Window::ResetVelocityPlot() {
+    velocity_y_line->clear();
 }
 
 void Window::UpdateVelocityPlot() {
