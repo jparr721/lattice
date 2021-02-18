@@ -87,9 +87,16 @@ class Window : public QWidget {
     QtCharts::QChart* acceleration_chart;
     QtCharts::QChartView* acceleration_chart_view;
 
+    // Velocity Line Chart Axes
+    QtCharts::QValueAxis* velocity_y_line_x_axis = new QtCharts::QValueAxis();
+    QtCharts::QValueAxis* velocity_y_line_y_axis = new QtCharts::QValueAxis();
+
     // Line chart for mass accleration data
     QtCharts::QSplineSeries* velocity_x_line;
     QtCharts::QSplineSeries* velocity_y_line;
+
+    QtCharts::QChart* velocity_chart;
+    QtCharts::QChartView* velocity_chart_view;
 
     // Time for polling glWidget for the latest force values
     QTimer* widget_poll_timeout;

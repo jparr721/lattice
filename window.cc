@@ -15,10 +15,11 @@
 #include <QStringLiteral>
 
 Window::Window(MainWindow* _main_window) : main_window(_main_window) {
-    CreateTimer();
     CreateChartsLayout();
 
     CreateSliders();
+
+    CreateTimer();
 
     sim_layout->addWidget(widget);
 
@@ -65,7 +66,7 @@ Window::Window(MainWindow* _main_window) : main_window(_main_window) {
 
 void Window::CreateChartsLayout() {
     force_y_line = new QtCharts::QSplineSeries(this);
-    force_y_line->setName("Spring Force Y");
+    force_y_line->setName("Spring Force Y Value");
 
     force_chart = new QtCharts::QChart();
     force_chart->addSeries(force_y_line);
@@ -76,35 +77,56 @@ void Window::CreateChartsLayout() {
     force_y_line->attachAxis(force_y_line_y_axis);
 
     force_y_line_x_axis->setTickCount(5);
-    force_y_line_x_axis->setRange(0, 25);
+    force_y_line_x_axis->setRange(0, 100);
     force_y_line_y_axis->setRange(-10, 10);
     force_y_line_y_axis->setTickCount(5);
 
     force_chart_view = new QtCharts::QChartView(force_chart);
     // =============================================================
 
-    /* acceleration_x_line = new QtCharts::QSplineSeries(this); */
-    /* acceleration_x_line->setName("Acceleration Y Value"); */
+    acceleration_y_line = new QtCharts::QSplineSeries(this);
+    acceleration_y_line->setName("Acceleration Y Value");
 
-    /* acceleration_chart = new QtCharts::QChart(); */
-    /* acceleration_chart->addSeries(acceleration_x_line); */
-    /* acceleration_chart->setTitle("Acceleration Over Time"); */
-    /* acceleration_chart->addAxis(acceleration_y_line_x_axis, Qt::AlignBottom); */
-    /* acceleration_chart->addAxis(acceleration_y_line_y_axis, Qt::AlignLeft); */
-    /* acceleration_y_line->attachAxis(acceleration_y_line_x_axis); */
-    /* acceleration_y_line->attachAxis(acceleration_y_line_y_axis); */
+    acceleration_chart = new QtCharts::QChart();
+    acceleration_chart->addSeries(acceleration_y_line);
+    acceleration_chart->setTitle("Acceleration Over Time");
+    acceleration_chart->addAxis(acceleration_y_line_x_axis, Qt::AlignBottom);
+    acceleration_chart->addAxis(acceleration_y_line_y_axis, Qt::AlignLeft);
 
-    /* acceleration_y_line_x_axis->setTickCount(5); */
-    /* acceleration_y_line_x_axis->setRange(0, 25); */
-    /* acceleration_y_line_y_axis->setTickCount(5); */
-    /* acceleration_y_line_y_axis->setRange(-1000, 1000); */
+    acceleration_y_line->attachAxis(acceleration_y_line_x_axis);
+    acceleration_y_line->attachAxis(acceleration_y_line_y_axis);
 
-    /* acceleration_chart_view = new QtCharts::QChartView(acceleration_chart); */
+    acceleration_y_line_x_axis->setTickCount(5);
+    acceleration_y_line_x_axis->setRange(0, 100);
+    acceleration_y_line_y_axis->setTickCount(5);
+    acceleration_y_line_y_axis->setRange(-1000, 1000);
 
+    acceleration_chart_view = new QtCharts::QChartView(acceleration_chart);
+
+    // =============================================================
+    velocity_y_line = new QtCharts::QSplineSeries(this);
+    velocity_y_line->setName("Acceleration Y Value");
+
+    velocity_chart = new QtCharts::QChart();
+    velocity_chart->addSeries(velocity_y_line);
+    velocity_chart->setTitle("Acceleration Over Time");
+    velocity_chart->addAxis(velocity_y_line_x_axis, Qt::AlignBottom);
+    velocity_chart->addAxis(velocity_y_line_y_axis, Qt::AlignLeft);
+
+    velocity_y_line->attachAxis(velocity_y_line_x_axis);
+    velocity_y_line->attachAxis(velocity_y_line_y_axis);
+
+    velocity_y_line_x_axis->setTickCount(5);
+    velocity_y_line_x_axis->setRange(0, 100);
+    velocity_y_line_y_axis->setTickCount(5);
+    velocity_y_line_y_axis->setRange(-1000, 1000);
+
+    velocity_chart_view = new QtCharts::QChartView(velocity_chart);
     // =============================================================
 
     charts_layout->addWidget(force_chart_view);
-    /* charts_layout->addWidget(acceleration_chart_view); */
+    charts_layout->addWidget(acceleration_chart_view);
+    charts_layout->addWidget(velocity_chart_view);
 }
 
 void Window::CreateSliders() {
@@ -142,13 +164,13 @@ void Window::CreateTimer() {
 
 void Window::UpdatePlots() {
     UpdateForcePlot();
-    /* UpdateAccelerationPlot(); */
-    /* UpdateVelocityPlot(); */
+    UpdateAccelerationPlot();
+    UpdateVelocityPlot();
 
-    ++frame;
-    if (frame == 25) {
+    if (frame == 100) {
         widget_poll_timeout->stop();
     }
+    ++frame;
 }
 
 void Window::UpdateForcePlot() {
@@ -163,6 +185,7 @@ void Window::UpdateAccelerationPlot() {
 
 void Window::UpdateVelocityPlot() {
     const auto current_velocity_vector = widget->CurrentSimObjectVelocity();
+    velocity_y_line->append(frame, current_velocity_vector.y());
 }
 
 QSlider* Window::CreateSlider() {
