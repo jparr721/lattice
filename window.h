@@ -35,6 +35,8 @@ class Window : public QWidget {
     void keyPressEvent(QKeyEvent* event) override;
 
   private:
+    constexpr static int kMinFrame = 0;
+    constexpr static int kMaxFrame = 250;
     constexpr static const char* kWindowTitle = "Lattice Sim";
 
     GLWidget* widget = new GLWidget;
@@ -104,8 +106,7 @@ class Window : public QWidget {
     // A reference to our management window instance.
     MainWindow* main_window;
 
-    // DELETE LATER
-    int frame = 0;
+    int frame = kMinFrame;
 
     QSlider* CreateSlider();
 

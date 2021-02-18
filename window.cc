@@ -77,7 +77,7 @@ void Window::CreateChartsLayout() {
     force_y_line->attachAxis(force_y_line_y_axis);
 
     force_y_line_x_axis->setTickCount(5);
-    force_y_line_x_axis->setRange(0, 100);
+    force_y_line_x_axis->setRange(kMinFrame, kMaxFrame);
     force_y_line_y_axis->setRange(-10, 10);
     force_y_line_y_axis->setTickCount(5);
 
@@ -97,7 +97,7 @@ void Window::CreateChartsLayout() {
     acceleration_y_line->attachAxis(acceleration_y_line_y_axis);
 
     acceleration_y_line_x_axis->setTickCount(5);
-    acceleration_y_line_x_axis->setRange(0, 100);
+    acceleration_y_line_x_axis->setRange(kMinFrame, kMaxFrame);
     acceleration_y_line_y_axis->setTickCount(5);
     acceleration_y_line_y_axis->setRange(-1000, 1000);
 
@@ -117,7 +117,7 @@ void Window::CreateChartsLayout() {
     velocity_y_line->attachAxis(velocity_y_line_y_axis);
 
     velocity_y_line_x_axis->setTickCount(5);
-    velocity_y_line_x_axis->setRange(0, 100);
+    velocity_y_line_x_axis->setRange(kMinFrame, kMaxFrame);
     velocity_y_line_y_axis->setTickCount(5);
     velocity_y_line_y_axis->setRange(-1000, 1000);
 
@@ -159,7 +159,7 @@ void Window::CreateSliders() {
 void Window::CreateTimer() {
     widget_poll_timeout = new QTimer(this);
     connect(widget_poll_timeout, &QTimer::timeout, this, &Window::UpdatePlots);
-    widget_poll_timeout->start(100.0);
+    widget_poll_timeout->start(1);
 }
 
 void Window::UpdatePlots() {
@@ -167,7 +167,7 @@ void Window::UpdatePlots() {
     UpdateAccelerationPlot();
     UpdateVelocityPlot();
 
-    if (frame == 100) {
+    if (frame == kMaxFrame) {
         widget_poll_timeout->stop();
     }
     ++frame;
