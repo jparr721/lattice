@@ -41,12 +41,17 @@ class Spring : public SimObject {
 
     void SetRestLength(float value) { rest_length = value; }
 
+    QVector4D Force() const { return force; }
+
   private:
     // The spring k value.
     float stiffness;
 
     // The resting length of the spring in the Y direction.
     float rest_length;
+
+    // The force that the spring is exerting;
+    QVector4D force;
 
     std::shared_ptr<Mass> left_mass;
     std::shared_ptr<Mass> right_mass;
@@ -59,7 +64,7 @@ class Spring : public SimObject {
         const auto lr_diff = left_mass->Position() - right_mass->Position();
         auto mass_norm = lr_diff.normalized();
 
-        auto force =
+        force =
             stiffness * (current_spring_length - rest_length) * mass_norm;
         QVector4D mass_acceleration_delta = force / right_mass->Weight();
 

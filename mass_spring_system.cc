@@ -113,3 +113,31 @@ void MassSpringSystem::SetMassDampingConstant(float value) {
         mass->SetDampingConstant(value);
     }
 }
+
+QVector4D MassSpringSystem::GetFirstMovingMassVelocity() {
+    for (auto mass : masses) {
+        if (!mass->is_fixed) {
+            return mass->Velocity();
+        }
+    }
+
+    return QVector4D(0, 0, 0, 0);
+}
+
+QVector4D MassSpringSystem::GetFirstMovingMassAcceleration() {
+    for (auto mass : masses) {
+        if (!mass->is_fixed) {
+            return mass->Acceleration();
+        }
+    }
+
+    return QVector4D(0, 0, 0, 0);
+}
+
+QVector4D MassSpringSystem::GetFirstSpringForce() {
+    assert(is_init && "Must be initialized");
+    assert(springs.size() > 0);
+    const auto spring = springs[0];
+
+    return spring->Force();
+}

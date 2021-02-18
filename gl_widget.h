@@ -8,6 +8,7 @@
 #include <string>
 
 #include <QElapsedTimer>
+#include <QLineSeries>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
 #include <QTimer>
@@ -38,6 +39,10 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     QSize sizeHint() const override;
 
     float CurrentSimObjectMass();
+
+    QVector4D CurrentSimObjectVelocity();
+    QVector4D CurrentSimObjectAcceleration();
+    QVector4D CurrentSimSpringForce();
 
   public slots:
     void Update();

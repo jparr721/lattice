@@ -30,6 +30,13 @@ class MassSpringSystem {
     void SetMassWeight(float value);
     void SetMassDampingConstant(float value);
 
+    // Mass Plottable Getters
+    QVector4D GetFirstMovingMassVelocity();
+    QVector4D GetFirstMovingMassAcceleration();
+
+    // Spring Plottable Getters
+    QVector4D GetFirstSpringForce();
+
     std::vector<QVector3D> Colors() { return colors; }
     std::vector<QVector3D> Shapes() { return shapes; }
 

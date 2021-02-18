@@ -213,3 +213,15 @@ void GLWidget::PrintParameters() {
 }
 
 float GLWidget::CurrentSimObjectMass() { return slider_mass_value; }
+
+QVector4D GLWidget::CurrentSimObjectVelocity() {
+    return mass_spring_system->GetFirstMovingMassVelocity();
+}
+
+QVector4D GLWidget::CurrentSimObjectAcceleration() {
+    return mass_spring_system->GetFirstMovingMassAcceleration();
+}
+
+QVector4D GLWidget::CurrentSimSpringForce() {
+    return mass_spring_system->GetFirstSpringForce();
+}

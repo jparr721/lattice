@@ -91,8 +91,12 @@ class Mass : public SimObject {
 
     void SetWeight(float value) { mass_weight = value; }
     void SetDampingConstant(float value) { damping_constant = value; }
+
     float Weight() { return mass_weight; }
     float DampingConstant() { return damping_constant; }
+
+    QVector4D Velocity() const { return velocity; }
+    QVector4D Acceleration() const { return acceleration; }
 
   private:
     // The mass of the... mass...
