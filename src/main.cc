@@ -1,4 +1,4 @@
-#include "main_window.h"
+#include <lattice/main_window.h>
 
 #include <QApplication>
 #include <QMatrix4x4>

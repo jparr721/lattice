@@ -9,6 +9,6 @@ class MainWindow : public QMainWindow {
     MainWindow();
     ~MainWindow() = default;
 
-  private slots:
-    void OnAddNew();
+  public slots:
+    void AddCentralWidget();
 };

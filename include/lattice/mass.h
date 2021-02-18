@@ -1,7 +1,8 @@
 #pragma once
 
-#include "colors.h"
-#include "sim_object.h"
+#include <lattice/colors.h>
+#include <lattice/sim_object.h>
+
 #include <QDebug>
 #include <QMatrix4x4>
 

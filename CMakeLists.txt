@@ -14,9 +14,10 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(Qt5_DIR /opt/homebrew/opt/qt/lib/cmake/Qt5)
 
-file(GLOB SOURCES *.cc)
+file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cc")
 
-include_directories(/opt/homebrew/opt/qt/include)
+# include_directories(/opt/homebrew/opt/qt/include)
+
 link_directories(/opt/homebrew/opt/qt/lib)
 
 set(CMAKE_AUTOMOC ON)
@@ -32,4 +33,12 @@ find_package(Qt5 COMPONENTS Quick REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+target_include_directories(${PROJECT_NAME} PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+target_include_directories(${PROJECT_NAME} PUBLIC
+  $<BUILD_INTERFACE:/opt/homebrew/opt/qt/include>
+  $<INSTALL_INTERFACE:include>
+)
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Gui Qt5::OpenGL Qt5::Core Qt5::Charts Qt5::Quick)

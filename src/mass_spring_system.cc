@@ -1,4 +1,4 @@
-#include "mass_spring_system.h"
+#include <lattice/mass_spring_system.h>
 
 void MassSpringSystem::Initialize() {
     assert(size() > 0 && "Must add fixtures for simulation");

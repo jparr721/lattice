@@ -1,10 +1,10 @@
 #pragma once
 
+#include <lattice/mass.h>
+#include <lattice/spring.h>
+
 #include <QVector3D>
 #include <vector>
-
-#include "mass.h"
-#include "spring.h"
 
 class MassSpringSystem {
   public:

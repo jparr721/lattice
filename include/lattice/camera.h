@@ -1,6 +1,6 @@
 #pragma once
 
-#include "keyboard.h"
+#include <lattice/keyboard.h>
 
 #include <QKeyEvent>
 

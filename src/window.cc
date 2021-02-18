@@ -1,5 +1,5 @@
-#include "window.h"
-#include "main_window.h"
+#include <lattice/window.h>
+#include <lattice/main_window.h>
 
 #include <cstdlib>
 #include <iostream>

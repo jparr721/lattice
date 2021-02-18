@@ -1,8 +1,8 @@
-#include "gl_widget.h"
-#include "colors.h"
-#include "mass.h"
-#include "spring.h"
-#include "window.h"
+#include <lattice/gl_widget.h>
+#include <lattice/colors.h>
+#include <lattice/mass.h>
+#include <lattice/spring.h>
+#include <lattice/window.h>
 
 #include <fstream>
 #include <iostream>
