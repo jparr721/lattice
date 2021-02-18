@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "mass.h"
-#include "plotter.h"
 #include "spring.h"
 
 class MassSpringSystem {
