@@ -5,8 +5,6 @@
 #include <QMenuBar>
 #include <QMessageBox>
 
-MainWindow::MainWindow() {
-    OnAddNew();
-}
+MainWindow::MainWindow() { OnAddNew(); }
 
 void MainWindow::OnAddNew() { setCentralWidget(new Window(this)); }

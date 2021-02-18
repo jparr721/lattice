@@ -64,8 +64,7 @@ class Spring : public SimObject {
         const auto lr_diff = left_mass->Position() - right_mass->Position();
         auto mass_norm = lr_diff.normalized();
 
-        force =
-            stiffness * (current_spring_length - rest_length) * mass_norm;
+        force = stiffness * (current_spring_length - rest_length) * mass_norm;
         QVector4D mass_acceleration_delta = force / right_mass->Weight();
 
         right_mass->ChangeAcceleration(mass_acceleration_delta);

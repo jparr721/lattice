@@ -206,8 +206,7 @@ void GLWidget::InitializeSimulation() {
 
 void GLWidget::PrintParameters() {
     std::cout << "        Parameters:           " << std::endl;
-    std::cout << "=============================="
-              << std::endl;
+    std::cout << "==============================" << std::endl;
     std::cout << "Mass: " << slider_mass_value << std::endl;
     std::cout << "K: " << slider_spring_constant_value << std::endl;
     std::cout << "Damping: " << slider_damping_constant_value << std::endl;
@@ -228,10 +227,10 @@ QVector4D GLWidget::CurrentSimSpringForce() {
 }
 
 bool GLWidget::IsRestarted() {
-   if (is_restarted) {
-     is_restarted = false;
-     return true;
-   }
+    if (is_restarted) {
+        is_restarted = false;
+        return true;
+    }
 
-   return false;
+    return false;
 }

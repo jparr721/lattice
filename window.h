@@ -80,8 +80,10 @@ class Window : public QWidget {
     QtCharts::QChartView* force_chart_view;
 
     // Acceleration Line Chart Axes
-    QtCharts::QValueAxis* acceleration_y_line_x_axis = new QtCharts::QValueAxis();
-    QtCharts::QValueAxis* acceleration_y_line_y_axis = new QtCharts::QValueAxis();
+    QtCharts::QValueAxis* acceleration_y_line_x_axis =
+        new QtCharts::QValueAxis();
+    QtCharts::QValueAxis* acceleration_y_line_y_axis =
+        new QtCharts::QValueAxis();
 
     // Line chart for mass accleration data
     QtCharts::QSplineSeries* acceleration_x_line;
@@ -131,5 +133,4 @@ class Window : public QWidget {
     void UpdateForcePlot();
     void UpdateAccelerationPlot();
     void UpdateVelocityPlot();
-
 };

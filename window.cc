@@ -7,11 +7,11 @@
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QLabel>
-#include <QSplineSeries>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QScreen>
 #include <QSlider>
+#include <QSplineSeries>
 #include <QStringLiteral>
 
 Window::Window(MainWindow* _main_window) : main_window(_main_window) {
@@ -178,36 +178,31 @@ void Window::UpdatePlots() {
 }
 
 void Window::ResetPlots() {
-  if (widget->IsRestarted()) {
-      ResetForcePlot();
-      ResetAccelerationPlot();
-      ResetVelocityPlot();
+    if (widget->IsRestarted()) {
+        ResetForcePlot();
+        ResetAccelerationPlot();
+        ResetVelocityPlot();
 
-      frame = 0;
-  }
+        frame = 0;
+    }
 }
 
-void Window::ResetForcePlot() {
-    force_y_line->clear();
-}
+void Window::ResetForcePlot() { force_y_line->clear(); }
 
 void Window::UpdateForcePlot() {
     const auto current_force_vector = widget->CurrentSimSpringForce();
     force_y_line->append(frame, current_force_vector.y());
 }
 
-void Window::ResetAccelerationPlot() {
-    acceleration_y_line->clear();
-}
+void Window::ResetAccelerationPlot() { acceleration_y_line->clear(); }
 
 void Window::UpdateAccelerationPlot() {
-    const auto current_acceleration_vector = widget->CurrentSimObjectAcceleration();
+    const auto current_acceleration_vector =
+        widget->CurrentSimObjectAcceleration();
     acceleration_y_line->append(frame, current_acceleration_vector.y());
 }
 
-void Window::ResetVelocityPlot() {
-    velocity_y_line->clear();
-}
+void Window::ResetVelocityPlot() { velocity_y_line->clear(); }
 
 void Window::UpdateVelocityPlot() {
     const auto current_velocity_vector = widget->CurrentSimObjectVelocity();
