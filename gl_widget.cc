@@ -168,14 +168,14 @@ void GLWidget::keyReleaseEvent(QKeyEvent* event) {
 
 std::string GLWidget::ReadVertexShader() {
     std::ostringstream sstr;
-    auto stream = std::ifstream{"core.vs"};
+    auto stream = std::ifstream{"./shaders/core.vs"};
     sstr << stream.rdbuf();
     return sstr.str();
 }
 
 std::string GLWidget::ReadFragmentShader() {
     std::ostringstream sstr;
-    auto stream = std::ifstream{"core.frag"};
+    auto stream = std::ifstream{"./shaders/core.frag"};
     sstr << stream.rdbuf();
     return sstr.str();
 }
@@ -200,10 +200,13 @@ void GLWidget::InitializeSimulation() {
     mass_spring_system->AddMass(movable_mass);
     mass_spring_system->AddSpring(spring);
     mass_spring_system->Initialize();
+
+    is_restarted = frame == 0 ? false : true;
 }
 
 void GLWidget::PrintParameters() {
-    std::cout << "Current Parameters =============================="
+    std::cout << "        Parameters:           " << std::endl;
+    std::cout << "=============================="
               << std::endl;
     std::cout << "Mass: " << slider_mass_value << std::endl;
     std::cout << "K: " << slider_spring_constant_value << std::endl;
@@ -211,8 +214,6 @@ void GLWidget::PrintParameters() {
     std::cout << "Rest Length: " << slider_rest_length_value << std::endl;
     std::cout << "==============================" << std::endl;
 }
-
-float GLWidget::CurrentSimObjectMass() { return slider_mass_value; }
 
 QVector4D GLWidget::CurrentSimObjectVelocity() {
     return mass_spring_system->GetFirstMovingMassVelocity();
@@ -224,4 +225,13 @@ QVector4D GLWidget::CurrentSimObjectAcceleration() {
 
 QVector4D GLWidget::CurrentSimSpringForce() {
     return mass_spring_system->GetFirstSpringForce();
+}
+
+bool GLWidget::IsRestarted() {
+   if (is_restarted) {
+     is_restarted = false;
+     return true;
+   }
+
+   return false;
 }

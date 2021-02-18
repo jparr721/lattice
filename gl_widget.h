@@ -38,11 +38,11 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
 
-    float CurrentSimObjectMass();
-
     QVector4D CurrentSimObjectVelocity();
     QVector4D CurrentSimObjectAcceleration();
     QVector4D CurrentSimSpringForce();
+
+    bool IsRestarted();
 
   public slots:
     void Update();
@@ -105,6 +105,7 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     int frame = 0;
 
     bool is_init = false;
+    bool is_restarted = false;
 
     std::string ReadVertexShader();
     std::string ReadFragmentShader();
