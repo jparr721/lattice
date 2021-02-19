@@ -186,10 +186,10 @@ float GLWidget::Interpolate(float v0, float v1, float t) {
 
 void GLWidget::InitializeSimulation() {
     auto fixed_mass =
-        std::make_shared<Mass>(0.1, 0.2f, kFixedPosition, colors::kBlue,
+        std::make_shared<Mass>(0.1, "Fixed", kFixedPosition, colors::kBlue,
                                QVector4D(0.f, 1.f, 0.f, 1.f));
     auto movable_mass =
-        std::make_shared<Mass>(0.1, 0.2f, kUnfixedPosition, colors::kRed,
+        std::make_shared<Mass>(0.1, "Movable", kUnfixedPosition, colors::kRed,
                                QVector4D(0.f, 0.f, 0.f, 1.f));
 
     auto spring = std::make_shared<Spring>(0.5f, 1.f, colors::kGreen,
