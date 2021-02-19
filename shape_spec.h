@@ -38,13 +38,13 @@ class ShapeSpec {
   public:
     std::unordered_map<MassNode, std::vector<MassNode>, MassNodeHash> graph;
 
+    std::vector<MassNode> masses;
+
     ShapeSpec();
     ~ShapeSpec() = default;
 
   private:
     inline static const std::string kKeywordVertex = "vertex";
-
-    std::vector<MassNode> masses;
 
     void Parse(const std::vector<std::string>& lines);
     void ParseVertex(const std::string& parameters_string, int line_number);

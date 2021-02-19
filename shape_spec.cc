@@ -22,6 +22,7 @@ ShapeSpec::ShapeSpec() {
     }
 
     Parse(lines);
+    ComputeDiGraph();
 }
 
 void ShapeSpec::Parse(const std::vector<std::string>& lines) {
