@@ -18,7 +18,6 @@ class MultiObjectRenderer {
     }
 
     void Initialize();
-    void Recalculate();
 
   private:
     bool is_init = false;

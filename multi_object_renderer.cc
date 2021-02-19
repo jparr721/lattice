@@ -1,5 +1,7 @@
 #include "multi_object_renderer.h"
 
+#include <optional>
+
 #include <QVector4D>
 
 void MultiObjectRenderer::Initialize() {
@@ -34,9 +36,25 @@ void MultiObjectRenderer::Initialize() {
     }
 
     for (const auto& [node, adjacencies] : shape_spec->graph) {
-        for (auto adjacency : adjacencies) {
-            /* auto spring = std::make_shared<Spring>( */
-            /*     1.0f, 0.5f, colors::kGreen, */
+        if (adjacencies.size() > 0) {
+            // This'll break when we add more complex shapes!
+            const MassNode left_mass_node = adjacencies[0];
+            const MassNode right_mass_node = adjacencies[1];
+
+            auto left_adjacent_node =
+                mass_spring_system->GetMassByName(left_mass_node.name);
+            auto right_adjacent_node =
+                mass_spring_system->GetMassByName(right_mass_node.name);
+
+            assert(left_adjacent_node != std::nullopt);
+            assert(right_adjacent_node != std::nullopt);
+
+            auto spring = std::make_shared<Spring>(1.0f, 0.5f, colors::kGreen,
+                                                   left_adjacent_node.value(),
+                                                   right_adjacent_node.value());
+            mass_spring_system->AddSpring(std::move(spring));
         }
     }
+
+    is_init = true;
 }

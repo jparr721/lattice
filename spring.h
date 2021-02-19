@@ -3,6 +3,7 @@
 #include "colors.h"
 #include "mass.h"
 #include "sim_object.h"
+
 #include <memory>
 
 class Spring : public SimObject {

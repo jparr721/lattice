@@ -1,10 +1,12 @@
 #pragma once
 
-#include <QVector3D>
-#include <vector>
-
 #include "mass.h"
 #include "spring.h"
+
+#include <optional>
+#include <vector>
+
+#include <QVector3D>
 
 class MassSpringSystem {
   public:
@@ -28,6 +30,9 @@ class MassSpringSystem {
     // Mass Mutators
     void SetMassWeight(float value);
     void SetMassDampingConstant(float value);
+
+    // Mass Getter
+    std::optional<std::shared_ptr<Mass>> GetMassByName(const std::string& name);
 
     // Mass Plottable Getters
     QVector4D GetFirstMovingMassVelocity();

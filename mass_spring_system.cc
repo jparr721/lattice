@@ -141,3 +141,14 @@ QVector4D MassSpringSystem::GetFirstSpringForce() {
 
     return spring->Force();
 }
+
+std::optional<std::shared_ptr<Mass>>
+MassSpringSystem::GetMassByName(const std::string& name) {
+    for (auto mass : masses) {
+        if (mass->Name() == name) {
+            return mass;
+        }
+    }
+
+    return std::nullopt;
+}
