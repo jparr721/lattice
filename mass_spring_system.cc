@@ -21,13 +21,13 @@ void MassSpringSystem::Initialize() {
     for (const auto& [node, adjacencies] : shape_spec->graph) {
         // Top Masses
         if (i < 4) {
-            auto position = QVector4D(top_x + (i * .2), top_y, top_z, 1.0f);
+            auto position = QVector4D(top_x + (i * .4), top_y, top_z, 1.0f);
             auto mass = std::make_shared<Mass>(node.size, node.name, node.fixed,
                                                node.color, position);
             AddMass(mass);
         } else { // Bottom Masses
             auto position =
-                QVector4D(bottom_x + ((i % 4) * .2), bottom_y, bottom_z, 1.0f);
+                QVector4D(bottom_x + ((i % 4) * .4), bottom_y, bottom_z, 1.0f);
             auto mass = std::make_shared<Mass>(node.size, node.name, node.fixed,
                                                node.color, position);
             AddMass(mass);
@@ -50,11 +50,13 @@ void MassSpringSystem::Initialize() {
             assert(right_adjacent_node != std::nullopt);
 
             auto left_spring = std::make_shared<Spring>(1.0f, 0.5f, colors::kGreen,
-                                                   center_node.value(),
-                                                   left_adjacent_node.value());
+                                                   left_adjacent_node.value(),
+                                                   center_node.value());
+
             auto right_spring = std::make_shared<Spring>(1.0f, 0.5f, colors::kGreen,
                                                    center_node.value(),
                                                    right_adjacent_node.value());
+
             AddSpring(left_spring);
             AddSpring(right_spring);
         }
