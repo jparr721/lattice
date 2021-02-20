@@ -185,20 +185,7 @@ float GLWidget::Interpolate(float v0, float v1, float t) {
 }
 
 void GLWidget::InitializeSimulation() {
-    auto fixed_mass =
-        std::make_shared<Mass>(0.1, 0.2f, kFixedPosition, colors::kBlue,
-                               QVector4D(0.f, 1.f, 0.f, 1.f));
-    auto movable_mass =
-        std::make_shared<Mass>(0.1, 0.2f, kUnfixedPosition, colors::kRed,
-                               QVector4D(0.f, 0.f, 0.f, 1.f));
-
-    auto spring = std::make_shared<Spring>(0.5f, 1.f, colors::kGreen,
-                                           fixed_mass, movable_mass);
-
     mass_spring_system = std::make_unique<MassSpringSystem>();
-    mass_spring_system->AddMass(fixed_mass);
-    mass_spring_system->AddMass(movable_mass);
-    mass_spring_system->AddSpring(spring);
     mass_spring_system->Initialize();
 
     is_restarted = frame == 0 ? false : true;
@@ -233,4 +220,35 @@ bool GLWidget::IsRestarted() {
     }
 
     return false;
+}
+
+/**
+ * This is here because we are not translating vectors via absolute
+ * positions, so when we initially click, we need to set the "last"
+ * position vector so we know how much, and in what direction, we've
+ * translated"
+ */
+void GLWidget::mousePressEvent(QMouseEvent* event) {
+    last_position = QVector3D(event->x(), event->y(), 0.f);
+}
+
+void GLWidget::mouseMoveEvent(QMouseEvent* event) {
+    int x = event->x();
+    int y = event->y();
+    QVector3D dposition = QVector3D(x, y, 0.f) - last_position;
+
+    // TODO(@jparr721) - This sucks.
+    QVector3D dposition_scaled = dposition * QVector3D(0.01f, 0.01f, 0.0f);
+
+    // Click and drag with left moves top group
+    if (event->buttons() & Qt::LeftButton) {
+        mass_spring_system->TranslateTopGroup(dposition_scaled);
+    }
+
+    // Click and drag with right moved bottom group
+    if (event->buttons() & Qt::RightButton) {
+        mass_spring_system->TranslateBottomGroup(dposition_scaled);
+    }
+
+    last_position = QVector3D(x, y, 0.f);
 }

@@ -1,7 +1,68 @@
 #include "mass_spring_system.h"
+#include "shape_spec.h"
+
+#include <iostream>
+#include <memory>
 
 void MassSpringSystem::Initialize() {
-    assert(size() > 0 && "Must add fixtures for simulation");
+    auto shape_spec = std::make_unique<ShapeSpec>();
+
+    const float top_x = -0.5f;
+    const float top_y = 0.5f;
+    const float top_z = 0.0f;
+
+    const float bottom_x = -0.5f;
+    const float bottom_y = -0.5f;
+    const float bottom_z = 0.0f;
+
+    assert(shape_spec->graph.size() % 2 == 0);
+
+    int i = 0;
+    for (const auto& [node, adjacencies] : shape_spec->graph) {
+        // Top Masses
+        if (i < 4) {
+            auto position = QVector4D(top_x + (i * .4), top_y, top_z, 1.0f);
+            auto mass = std::make_shared<Mass>(node.size, node.name, node.fixed,
+                                               node.color, position);
+            AddMass(mass);
+            top_masses.push_back(mass);
+        } else { // Bottom Masses
+            auto position =
+                QVector4D(bottom_x + ((i % 4) * .4), bottom_y, bottom_z, 1.0f);
+            auto mass = std::make_shared<Mass>(node.size, node.name, node.fixed,
+                                               node.color, position);
+            AddMass(mass);
+            bottom_masses.push_back(mass);
+        }
+        ++i;
+    }
+
+    for (const auto& [node, adjacencies] : shape_spec->graph) {
+        if (adjacencies.size() > 0) {
+            // This'll break when we add more complex shapes!
+            const MassNode left_mass_node = adjacencies[0];
+            const MassNode right_mass_node = adjacencies[1];
+
+            auto center_node = GetMassByName(node.name);
+            auto left_adjacent_node = GetMassByName(left_mass_node.name);
+            auto right_adjacent_node = GetMassByName(right_mass_node.name);
+
+            assert(center_node != std::nullopt);
+            assert(left_adjacent_node != std::nullopt);
+            assert(right_adjacent_node != std::nullopt);
+
+            auto left_spring = std::make_shared<Spring>(
+                1.0f, 0.5f, colors::kGreen, left_adjacent_node.value(),
+                center_node.value());
+
+            auto right_spring = std::make_shared<Spring>(
+                1.0f, 0.5f, colors::kGreen, center_node.value(),
+                right_adjacent_node.value());
+
+            AddSpring(left_spring);
+            AddSpring(right_spring);
+        }
+    }
 
     for (auto mass : masses) {
         mass->Initialize();
@@ -18,6 +79,11 @@ void MassSpringSystem::Initialize() {
     is_init = true;
 }
 
+void MassSpringSystem::Redraw() {
+    ComputeVertexPoints();
+    ComputeShapes();
+}
+
 void MassSpringSystem::Update(float dt) {
     for (auto mass : masses) {
         mass->Update(dt);
@@ -26,8 +92,8 @@ void MassSpringSystem::Update(float dt) {
     for (auto spring : springs) {
         spring->Update(dt);
     }
-    ComputeVertexPoints();
-    ComputeShapes();
+
+    Redraw();
 }
 
 void MassSpringSystem::AddSpring(const std::shared_ptr<Spring>& spring) {
@@ -140,4 +206,31 @@ QVector4D MassSpringSystem::GetFirstSpringForce() {
     const auto spring = springs[0];
 
     return spring->Force();
+}
+
+std::optional<std::shared_ptr<Mass>>
+MassSpringSystem::GetMassByName(const std::string& name) {
+    for (auto mass : masses) {
+        if (mass->Name() == name) {
+            return mass;
+        }
+    }
+
+    return std::nullopt;
+}
+
+// TODO(@jparr721) - THIS IS BAD CODE DELETE LATER
+void MassSpringSystem::TranslateTopGroup(const QVector3D& direction) {
+    for (auto mass : top_masses) {
+        // Translate each individual mass
+        mass->Translate(direction);
+    }
+}
+
+// TODO(@jparr721) - THIS IS BAD CODE DELETE LATER
+void MassSpringSystem::TranslateBottomGroup(const QVector3D& direction) {
+    for (auto mass : bottom_masses) {
+        // Translate each individual mass
+        mass->Translate(direction);
+    }
 }

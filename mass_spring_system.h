@@ -1,10 +1,12 @@
 #pragma once
 
-#include <QVector3D>
-#include <vector>
-
 #include "mass.h"
 #include "spring.h"
+
+#include <optional>
+#include <vector>
+
+#include <QVector3D>
 
 class MassSpringSystem {
   public:
@@ -29,6 +31,9 @@ class MassSpringSystem {
     void SetMassWeight(float value);
     void SetMassDampingConstant(float value);
 
+    // Mass Getter
+    std::optional<std::shared_ptr<Mass>> GetMassByName(const std::string& name);
+
     // Mass Plottable Getters
     QVector4D GetFirstMovingMassVelocity();
     QVector4D GetFirstMovingMassAcceleration();
@@ -40,6 +45,10 @@ class MassSpringSystem {
     std::vector<QVector3D> Shapes() { return shapes; }
 
     auto size() { return springs.size() + masses.size(); }
+
+    // TODO(@jparr721) - Change when refactoring later!!!
+    void TranslateTopGroup(const QVector3D& direction);
+    void TranslateBottomGroup(const QVector3D& direction);
 
   private:
     bool is_init = false;
@@ -55,4 +64,11 @@ class MassSpringSystem {
 
     // Our shapes' colors in a flat list.
     std::vector<QVector3D> colors;
+
+
+    // TODO(@jparr721) - This is not a good way to do this which scales well.
+    std::vector<std::shared_ptr<Mass>> top_masses;
+    std::vector<std::shared_ptr<Mass>> bottom_masses;
+
+    void Redraw();
 };

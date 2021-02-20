@@ -2,6 +2,9 @@
 
 #include "colors.h"
 #include "sim_object.h"
+
+#include <string>
+
 #include <QDebug>
 #include <QMatrix4x4>
 
@@ -18,11 +21,13 @@ class Mass : public SimObject {
     Mass(bool fixed, QVector4D starting_position)
         : SimObject(starting_position, colors::kBlue), mass_weight(1),
           mass_size(1), is_fixed(fixed) {}
-    Mass(float size, float mass, bool fixed, QVector3D color,
+    Mass(float size, std::string name, bool fixed, QVector3D color,
          QVector4D starting_position)
-        : SimObject(starting_position, color), is_fixed(fixed),
-          mass_weight(mass), mass_size(size) {}
+        : SimObject(starting_position, color), is_fixed(fixed), name(name),
+          mass_size(size) {}
     ~Mass() = default;
+
+    std::string Name() { return name; }
 
     void CalculateMassForces(float dt = 0.1f) {
         // We don't want to calculate for fixed masses, that would be bad.
@@ -99,8 +104,11 @@ class Mass : public SimObject {
     QVector4D Acceleration() const { return acceleration; }
 
   private:
+    // The name of the mass node
+    std::string name;
+
     // The mass of the... mass...
-    float mass_weight;
+    float mass_weight = 0.5f;
 
     // The damping constant to prevent explosiveness
     float damping_constant = 0.8f;
