@@ -46,6 +46,10 @@ class MassSpringSystem {
 
     auto size() { return springs.size() + masses.size(); }
 
+    // TODO(@jparr721) - Change when refactoring later!!!
+    void TranslateTopGroup(const QVector3D& direction);
+    void TranslateBottomGroup(const QVector3D& direction);
+
   private:
     bool is_init = false;
 
@@ -60,4 +64,11 @@ class MassSpringSystem {
 
     // Our shapes' colors in a flat list.
     std::vector<QVector3D> colors;
+
+
+    // TODO(@jparr721) - This is not a good way to do this which scales well.
+    std::vector<std::shared_ptr<Mass>> top_masses;
+    std::vector<std::shared_ptr<Mass>> bottom_masses;
+
+    void Redraw();
 };

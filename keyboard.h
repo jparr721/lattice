@@ -18,6 +18,10 @@ class Keyboard {
     constexpr static int kRestart = Qt::Key_R;
     constexpr static int kPrint = Qt::Key_P;
 
+    // Modifier keys
+    constexpr static int kShift = Qt::Key_Shift;
+    constexpr static int kControl = Qt::Key_Control;
+
     Keyboard() = default;
     ~Keyboard() = default;
 
@@ -28,7 +32,8 @@ class Keyboard {
     std::unordered_map<int, bool> key_states = {
         {kForward, false}, {kBackward, false}, {kLeft, false},
         {kRight, false},   {kUp, false},       {kDown, false},
-        {kRestart, false}, {kPrint, false},
+        {kRestart, false}, {kPrint, false},    {kShift, false},
+        {kControl, false},
     };
 
     bool IsValidKey(int key);

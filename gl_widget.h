@@ -9,6 +9,7 @@
 
 #include <QElapsedTimer>
 #include <QLineSeries>
+#include <QMouseEvent>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
 #include <QTimer>
@@ -70,12 +71,18 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
 
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+
   private:
     QOpenGLShaderProgram* program_id = nullptr;
 
     // Window Parameters
     constexpr static int kWidth = 1200;
     constexpr static int kHeight = 1000;
+
+    // Positional Translation Parameters
+    QVector3D last_position = QVector3D(0.f, 0.f, 0.f);
 
     // Slider Data
     float slider_mass_value = kMinimumMassSliderValue;

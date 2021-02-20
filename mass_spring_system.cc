@@ -25,12 +25,14 @@ void MassSpringSystem::Initialize() {
             auto mass = std::make_shared<Mass>(node.size, node.name, node.fixed,
                                                node.color, position);
             AddMass(mass);
+            top_masses.push_back(mass);
         } else { // Bottom Masses
             auto position =
                 QVector4D(bottom_x + ((i % 4) * .4), bottom_y, bottom_z, 1.0f);
             auto mass = std::make_shared<Mass>(node.size, node.name, node.fixed,
                                                node.color, position);
             AddMass(mass);
+            bottom_masses.push_back(mass);
         }
         ++i;
     }
@@ -49,13 +51,13 @@ void MassSpringSystem::Initialize() {
             assert(left_adjacent_node != std::nullopt);
             assert(right_adjacent_node != std::nullopt);
 
-            auto left_spring = std::make_shared<Spring>(1.0f, 0.5f, colors::kGreen,
-                                                   left_adjacent_node.value(),
-                                                   center_node.value());
+            auto left_spring = std::make_shared<Spring>(
+                1.0f, 0.5f, colors::kGreen, left_adjacent_node.value(),
+                center_node.value());
 
-            auto right_spring = std::make_shared<Spring>(1.0f, 0.5f, colors::kGreen,
-                                                   center_node.value(),
-                                                   right_adjacent_node.value());
+            auto right_spring = std::make_shared<Spring>(
+                1.0f, 0.5f, colors::kGreen, center_node.value(),
+                right_adjacent_node.value());
 
             AddSpring(left_spring);
             AddSpring(right_spring);
@@ -77,6 +79,11 @@ void MassSpringSystem::Initialize() {
     is_init = true;
 }
 
+void MassSpringSystem::Redraw() {
+    ComputeVertexPoints();
+    ComputeShapes();
+}
+
 void MassSpringSystem::Update(float dt) {
     for (auto mass : masses) {
         mass->Update(dt);
@@ -85,8 +92,8 @@ void MassSpringSystem::Update(float dt) {
     for (auto spring : springs) {
         spring->Update(dt);
     }
-    ComputeVertexPoints();
-    ComputeShapes();
+
+    Redraw();
 }
 
 void MassSpringSystem::AddSpring(const std::shared_ptr<Spring>& spring) {
@@ -210,4 +217,20 @@ MassSpringSystem::GetMassByName(const std::string& name) {
     }
 
     return std::nullopt;
+}
+
+// TODO(@jparr721) - THIS IS BAD CODE DELETE LATER
+void MassSpringSystem::TranslateTopGroup(const QVector3D& direction) {
+    for (auto mass : top_masses) {
+        // Translate each individual mass
+        mass->Translate(direction);
+    }
+}
+
+// TODO(@jparr721) - THIS IS BAD CODE DELETE LATER
+void MassSpringSystem::TranslateBottomGroup(const QVector3D& direction) {
+    for (auto mass : bottom_masses) {
+        // Translate each individual mass
+        mass->Translate(direction);
+    }
 }
