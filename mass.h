@@ -36,11 +36,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
     }
 
     // Complex Setters
-    /**
-        @brief Updates the acceleration of the mass object by some positive or
-       negative delta value.
-     */
-    void ChangeAcceleration(const Eigen::Vector4f& delta);
     void Translate(const Eigen::Vector3f& translation_vector);
 
     // Trivial Getters

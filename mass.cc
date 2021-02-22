@@ -63,10 +63,6 @@ void Mass::CalculateMassForces(float dt) {
     position += velocity * 0.1 * dt;
 }
 
-void Mass::ChangeAcceleration(const Eigen::Vector4f& delta) {
-    acceleration += delta;
-}
-
 void Mass::CalculateAcceleration() {
     // Mass of our object x gravity.
     const Eigen::Vector4f Fg = kGravity * mass_weight;
