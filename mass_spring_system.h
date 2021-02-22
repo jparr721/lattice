@@ -10,11 +10,25 @@
 
 class MassSpringSystem {
   public:
-    MassSpringSystem() = default;
+    //  Minimum Values
+    constexpr static float kMinimumMassValue = 10.5f;
+    constexpr static float kMinimumSpringConstantValue = 1.0f;
+    constexpr static float kMinimumDampingValue = 0.5;
+    constexpr static float kMinimumSpringRestLengthValue = 0.5f;
+    constexpr static float kMinimumTimeStepChangeValue = 0.0001;
+
+    //  Maxmum Values
+    constexpr static float kMaximumMassValue = 10.0f;
+    constexpr static float kMaximumSpringConstantValue = 50.0f;
+    constexpr static float kMaximumDampingValue = 5.0f;
+    constexpr static float kMaximumSpringRestLengthValue = 10.0f;
+    constexpr static float kMaximumTimeStepChangeValue = 0.1f;
+
+    MassSpringSystem();
     ~MassSpringSystem() = default;
 
-    void Initialize();
-    void Update(float dt = 0.1);
+    void Update();
+    void Reset();
 
     void AddSpring(const std::shared_ptr<Spring>& spring);
     void AddMass(const std::shared_ptr<Mass>& mass);
@@ -32,6 +46,9 @@ class MassSpringSystem {
     void SetMassDampingConstant(float value);
 
     // Time Step Mutators
+    void SetTimeStep(float value) {
+      timestep_size = value;
+    }
 
     // Mass Getter
     std::optional<std::shared_ptr<Mass>> GetMassByName(const std::string& name);
@@ -54,6 +71,8 @@ class MassSpringSystem {
 
   private:
     bool is_init = false;
+
+    float timestep_size = kMinimumTimeStepChangeValue;
 
     // The springs in the sim
     std::vector<std::shared_ptr<Spring>> springs;

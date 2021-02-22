@@ -7,17 +7,16 @@
 
 #include <QDebug>
 
-class Mass {
+class Spring;
+
+class Mass : public std::enable_shared_from_this<Mass> {
   public:
     const bool is_fixed;
 
-    Mass()
-        : position(Eigen::Vector4f(0.f, 0.f, 0.f, 0.f)), kColor(colors::kBlue),
-          mass_weight(1), mass_size(1), is_fixed(false) {}
-    Mass(float size, std::string name, bool fixed, Eigen::Vector3f color,
-         Eigen::Vector4f starting_position)
+    Mass(float size, float _mass, std::string name, bool fixed,
+         Eigen::Vector3f color, Eigen::Vector4f starting_position)
         : position(starting_position), kColor(color), is_fixed(fixed),
-          name(name), mass_size(size) {}
+          mass_weight(_mass), name(name), mass_size(size) {}
     ~Mass() = default;
 
     // Class Initializers
@@ -29,6 +28,10 @@ class Mass {
     // Trivial Setters
     void SetWeight(float value) { mass_weight = value; }
     void SetDampingConstant(float value) { damping_constant = value; }
+    void SetPosition(const Eigen::Vector4f& value) { position = value; }
+    void SetAcceleration(const Eigen::Vector4f& value) { acceleration = value; }
+    void SetVelocity(const Eigen::Vector4f& value) { velocity = value; }
+    void AddSpring(std::shared_ptr<Spring> _spring) { springs.push_back(_spring); }
 
     // Complex Setters
     /**
@@ -68,10 +71,10 @@ class Mass {
     std::string name;
 
     // The mass of the... mass...
-    float mass_weight = 0.5f;
+    float mass_weight;
 
     // The damping constant to prevent explosiveness
-    float damping_constant = 0.8f;
+    float damping_constant;
 
     // The size of the object centered around the current position.
     float mass_size;
@@ -84,6 +87,9 @@ class Mass {
 
     // Represents the colors mapped to each vertex.
     std::vector<Eigen::Vector3f> colors;
+
+    // The springs that this mass is connected to.
+    std::vector<std::shared_ptr<Spring>> springs;
 
     // The velocity the object is moving at with respect to time.
     Eigen::Vector4f velocity = Eigen::Vector4f(0.f, 0.f, 0.f, 0.f);

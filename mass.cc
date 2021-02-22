@@ -1,4 +1,7 @@
 #include "mass.h"
+#include "spring.h"
+
+#include <iostream>
 
 void Mass::Initialize() {
     ComputeVertexPoints();
@@ -53,11 +56,11 @@ void Mass::CalculateMassForces(float dt) {
     CalculateAcceleration();
 
     // Calculate new velocity with respect to time.
-    velocity = velocity + acceleration * dt;
+    velocity += acceleration * dt;
 
     // Calculate new position based on the current velocity with respect to
     // time.
-    position = position + velocity * dt;
+    position += velocity * 0.1 * dt;
 }
 
 void Mass::ChangeAcceleration(const Eigen::Vector4f& delta) {
@@ -65,12 +68,14 @@ void Mass::ChangeAcceleration(const Eigen::Vector4f& delta) {
 }
 
 void Mass::CalculateAcceleration() {
-    // Calculate damping dynamically based on how fast the object is moving.
-    // Flip the sign of damping since we're adding it to the acceleration
-    // value.
-    auto damping = (-1 * damping_constant * velocity) / mass_weight;
+    // Mass of our object x gravity.
+    const Eigen::Vector4f Fg = kGravity * mass_weight;
 
-    // Calculate our acceleration with gravity doing gravity things and
-    // damping to prevent explosion.
-    acceleration = acceleration + kGravity + damping;
+    Eigen::Vector4f Fs = Eigen::Vector4f(0.0, 0.0, 0.0, 0.0);
+
+    for (const auto spring : springs) {
+        Fs += spring->CalculateCurrentForce(shared_from_this());
+    }
+
+    acceleration = (Fg + Fs) / mass_weight;
 }

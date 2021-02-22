@@ -1,5 +1,8 @@
 #include "utility.h"
 
+#include <cmath>
+#include <iostream>
+
 namespace utility {
 float EuclideanDistance(const Eigen::Vector4f& left,
                         const Eigen::Vector4f& right) {
@@ -11,6 +14,9 @@ float EuclideanDistance(const Eigen::Vector4f& left,
     const auto ry = right(1);
     const auto rz = right(2);
 
-    return std::sqrt((lx - rx) + (ly - ry) + (lz - rz));
+    const auto diff = std::pow(lx - rx, 2) +
+      std::pow(ly - ry, 2) + std::pow(lz - rz, 2);
+
+    return std::sqrt(diff);
 }
 } // namespace utility

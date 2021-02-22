@@ -3,12 +3,13 @@
 #include "colors.h"
 #include "utility.h"
 
+#include <iostream>
 #include <memory>
 #include <vector>
 
 class Mass;
 
-class Spring {
+class Spring : public std::enable_shared_from_this<Spring> {
   public:
     Spring(float stiffness, float resting_length, Eigen::Vector3f color,
            std::shared_ptr<Mass>& _left_mass,
@@ -32,6 +33,11 @@ class Spring {
     std::vector<Eigen::Vector3f> Vertices() { return vertices; }
     std::vector<Eigen::Vector3f> Colors() { return colors; }
 
+
+    // Non Trivial Getters
+    Eigen::Vector4f CalculateCurrentForce(std::shared_ptr<Mass> ref);
+
+
   private:
     // The initialization status of the fixture object.
     bool is_init = false;
@@ -41,6 +47,9 @@ class Spring {
 
     // The resting length of the spring in the Y direction.
     float rest_length;
+
+    // The spring calculation damping constant to prevent explosions.
+    float damping_constant = 0.01;
 
     const Eigen::Vector3f kColor;
 

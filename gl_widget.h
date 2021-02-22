@@ -19,22 +19,10 @@ QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
   public:
-    // Slider Minimum Values
-    constexpr static float kMinimumMassSliderValue = 0.5f;
-    constexpr static float kMinimumSpringConstantSliderValue = 1.0f;
-    constexpr static float kMinimumDampingSliderValue = 0.5;
-    constexpr static float kMinimumSpringRestLengthSliderValue = 0.5f;
-    constexpr static float kMinimumTimeStepChangeSliderValue = 0.000000001;
-
-    // Slider Maxmum Values
-    constexpr static float kMaximumMassSliderValue = 10.0f;
-    constexpr static float kMaximumSpringConstantSliderValue = 50.0f;
-    constexpr static float kMaximumDampingSliderValue = 5.0f;
-    constexpr static float kMaximumSpringRestLengthSliderValue = 10.0f;
-    constexpr static float kMaximumTimeStepChangeSliderValue = 0.00001f;
-
     explicit GLWidget(QWidget* parent = nullptr);
     ~GLWidget() = default;
+
+    void RestartSimulation();
 
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
@@ -85,11 +73,15 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Eigen::Vector3f last_position = Eigen::Vector3f(0.f, 0.f, 0.f);
 
     // Slider Data
-    float slider_mass_value = kMinimumMassSliderValue;
-    float slider_spring_constant_value = kMinimumSpringConstantSliderValue;
-    float slider_damping_constant_value = kMinimumDampingSliderValue;
-    float slider_rest_length_value = kMinimumSpringRestLengthSliderValue;
-    float slider_time_step_value = kMinimumTimeStepChangeSliderValue;
+    float slider_mass_value = MassSpringSystem::kMinimumMassValue;
+    float slider_spring_constant_value =
+        MassSpringSystem::kMinimumSpringConstantValue;
+    float slider_damping_constant_value =
+        MassSpringSystem::kMinimumDampingValue;
+    float slider_rest_length_value =
+        MassSpringSystem::kMinimumSpringRestLengthValue;
+    float slider_time_step_value =
+        MassSpringSystem::kMinimumTimeStepChangeValue;
 
     // Draw Timers for the sim time step
     QTimer* draw_timer;
@@ -119,6 +111,5 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
 
     float Interpolate(float v0, float v1, float t);
 
-    void InitializeSimulation();
     void PrintParameters();
 };

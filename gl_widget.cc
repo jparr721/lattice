@@ -17,7 +17,7 @@
 GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
 
-    InitializeSimulation();
+    mass_spring_system = std::make_unique<MassSpringSystem>();
 
     float updates_per_second = 120;
     float draws_per_second = 30;
@@ -44,53 +44,54 @@ void GLWidget::Update() {
     float dt = (float)delta_timer.elapsed() / 1000;
 
     delta_timer.restart();
-    mass_spring_system->Update(dt);
+    mass_spring_system->Update();
 }
 
 void GLWidget::SetMass(float value) {
     slider_mass_value =
-        Interpolate(kMinimumMassSliderValue, kMaximumMassSliderValue,
-                    (float)value / 100.0f);
+        Interpolate(MassSpringSystem::kMinimumMassValue,
+                    MassSpringSystem::kMaximumMassValue, (float)value / 100.0f);
 
     mass_spring_system->SetMassWeight(slider_mass_value);
 
     emit OnMassChange(value);
-    InitializeSimulation();
+    RestartSimulation();
 }
 
 void GLWidget::SetSpringConstant(float value) {
-    slider_spring_constant_value =
-        Interpolate(kMinimumSpringConstantSliderValue,
-                    kMaximumSpringConstantSliderValue, (float)value / 100.f);
+    slider_spring_constant_value = Interpolate(
+        MassSpringSystem::kMinimumSpringConstantValue,
+        MassSpringSystem::kMaximumSpringConstantValue, (float)value / 100.f);
     mass_spring_system->SetSpringStiffness(slider_spring_constant_value);
     emit OnSpringConstantChange(value);
-    InitializeSimulation();
+    RestartSimulation();
 }
 
 void GLWidget::SetSpringDampingConstant(float value) {
-    slider_damping_constant_value =
-        Interpolate(kMinimumDampingSliderValue, kMaximumDampingSliderValue,
-                    (float)value / 100.f);
+    slider_damping_constant_value = Interpolate(
+        MassSpringSystem::kMinimumDampingValue,
+        MassSpringSystem::kMaximumDampingValue, (float)value / 100.f);
     mass_spring_system->SetMassDampingConstant(slider_damping_constant_value);
     emit OnSpringDampingChange(value);
-    InitializeSimulation();
+    RestartSimulation();
 }
 
 void GLWidget::SetSpringRestLength(float value) {
-    slider_rest_length_value =
-        Interpolate(kMinimumSpringRestLengthSliderValue,
-                    kMaximumSpringRestLengthSliderValue, (float)value / 100.f);
+    slider_rest_length_value = Interpolate(
+        MassSpringSystem::kMinimumSpringRestLengthValue,
+        MassSpringSystem::kMaximumSpringRestLengthValue, (float)value / 100.f);
     mass_spring_system->SetSpringRestLength(value);
     emit OnSpringRestLengthChange(value);
-    InitializeSimulation();
+    RestartSimulation();
 }
 
 void GLWidget::SetTimeStep(float value) {
-    slider_time_step_value =
-        Interpolate(kMinimumTimeStepChangeSliderValue,
-                    kMaximumTimeStepChangeSliderValue, (float)value / 100.f);
+    slider_time_step_value = Interpolate(
+        MassSpringSystem::kMinimumTimeStepChangeValue,
+        MassSpringSystem::kMaximumTimeStepChangeValue, (float)value / 100.f);
+    mass_spring_system->SetTimeStep(slider_time_step_value);
     emit OnTimeStepChange(value);
-    InitializeSimulation();
+    RestartSimulation();
 }
 
 void GLWidget::initializeGL() {
@@ -129,7 +130,7 @@ void GLWidget::paintGL() {
     program_id->setUniformValue(matrix_uniform, matrix);
     auto shapes = mass_spring_system->Shapes();
     auto colors = mass_spring_system->Colors();
-    mass_spring_system->Update(0.1f);
+    mass_spring_system->Update();
 
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0,
                           static_cast<void*>(shapes.data()));
@@ -158,7 +159,7 @@ void GLWidget::keyPressEvent(QKeyEvent* event) {
         if (key == Keyboard::kPrint) {
             PrintParameters();
         } else if (key == Keyboard::kRestart) {
-            InitializeSimulation();
+            RestartSimulation();
         }
     }
 }
@@ -185,9 +186,8 @@ float GLWidget::Interpolate(float v0, float v1, float t) {
     return v0 + t * (v1 - v0);
 }
 
-void GLWidget::InitializeSimulation() {
-    mass_spring_system = std::make_unique<MassSpringSystem>();
-    mass_spring_system->Initialize();
+void GLWidget::RestartSimulation() {
+    mass_spring_system->Reset();
 
     is_restarted = frame == 0 ? false : true;
 }

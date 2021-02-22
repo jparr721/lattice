@@ -53,12 +53,13 @@ Window::Window(MainWindow* _main_window) : main_window(_main_window) {
 
     setLayout(main_layout);
 
-    mass_slider->setValue(GLWidget::kMinimumMassSliderValue);
+    mass_slider->setValue(MassSpringSystem::kMinimumMassValue);
     spring_constant_slider->setValue(
-        GLWidget::kMinimumSpringConstantSliderValue);
-    damping_constant_slider->setValue(GLWidget::kMinimumDampingSliderValue);
-    rest_length_slider->setValue(GLWidget::kMinimumSpringRestLengthSliderValue);
-    time_step_slider->setValue(GLWidget::kMinimumTimeStepChangeSliderValue);
+        MassSpringSystem::kMinimumSpringConstantValue);
+    damping_constant_slider->setValue(MassSpringSystem::kMinimumDampingValue);
+    rest_length_slider->setValue(
+        MassSpringSystem::kMinimumSpringRestLengthValue);
+    time_step_slider->setValue(MassSpringSystem::kMinimumTimeStepChangeValue);
 
     setWindowTitle(tr(kWindowTitle));
     setFocus();
@@ -78,7 +79,7 @@ void Window::CreateChartsLayout() {
 
     force_y_line_x_axis->setTickCount(5);
     force_y_line_x_axis->setRange(kMinFrame, kMaxFrame);
-    force_y_line_y_axis->setRange(-10, 10);
+    force_y_line_y_axis->setRange(0, 100);
     force_y_line_y_axis->setTickCount(5);
 
     force_chart_view = new QtCharts::QChartView(force_chart);
@@ -99,17 +100,17 @@ void Window::CreateChartsLayout() {
     acceleration_y_line_x_axis->setTickCount(5);
     acceleration_y_line_x_axis->setRange(kMinFrame, kMaxFrame);
     acceleration_y_line_y_axis->setTickCount(5);
-    acceleration_y_line_y_axis->setRange(-1000, 1000);
+    acceleration_y_line_y_axis->setRange(-10, 10);
 
     acceleration_chart_view = new QtCharts::QChartView(acceleration_chart);
 
     // =============================================================
     velocity_y_line = new QtCharts::QSplineSeries(this);
-    velocity_y_line->setName("Acceleration Y Value");
+    velocity_y_line->setName("Velocity Y Value");
 
     velocity_chart = new QtCharts::QChart();
     velocity_chart->addSeries(velocity_y_line);
-    velocity_chart->setTitle("Acceleration Over Time");
+    velocity_chart->setTitle("Velocity Over Time");
     velocity_chart->addAxis(velocity_y_line_x_axis, Qt::AlignBottom);
     velocity_chart->addAxis(velocity_y_line_y_axis, Qt::AlignLeft);
 
@@ -119,7 +120,7 @@ void Window::CreateChartsLayout() {
     velocity_y_line_x_axis->setTickCount(5);
     velocity_y_line_x_axis->setRange(kMinFrame, kMaxFrame);
     velocity_y_line_y_axis->setTickCount(5);
-    velocity_y_line_y_axis->setRange(-1000, 1000);
+    velocity_y_line_y_axis->setRange(-10, 10);
 
     velocity_chart_view = new QtCharts::QChartView(velocity_chart);
     // =============================================================
@@ -146,14 +147,23 @@ void Window::CreateSliders() {
     time_step_slider = CreateSlider();
 
     connect(mass_slider, &QSlider::valueChanged, widget, &GLWidget::SetMass);
+    connect(widget, &GLWidget::OnMassChange, mass_slider, &QSlider::setValue);
+
     connect(spring_constant_slider, &QSlider::valueChanged, widget,
             &GLWidget::SetSpringConstant);
+    connect(widget, &GLWidget::OnSpringConstantChange, spring_constant_slider, &QSlider::setValue);
+
     connect(damping_constant_slider, &QSlider::valueChanged, widget,
             &GLWidget::SetSpringDampingConstant);
+    connect(widget, &GLWidget::OnSpringDampingChange, damping_constant_slider, &QSlider::setValue);
+
     connect(rest_length_slider, &QSlider::valueChanged, widget,
             &GLWidget::SetSpringRestLength);
+    connect(widget, &GLWidget::OnSpringRestLengthChange, rest_length_slider, &QSlider::setValue);
+
     connect(time_step_slider, &QSlider::valueChanged, widget,
             &GLWidget::SetTimeStep);
+    connect(widget, &GLWidget::OnTimeStepChange, time_step_slider, &QSlider::setValue);
 }
 
 void Window::CreateTimer() {
