@@ -151,19 +151,23 @@ void Window::CreateSliders() {
 
     connect(spring_constant_slider, &QSlider::valueChanged, widget,
             &GLWidget::SetSpringConstant);
-    connect(widget, &GLWidget::OnSpringConstantChange, spring_constant_slider, &QSlider::setValue);
+    connect(widget, &GLWidget::OnSpringConstantChange, spring_constant_slider,
+            &QSlider::setValue);
 
     connect(damping_constant_slider, &QSlider::valueChanged, widget,
             &GLWidget::SetSpringDampingConstant);
-    connect(widget, &GLWidget::OnSpringDampingChange, damping_constant_slider, &QSlider::setValue);
+    connect(widget, &GLWidget::OnSpringDampingChange, damping_constant_slider,
+            &QSlider::setValue);
 
     connect(rest_length_slider, &QSlider::valueChanged, widget,
             &GLWidget::SetSpringRestLength);
-    connect(widget, &GLWidget::OnSpringRestLengthChange, rest_length_slider, &QSlider::setValue);
+    connect(widget, &GLWidget::OnSpringRestLengthChange, rest_length_slider,
+            &QSlider::setValue);
 
     connect(time_step_slider, &QSlider::valueChanged, widget,
             &GLWidget::SetTimeStep);
-    connect(widget, &GLWidget::OnTimeStepChange, time_step_slider, &QSlider::setValue);
+    connect(widget, &GLWidget::OnTimeStepChange, time_step_slider,
+            &QSlider::setValue);
 }
 
 void Window::CreateTimer() {

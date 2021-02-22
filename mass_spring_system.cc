@@ -188,7 +188,6 @@ void MassSpringSystem::SetMassDampingConstant(float value) {
     }
 }
 
-
 Eigen::Vector4f MassSpringSystem::GetFirstMovingMassVelocity() {
     for (auto mass : masses) {
         if (!mass->is_fixed) {

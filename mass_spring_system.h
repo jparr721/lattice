@@ -46,9 +46,7 @@ class MassSpringSystem {
     void SetMassDampingConstant(float value);
 
     // Time Step Mutators
-    void SetTimeStep(float value) {
-      timestep_size = value;
-    }
+    void SetTimeStep(float value) { timestep_size = value; }
 
     // Mass Getter
     std::optional<std::shared_ptr<Mass>> GetMassByName(const std::string& name);

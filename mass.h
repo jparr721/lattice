@@ -31,7 +31,9 @@ class Mass : public std::enable_shared_from_this<Mass> {
     void SetPosition(const Eigen::Vector4f& value) { position = value; }
     void SetAcceleration(const Eigen::Vector4f& value) { acceleration = value; }
     void SetVelocity(const Eigen::Vector4f& value) { velocity = value; }
-    void AddSpring(std::shared_ptr<Spring> _spring) { springs.push_back(_spring); }
+    void AddSpring(std::shared_ptr<Spring> _spring) {
+        springs.push_back(_spring);
+    }
 
     // Complex Setters
     /**

@@ -14,8 +14,8 @@ float EuclideanDistance(const Eigen::Vector4f& left,
     const auto ry = right(1);
     const auto rz = right(2);
 
-    const auto diff = std::pow(lx - rx, 2) +
-      std::pow(ly - ry, 2) + std::pow(lz - rz, 2);
+    const auto diff =
+        std::pow(lx - rx, 2) + std::pow(ly - ry, 2) + std::pow(lz - rz, 2);
 
     return std::sqrt(diff);
 }
