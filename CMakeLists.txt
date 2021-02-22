@@ -23,6 +23,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt5 COMPONENTS Gui REQUIRED)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
@@ -32,4 +33,13 @@ find_package(Qt5 COMPONENTS Quick REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Gui Qt5::OpenGL Qt5::Core Qt5::Charts Qt5::Quick)
+target_link_libraries(
+  ${PROJECT_NAME}
+  Qt5::Widgets
+  Qt5::Gui
+  Qt5::OpenGL
+  Qt5::Core
+  Qt5::Charts
+  Qt5::Quick
+  Eigen3::Eigen
+)

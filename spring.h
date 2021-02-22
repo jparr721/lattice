@@ -1,73 +1,67 @@
 #pragma once
 
 #include "colors.h"
-#include "mass.h"
-#include "sim_object.h"
+#include "utility.h"
 
+#include <iostream>
 #include <memory>
+#include <vector>
 
-class Spring : public SimObject {
+class Mass;
+
+class Spring : public std::enable_shared_from_this<Spring> {
   public:
-    Spring(float stiffness, float resting_length, QVector3D color,
+    Spring(float stiffness, float resting_length, Eigen::Vector3f color,
            std::shared_ptr<Mass>& _left_mass,
            std::shared_ptr<Mass>& _right_mass)
-        : SimObject(QVector4D(0.f, 0.f, 0.f, 1.f), colors::kGreen),
-          stiffness(stiffness), rest_length(resting_length),
-          left_mass(_left_mass), right_mass(_right_mass) {}
+        : kColor(colors::kGreen), stiffness(stiffness),
+          rest_length(resting_length), left_mass(_left_mass),
+          right_mass(_right_mass) {}
 
-    void Initialize() {
-        ComputeVertexPoints();
+    // Class Initializers and Mutators
+    void Initialize();
+    void ComputeVertexPoints();
 
-        colors = std::vector<QVector3D>{{kColor, kColor, kColor}};
-
-        is_init = true;
-    }
-
-    inline void Update(float dt) { ApplySpringForces(); }
-
-    inline void ComputeVertexPoints() {
-        const auto lpos = left_mass->Position();
-        const auto rpos = right_mass->Position();
-
-        const auto v1 = QVector3D(lpos.x(), lpos.y(), position.z());
-        const auto v2 = QVector3D(rpos.x(), rpos.y(), position.z());
-        const auto v3 = QVector3D(rpos.x() + 0.01f, rpos.y(), position.z());
-
-        vertices = std::vector<QVector3D>{{v1, v2, v3}};
-    }
-
-    void Translate(const QVector3D& translation_vector) { return; }
-
+    // Setters
     void SetStiffness(float value) { stiffness = value; }
-
     void SetRestLength(float value) { rest_length = value; }
 
-    QVector4D Force() const { return force; }
+    // Trivial Getters
+    auto size() { return vertices.size(); }
+    Eigen::Vector4f Force() const { return force; }
+    std::vector<Eigen::Vector3f> Vertices() { return vertices; }
+    std::vector<Eigen::Vector3f> Colors() { return colors; }
+
+    // Non Trivial Getters
+    Eigen::Vector4f CalculateCurrentForce(std::shared_ptr<Mass> ref);
 
   private:
+    // The initialization status of the fixture object.
+    bool is_init = false;
+
     // The spring k value.
     float stiffness;
 
     // The resting length of the spring in the Y direction.
     float rest_length;
 
+    // The spring calculation damping constant to prevent explosions.
+    float damping_constant = 0.01;
+
+    const Eigen::Vector3f kColor;
+
     // The force that the spring is exerting;
-    QVector4D force;
+    Eigen::Vector4f force;
 
+    // Represents the vertices of the fixture.
+    std::vector<Eigen::Vector3f> vertices;
+
+    // Represents the colors mapped to each vertex.
+    std::vector<Eigen::Vector3f> colors;
+
+    // The left-side mass the spring is attached to.
     std::shared_ptr<Mass> left_mass;
+
+    // The right-side mass the spring is attached to.
     std::shared_ptr<Mass> right_mass;
-
-    void ApplySpringForces() {
-        const auto current_spring_length =
-            left_mass->Position().toVector3D().distanceToPoint(
-                right_mass->Position().toVector3D());
-
-        const auto lr_diff = left_mass->Position() - right_mass->Position();
-        auto mass_norm = lr_diff.normalized();
-
-        force = stiffness * (current_spring_length - rest_length) * mass_norm;
-        QVector4D mass_acceleration_delta = force / right_mass->Weight();
-
-        right_mass->ChangeAcceleration(mass_acceleration_delta);
-    }
 };

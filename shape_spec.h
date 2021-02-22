@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <QVector3D>
+#include <Eigen/Dense>
 
 enum VertexParameters {
     NAME = 0x00,
@@ -17,7 +17,7 @@ enum VertexParameters {
 
 struct MassNode {
     std::string name;
-    QVector3D color;
+    Eigen::Vector3f color;
     float size;
     bool fixed;
     std::vector<std::string> adjacencies;
