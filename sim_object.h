@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QVector3D>
-#include <QVector4D>
 #include <vector>
+
+#include <Eigen/Dense>
 
 /**
  @brief SimObject represents a type of object which can be loaded and interacted
@@ -10,20 +10,20 @@
  */
 class SimObject {
   public:
-    SimObject(QVector4D _position, QVector3D color)
+    SimObject(Eigen::Vector4f _position, Eigen::Vector3f color)
         : position(_position), kColor(color) {}
 
     virtual ~SimObject() = default;
     virtual void Initialize() = 0;
     virtual inline void Update(float dt) = 0;
-    virtual void Translate(const QVector3D& translation_vector) = 0;
+    virtual void Translate(const Eigen::Vector3f& translation_vector) = 0;
 
     virtual inline void ComputeVertexPoints() = 0;
 
-    std::vector<QVector3D> Vertices() { return vertices; }
-    std::vector<QVector3D> Colors() { return colors; }
+    std::vector<Eigen::Vector3f> Vertices() { return vertices; }
+    std::vector<Eigen::Vector3f> Colors() { return colors; }
 
-    QVector4D Position() { return position; }
+    Eigen::Vector4f Position() { return position; }
 
     auto size() { return vertices.size(); }
 
@@ -31,14 +31,14 @@ class SimObject {
     // The initialization status of the fixture object.
     bool is_init = false;
 
-    const QVector3D kColor;
+    const Eigen::Vector3f kColor;
 
     // Represents the current position of the fixture.
-    QVector4D position;
+    Eigen::Vector4f position;
 
     // Represents the vertices of the fixture.
-    std::vector<QVector3D> vertices;
+    std::vector<Eigen::Vector3f> vertices;
 
     // Represents the colors mapped to each vertex.
-    std::vector<QVector3D> colors;
+    std::vector<Eigen::Vector3f> colors;
 };

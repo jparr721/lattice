@@ -13,7 +13,6 @@
 #include <QOpenGLPaintDevice>
 #include <QOpenGLShaderProgram>
 #include <QPainter>
-#include <QVector3D>
 
 GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
@@ -87,7 +86,9 @@ void GLWidget::SetSpringRestLength(float value) {
 }
 
 void GLWidget::SetTimeStep(float value) {
-    slider_time_step_value = value;
+    slider_time_step_value =
+        Interpolate(kMinimumTimeStepChangeSliderValue,
+                    kMaximumTimeStepChangeSliderValue, (float)value / 100.f);
     emit OnTimeStepChange(value);
     InitializeSimulation();
 }
@@ -201,15 +202,15 @@ void GLWidget::PrintParameters() {
     std::cout << "==============================" << std::endl;
 }
 
-QVector4D GLWidget::CurrentSimObjectVelocity() {
+Eigen::Vector4f GLWidget::CurrentSimObjectVelocity() {
     return mass_spring_system->GetFirstMovingMassVelocity();
 }
 
-QVector4D GLWidget::CurrentSimObjectAcceleration() {
+Eigen::Vector4f GLWidget::CurrentSimObjectAcceleration() {
     return mass_spring_system->GetFirstMovingMassAcceleration();
 }
 
-QVector4D GLWidget::CurrentSimSpringForce() {
+Eigen::Vector4f GLWidget::CurrentSimSpringForce() {
     return mass_spring_system->GetFirstSpringForce();
 }
 
@@ -229,16 +230,17 @@ bool GLWidget::IsRestarted() {
  * translated"
  */
 void GLWidget::mousePressEvent(QMouseEvent* event) {
-    last_position = QVector3D(event->x(), event->y(), 0.f);
+    last_position = Eigen::Vector3f(event->x(), event->y(), 0.f);
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent* event) {
     int x = event->x();
     int y = event->y();
-    QVector3D dposition = QVector3D(x, y, 0.f) - last_position;
+    Eigen::Vector3f dposition = Eigen::Vector3f(x, y, 0.f) - last_position;
 
     // TODO(@jparr721) - This sucks.
-    QVector3D dposition_scaled = dposition * QVector3D(0.01f, 0.01f, 0.0f);
+    Eigen::Vector3f dposition_scaled =
+        (dposition.array() * Eigen::Array3f(0.01f, 0.01f, 0.0f)).matrix();
 
     // Click and drag with left moves top group
     if (event->buttons() & Qt::LeftButton) {
@@ -250,5 +252,5 @@ void GLWidget::mouseMoveEvent(QMouseEvent* event) {
         mass_spring_system->TranslateBottomGroup(dposition_scaled);
     }
 
-    last_position = QVector3D(x, y, 0.f);
+    last_position = Eigen::Vector3f(x, y, 0.f);
 }

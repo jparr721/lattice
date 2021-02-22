@@ -24,14 +24,14 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     constexpr static float kMinimumSpringConstantSliderValue = 1.0f;
     constexpr static float kMinimumDampingSliderValue = 0.5;
     constexpr static float kMinimumSpringRestLengthSliderValue = 0.5f;
-    constexpr static float kMinimumTimeStepChangeSliderValue = 0.0001;
+    constexpr static float kMinimumTimeStepChangeSliderValue = 0.000000001;
 
     // Slider Maxmum Values
     constexpr static float kMaximumMassSliderValue = 10.0f;
     constexpr static float kMaximumSpringConstantSliderValue = 50.0f;
     constexpr static float kMaximumDampingSliderValue = 5.0f;
     constexpr static float kMaximumSpringRestLengthSliderValue = 10.0f;
-    constexpr static float kMaximumTimeStepChangeSliderValue = 1.0f;
+    constexpr static float kMaximumTimeStepChangeSliderValue = 0.00001f;
 
     explicit GLWidget(QWidget* parent = nullptr);
     ~GLWidget() = default;
@@ -39,9 +39,9 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
 
-    QVector4D CurrentSimObjectVelocity();
-    QVector4D CurrentSimObjectAcceleration();
-    QVector4D CurrentSimSpringForce();
+    Eigen::Vector4f CurrentSimObjectVelocity();
+    Eigen::Vector4f CurrentSimObjectAcceleration();
+    Eigen::Vector4f CurrentSimSpringForce();
 
     bool IsRestarted();
 
@@ -82,7 +82,7 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     constexpr static int kHeight = 1000;
 
     // Positional Translation Parameters
-    QVector3D last_position = QVector3D(0.f, 0.f, 0.f);
+    Eigen::Vector3f last_position = Eigen::Vector3f(0.f, 0.f, 0.f);
 
     // Slider Data
     float slider_mass_value = kMinimumMassSliderValue;

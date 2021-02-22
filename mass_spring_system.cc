@@ -21,14 +21,15 @@ void MassSpringSystem::Initialize() {
     for (const auto& [node, adjacencies] : shape_spec->graph) {
         // Top Masses
         if (i < 4) {
-            auto position = QVector4D(top_x + (i * .4), top_y, top_z, 1.0f);
+            auto position =
+                Eigen::Vector4f(top_x + (i * .4), top_y, top_z, 1.0f);
             auto mass = std::make_shared<Mass>(node.size, node.name, node.fixed,
                                                node.color, position);
             AddMass(mass);
             top_masses.push_back(mass);
         } else { // Bottom Masses
-            auto position =
-                QVector4D(bottom_x + ((i % 4) * .4), bottom_y, bottom_z, 1.0f);
+            auto position = Eigen::Vector4f(bottom_x + ((i % 4) * .4), bottom_y,
+                                            bottom_z, 1.0f);
             auto mass = std::make_shared<Mass>(node.size, node.name, node.fixed,
                                                node.color, position);
             AddMass(mass);
@@ -180,27 +181,27 @@ void MassSpringSystem::SetMassDampingConstant(float value) {
     }
 }
 
-QVector4D MassSpringSystem::GetFirstMovingMassVelocity() {
+Eigen::Vector4f MassSpringSystem::GetFirstMovingMassVelocity() {
     for (auto mass : masses) {
         if (!mass->is_fixed) {
             return mass->Velocity();
         }
     }
 
-    return QVector4D(0, 0, 0, 0);
+    return Eigen::Vector4f(0, 0, 0, 0);
 }
 
-QVector4D MassSpringSystem::GetFirstMovingMassAcceleration() {
+Eigen::Vector4f MassSpringSystem::GetFirstMovingMassAcceleration() {
     for (auto mass : masses) {
         if (!mass->is_fixed) {
             return mass->Acceleration();
         }
     }
 
-    return QVector4D(0, 0, 0, 0);
+    return Eigen::Vector4f(0, 0, 0, 0);
 }
 
-QVector4D MassSpringSystem::GetFirstSpringForce() {
+Eigen::Vector4f MassSpringSystem::GetFirstSpringForce() {
     assert(is_init && "Must be initialized");
     assert(springs.size() > 0);
     const auto spring = springs[0];
@@ -220,7 +221,7 @@ MassSpringSystem::GetMassByName(const std::string& name) {
 }
 
 // TODO(@jparr721) - THIS IS BAD CODE DELETE LATER
-void MassSpringSystem::TranslateTopGroup(const QVector3D& direction) {
+void MassSpringSystem::TranslateTopGroup(const Eigen::Vector3f& direction) {
     for (auto mass : top_masses) {
         // Translate each individual mass
         mass->Translate(direction);
@@ -228,7 +229,7 @@ void MassSpringSystem::TranslateTopGroup(const QVector3D& direction) {
 }
 
 // TODO(@jparr721) - THIS IS BAD CODE DELETE LATER
-void MassSpringSystem::TranslateBottomGroup(const QVector3D& direction) {
+void MassSpringSystem::TranslateBottomGroup(const Eigen::Vector3f& direction) {
     for (auto mass : bottom_masses) {
         // Translate each individual mass
         mass->Translate(direction);

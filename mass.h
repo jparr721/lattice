@@ -1,109 +1,69 @@
 #pragma once
 
 #include "colors.h"
-#include "sim_object.h"
+#include "utility.h"
 
 #include <string>
 
 #include <QDebug>
-#include <QMatrix4x4>
 
-constexpr bool kFixedPosition = true;
-constexpr bool kUnfixedPosition = false;
-
-class Mass : public SimObject {
+class Mass {
   public:
     const bool is_fixed;
 
     Mass()
-        : SimObject(QVector4D(0.f, 0.f, 0.f, 0.f), colors::kBlue),
+        : position(Eigen::Vector4f(0.f, 0.f, 0.f, 0.f)), kColor(colors::kBlue),
           mass_weight(1), mass_size(1), is_fixed(false) {}
-    Mass(bool fixed, QVector4D starting_position)
-        : SimObject(starting_position, colors::kBlue), mass_weight(1),
-          mass_size(1), is_fixed(fixed) {}
-    Mass(float size, std::string name, bool fixed, QVector3D color,
-         QVector4D starting_position)
-        : SimObject(starting_position, color), is_fixed(fixed), name(name),
+    Mass(float size, std::string name, bool fixed, Eigen::Vector3f color,
+         Eigen::Vector4f starting_position)
+        : position(starting_position), kColor(color), is_fixed(fixed), name(name),
           mass_size(size) {}
     ~Mass() = default;
 
-    std::string Name() { return name; }
+    // Class Initializers
+    void Initialize();
+    void Update(float dt);
+    void ComputeVertexPoints();
+    void CalculateMassForces(float dt);
 
-    void CalculateMassForces(float dt = 0.1f) {
-        // We don't want to calculate for fixed masses, that would be bad.
-        assert(!is_fixed && "Mass is fixed");
-        CalculateAcceleration();
+    // Trivial Setters
+    void SetWeight(float value) { mass_weight = value; }
+    void SetDampingConstant(float value) { damping_constant = value; }
 
-        // Calculate new velocity with respect to time.
-        velocity = velocity + acceleration * dt;
-
-        // Calculate new position based on the current velocity with respect to
-        // time.
-        position = position + velocity * dt;
-    }
-
-    void Initialize() {
-        ComputeVertexPoints();
-
-        colors = std::vector<QVector3D>{{kColor, kColor, kColor}};
-
-        is_init = true;
-    }
-
-    inline void Update(float dt) {
-        if (is_fixed) {
-            return;
-        }
-
-        CalculateMassForces(dt);
-        ComputeVertexPoints();
-    }
-
-    inline void ComputeVertexPoints() {
-        // Construct our vertices centered around the origin position supplied
-        // on construction
-        const auto v1 =
-            QVector3D(position.x() - mass_size, position.y() - mass_size,
-                      position.z()); // Bottom Left
-        const auto v2 =
-            QVector3D(position.x() + mass_size, position.y() - mass_size,
-                      position.z()); // Bottom Right
-        const auto v3 = QVector3D(position.x(), position.y() + mass_size,
-                                  position.z()); // Top Center
-
-        vertices = std::vector<QVector3D>{{v1, v2, v3}};
-    }
-
-    void Translate(const QVector3D& translation_vector) {
-        auto translation_matrix = QMatrix4x4();
-
-        translation_matrix.setColumn(3, position);
-        translation_matrix.translate(translation_vector);
-
-        position = translation_matrix.column(3);
-
-        // Recompute our vertices
-        ComputeVertexPoints();
-    }
-
+    // Complex Setters
     /**
         @brief Updates the acceleration of the mass object by some positive or
        negative delta value.
      */
-    inline void ChangeAcceleration(const QVector4D& delta) {
-        acceleration += delta;
-    }
+    void ChangeAcceleration(const Eigen::Vector4f& delta);
+    void Translate(const Eigen::Vector3f& translation_vector);
 
-    void SetWeight(float value) { mass_weight = value; }
-    void SetDampingConstant(float value) { damping_constant = value; }
+    // Trivial Getters
+    float Weight() const { return mass_weight; }
+    float DampingConstant() const { return damping_constant; }
 
-    float Weight() { return mass_weight; }
-    float DampingConstant() { return damping_constant; }
+    std::string Name() { return name; }
 
-    QVector4D Velocity() const { return velocity; }
-    QVector4D Acceleration() const { return acceleration; }
+    Eigen::Vector4f Velocity() const { return velocity; }
+    Eigen::Vector4f Acceleration() const { return acceleration; }
+    Eigen::Vector4f Position() const { return position; }
+
+    std::vector<Eigen::Vector3f> Vertices() const { return vertices; }
+    std::vector<Eigen::Vector3f> Colors() const { return colors; }
+
+    auto size() const { return vertices.size(); }
 
   private:
+    // The initialization status of the fixture object.
+    bool is_init = false;
+
+    // Gravitational constant vector, applies -9.81f
+    // pounds of negative force
+    const Eigen::Vector4f kGravity = Eigen::Vector4f(0.0f, -9.81f, 0.0f, 1.0f);
+
+    // The color of the mass object.
+    const Eigen::Vector3f kColor;
+
     // The name of the mass node
     std::string name;
 
@@ -116,24 +76,20 @@ class Mass : public SimObject {
     // The size of the object centered around the current position.
     float mass_size;
 
-    // Gravitational constant vector, applies -9.81f
-    // pounds of negative force
-    const QVector4D kGravity = QVector4D(0.0f, -9.81f, 0.0f, 1.0f);
+    // Represents the current position of the fixture.
+    Eigen::Vector4f position;
+
+    // Represents the vertices of the fixture.
+    std::vector<Eigen::Vector3f> vertices;
+
+    // Represents the colors mapped to each vertex.
+    std::vector<Eigen::Vector3f> colors;
 
     // The velocity the object is moving at with respect to time.
-    QVector4D velocity = QVector4D(0.f, 0.f, 0.f, 0.f);
+    Eigen::Vector4f velocity = Eigen::Vector4f(0.f, 0.f, 0.f, 0.f);
 
     // The acceleration of the object with respect to time.
-    QVector4D acceleration = QVector4D(0.f, 0.f, 0.f, 0.f);
+    Eigen::Vector4f acceleration = Eigen::Vector4f(0.f, 0.f, 0.f, 0.f);
 
-    void CalculateAcceleration() {
-        // Calculate damping dynamically based on how fast the object is moving.
-        // Flip the sign of damping since we're adding it to the acceleration
-        // value.
-        auto damping = (-1 * damping_constant * velocity) / mass_weight;
-
-        // Calculate our acceleration with gravity doing gravity things and
-        // damping to prevent explosion.
-        acceleration = acceleration + kGravity + damping;
-    }
+    void CalculateAcceleration();
 };
