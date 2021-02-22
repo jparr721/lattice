@@ -1,10 +1,10 @@
 #pragma once
 
 #include "colors.h"
-#include "sim_object.h"
 #include "utility.h"
 
 #include <memory>
+#include <vector>
 
 class Mass;
 

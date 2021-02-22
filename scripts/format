@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -euox pipefail
+
+clang-format *.cc *.h -i

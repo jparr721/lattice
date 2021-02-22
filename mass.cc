@@ -21,13 +21,17 @@ void Mass::ComputeVertexPoints() {
     // Construct our vertices centered around the origin position supplied
     // on construction
     const auto v1 =
-        Eigen::Vector3f(position(utility::VectorPosition::X) - mass_size, position(utility::VectorPosition::Y) - mass_size,
+        Eigen::Vector3f(position(utility::VectorPosition::X) - mass_size,
+                        position(utility::VectorPosition::Y) - mass_size,
                         position(utility::VectorPosition::Z)); // Bottom Left
     const auto v2 =
-        Eigen::Vector3f(position(utility::VectorPosition::X) + mass_size, position(utility::VectorPosition::Y) - mass_size,
+        Eigen::Vector3f(position(utility::VectorPosition::X) + mass_size,
+                        position(utility::VectorPosition::Y) - mass_size,
                         position(utility::VectorPosition::Z)); // Bottom Right
-    const auto v3 = Eigen::Vector3f(position(utility::VectorPosition::X), position(utility::VectorPosition::Y) + mass_size,
-                                    position(utility::VectorPosition::Z)); // Top Center
+    const auto v3 =
+        Eigen::Vector3f(position(utility::VectorPosition::X),
+                        position(utility::VectorPosition::Y) + mass_size,
+                        position(utility::VectorPosition::Z)); // Top Center
 
     vertices = std::vector<Eigen::Vector3f>{{v1, v2, v3}};
 }

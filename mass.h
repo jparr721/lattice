@@ -16,8 +16,8 @@ class Mass {
           mass_weight(1), mass_size(1), is_fixed(false) {}
     Mass(float size, std::string name, bool fixed, Eigen::Vector3f color,
          Eigen::Vector4f starting_position)
-        : position(starting_position), kColor(color), is_fixed(fixed), name(name),
-          mass_size(size) {}
+        : position(starting_position), kColor(color), is_fixed(fixed),
+          name(name), mass_size(size) {}
     ~Mass() = default;
 
     // Class Initializers
