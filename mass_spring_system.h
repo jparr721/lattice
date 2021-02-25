@@ -4,6 +4,7 @@
 #include "spring.h"
 
 #include <optional>
+#include <string>
 #include <vector>
 
 #include <Eigen/Dense>
@@ -24,7 +25,7 @@ class MassSpringSystem {
     constexpr static float kMaximumSpringRestLengthValue = 10.0f;
     constexpr static float kMaximumTimeStepChangeValue = 0.1f;
 
-    MassSpringSystem();
+    MassSpringSystem(const std::string& _name = "sim_1");
     ~MassSpringSystem() = default;
 
     void Update();
@@ -69,6 +70,8 @@ class MassSpringSystem {
 
   private:
     bool is_init = false;
+
+    std::string name;
 
     float timestep_size = kMinimumTimeStepChangeValue;
 

@@ -7,6 +7,7 @@
 #include <sstream>
 
 ShapeSpec::ShapeSpec() {
+    // TODO(@jparr721) - Read this from CLI
     const std::string spec_file = "sim_specs/cube.spec";
     std::vector<std::string> lines;
 
@@ -32,6 +33,8 @@ void ShapeSpec::Parse(const std::vector<std::string>& lines) {
     for (auto line : lines) {
         if (StringStartsWith(line, kKeywordVertex)) {
             ParseVertex(line.substr(kKeywordVertex.size()), line_number);
+        } else if (StringStartsWith(line, kKeywordName)) {
+
         } else {
             std::cerr << "Parse error at line: " << line_number
                       << ". Invalid specifier " << line << std::endl;
@@ -51,6 +54,19 @@ std::vector<std::string> ShapeSpec::Split(const std::string& s) {
                                     std::istream_iterator<std::string>());
 }
 
+void ShapeSpec::ParseName(const std::string& parameters_string,
+                          int line_number) {
+    const auto params = Split(parameters_string);
+
+    if (params.size() < 2) {
+        std::cerr << "Parse error at line: " << line_number
+                  << ", missing parameter: name" << std::endl;
+    }
+
+    // "Magic" index which holds the name
+    auto name = params[1];
+}
+
 void ShapeSpec::ParseVertex(const std::string& parameters_string,
                             int line_number) {
 
@@ -58,6 +74,7 @@ void ShapeSpec::ParseVertex(const std::string& parameters_string,
     if (params.size() < VertexParameters::ADJACENCIES) {
         std::cerr << "Parse error at line: " << line_number
                   << ", missing parameter" << std::endl;
+        exit(1);
     }
 
     auto name = params[VertexParameters::NAME];

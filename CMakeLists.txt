@@ -16,6 +16,9 @@ set(Qt5_DIR /opt/homebrew/opt/qt/lib/cmake/Qt5)
 
 file(GLOB SOURCES *.cc)
 
+# Mac-Specific Includes Since Brew Sucks
+include_directories(/opt/homebrew/opt/assimp/include)
+link_directories(/opt/homebrew/opt/assimp/lib)
 include_directories(/opt/homebrew/opt/qt/include)
 link_directories(/opt/homebrew/opt/qt/lib)
 
@@ -23,6 +26,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+find_package(ASSIMP REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt5 COMPONENTS Gui REQUIRED)
@@ -35,6 +39,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(
   ${PROJECT_NAME}
+  assimp
   Qt5::Widgets
   Qt5::Gui
   Qt5::OpenGL

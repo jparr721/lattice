@@ -44,10 +44,13 @@ class ShapeSpec {
     ~ShapeSpec() = default;
 
   private:
+    inline static const std::string kKeywordName = "name";
     inline static const std::string kKeywordVertex = "vertex";
 
     void Parse(const std::vector<std::string>& lines);
     void ParseVertex(const std::string& parameters_string, int line_number);
+    void ParseName(const std::string& parameters_string, int line_number);
+
     void ComputeDiGraph();
 
     bool StringStartsWith(const std::string& s, const std::string& start);

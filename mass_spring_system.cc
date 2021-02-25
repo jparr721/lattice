@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 
-MassSpringSystem::MassSpringSystem() {
+MassSpringSystem::MassSpringSystem(const std::string& _name) : name(_name) {
     auto shape_spec = std::make_unique<ShapeSpec>();
 
     assert(shape_spec->graph.size() % 2 == 0);
@@ -33,28 +33,33 @@ MassSpringSystem::MassSpringSystem() {
         if (adjacencies.size() > 0) {
             // This'll break when we add more complex shapes!
             const MassNode left_mass_node = adjacencies[0];
-            const MassNode right_mass_node = adjacencies[1];
 
             auto center_node = GetMassByName(node.name);
             auto left_adjacent_node = GetMassByName(left_mass_node.name);
-            auto right_adjacent_node = GetMassByName(right_mass_node.name);
 
             assert(center_node != std::nullopt);
             assert(left_adjacent_node != std::nullopt);
-            assert(right_adjacent_node != std::nullopt);
 
             auto left_spring = std::make_shared<Spring>(
                 MassSpringSystem::kMinimumSpringConstantValue,
                 MassSpringSystem::kMinimumSpringRestLengthValue, colors::kGreen,
                 left_adjacent_node.value(), center_node.value());
-
-            auto right_spring = std::make_shared<Spring>(
-                MassSpringSystem::kMinimumSpringConstantValue,
-                MassSpringSystem::kMinimumSpringRestLengthValue, colors::kGreen,
-                center_node.value(), right_adjacent_node.value());
-
             AddSpring(left_spring);
-            AddSpring(right_spring);
+
+            if (adjacencies.size() > 1) {
+                const MassNode right_mass_node = adjacencies[1];
+                auto right_adjacent_node = GetMassByName(right_mass_node.name);
+
+                assert(right_adjacent_node != std::nullopt);
+
+                auto right_spring = std::make_shared<Spring>(
+                    MassSpringSystem::kMinimumSpringConstantValue,
+                    MassSpringSystem::kMinimumSpringRestLengthValue,
+                    colors::kGreen, center_node.value(),
+                    right_adjacent_node.value());
+
+                AddSpring(right_spring);
+            }
         }
     }
 
