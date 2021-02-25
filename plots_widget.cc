@@ -3,7 +3,8 @@
 
 #include <iostream>
 
-PlotsWidget::PlotsWidget(Window* _window, QWidget* parent) : window(_window), QWidget(parent) {
+PlotsWidget::PlotsWidget(GLWindow* _window, QWidget* parent)
+    : window(_window), QWidget(parent) {
     CreateTimer();
 
     force_y_line = new QtCharts::QSplineSeries(this);
@@ -74,11 +75,13 @@ PlotsWidget::PlotsWidget(Window* _window, QWidget* parent) : window(_window), QW
 
 void PlotsWidget::CreateTimer() {
     widget_poll_timeout = new QTimer(this);
-    connect(widget_poll_timeout, &QTimer::timeout, this, &PlotsWidget::UpdatePlots);
+    connect(widget_poll_timeout, &QTimer::timeout, this,
+            &PlotsWidget::UpdatePlots);
     widget_poll_timeout->start(1);
 
     plot_poll_timeout = new QTimer(this);
-    connect(plot_poll_timeout, &QTimer::timeout, this, &PlotsWidget::ResetPlots);
+    connect(plot_poll_timeout, &QTimer::timeout, this,
+            &PlotsWidget::ResetPlots);
     plot_poll_timeout->start(1);
 }
 
@@ -127,6 +130,7 @@ void PlotsWidget::UpdateAccelerationPlot() {
 void PlotsWidget::ResetVelocityPlot() { velocity_y_line->clear(); }
 
 void PlotsWidget::UpdateVelocityPlot() {
-    const auto current_velocity_vector = window->widget->CurrentSimObjectVelocity();
+    const auto current_velocity_vector =
+        window->widget->CurrentSimObjectVelocity();
     velocity_y_line->append(frame, current_velocity_vector.y());
 }

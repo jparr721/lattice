@@ -22,13 +22,13 @@ QT_END_NAMESPACE
 class GLWidget;
 class MainWindow;
 
-class Window : public QWidget {
+class GLWindow : public QWidget {
     Q_OBJECT
 
   public:
     GLWidget* widget = new GLWidget;
 
-    Window();
+    GLWindow();
 
   protected:
     void keyPressEvent(QKeyEvent* event) override;

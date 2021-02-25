@@ -14,7 +14,7 @@
 #include <QSplineSeries>
 #include <QStringLiteral>
 
-Window::Window() {
+GLWindow::GLWindow() {
     CreateSliders();
 
     sim_layout->addWidget(widget);
@@ -60,7 +60,7 @@ Window::Window() {
     setFocus();
 }
 
-void Window::CreateSliders() {
+void GLWindow::CreateSliders() {
     mass_label = new QLabel("Mass");
     mass_slider = CreateSlider();
 
@@ -100,7 +100,7 @@ void Window::CreateSliders() {
             &QSlider::setValue);
 }
 
-QSlider* Window::CreateSlider() {
+QSlider* GLWindow::CreateSlider() {
     auto slider = new QSlider(Qt::Horizontal);
     slider->setRange(0, 100);
     slider->setSingleStep(5);
@@ -111,7 +111,7 @@ QSlider* Window::CreateSlider() {
     return slider;
 }
 
-void Window::keyPressEvent(QKeyEvent* event) {
+void GLWindow::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Escape) {
         close();
     } else {

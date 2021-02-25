@@ -1,12 +1,12 @@
 #include "tab_widget.h"
-#include "plots_widget.h"
 #include "gl_window.h"
+#include "plots_widget.h"
 
 #include <QVBoxLayout>
 
 TabWidget::TabWidget(QWidget* parent) : QWidget(parent) {
     tab_widget = new QTabWidget;
-    const auto gl_window = new Window;
+    const auto gl_window = new GLWindow;
     tab_widget->addTab(gl_window, tr("Simulation"));
     tab_widget->addTab(new PlotsWidget(gl_window), tr("Plots"));
 

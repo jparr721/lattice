@@ -1,21 +1,21 @@
 #pragma once
 
-#include <QWidget>
 #include <QChart>
 #include <QChartView>
 #include <QHBoxLayout>
+#include <QScrollArea>
 #include <QSplineSeries>
 #include <QTimer>
 #include <QValueAxis>
-#include <QScrollArea>
+#include <QWidget>
 
-class Window;
+class GLWindow;
 
 class PlotsWidget : public QWidget {
     Q_OBJECT
 
   public:
-      explicit PlotsWidget(Window* _window, QWidget* parent = nullptr);
+    explicit PlotsWidget(GLWindow* _window, QWidget* parent = nullptr);
 
   public slots:
     void UpdatePlots();
@@ -26,7 +26,7 @@ class PlotsWidget : public QWidget {
     constexpr static int kMaxFrame = 1000;
     int frame = 0;
 
-    Window* window;
+    GLWindow* window;
 
     // Layouts - Plots
     QHBoxLayout* charts_layout = new QHBoxLayout;
