@@ -1,72 +1,35 @@
 #pragma once
 
-#include "gl_widget.h"
-
+#include <QWidget>
 #include <QChart>
 #include <QChartView>
 #include <QHBoxLayout>
-#include <QLabel>
 #include <QSplineSeries>
 #include <QTimer>
-#include <QVBoxLayout>
 #include <QValueAxis>
-#include <QWidget>
+#include <QScrollArea>
 
-#include <memory>
+class Window;
 
-QT_BEGIN_NAMESPACE
-class QSlider;
-class QPushButton;
-QT_END_NAMESPACE
-
-class GLWidget;
-class MainWindow;
-
-class Window : public QWidget {
+class PlotsWidget : public QWidget {
     Q_OBJECT
 
   public:
-    Window(MainWindow* _main_window);
+      explicit PlotsWidget(Window* _window, QWidget* parent = nullptr);
 
   public slots:
     void UpdatePlots();
     void ResetPlots();
 
-  protected:
-    void keyPressEvent(QKeyEvent* event) override;
-
   private:
     constexpr static int kMinFrame = 0;
-    constexpr static int kMaxFrame = 300;
-    constexpr static const char* kWindowTitle = "Lattice Sim";
+    constexpr static int kMaxFrame = 1000;
+    int frame = 0;
 
-    GLWidget* widget = new GLWidget;
-
-    // Layouts - Main
-    QVBoxLayout* main_layout = new QVBoxLayout;
+    Window* window;
 
     // Layouts - Plots
     QHBoxLayout* charts_layout = new QHBoxLayout;
-
-    // Layouts - Simulation
-    QHBoxLayout* sim_layout = new QHBoxLayout;
-
-    // Layouts - Controls
-    QVBoxLayout* controls_layout = new QVBoxLayout;
-
-    // Slider labels
-    QLabel* mass_label;
-    QLabel* spring_constant_label;
-    QLabel* damping_constant_label;
-    QLabel* rest_length_label;
-    QLabel* time_step_label;
-
-    // All of our slider objects in the mass spring system.
-    QSlider* mass_slider;
-    QSlider* spring_constant_slider;
-    QSlider* damping_constant_slider;
-    QSlider* rest_length_slider;
-    QSlider* time_step_slider;
 
     // Force Line Chart Axes
     QtCharts::QValueAxis* force_y_line_x_axis = new QtCharts::QValueAxis();
@@ -109,20 +72,7 @@ class Window : public QWidget {
     // Time for polling glWidget for reset status for updating plots
     QTimer* plot_poll_timeout;
 
-    // A reference to our management window instance.
-    MainWindow* main_window;
-
-    int frame = kMinFrame;
-
-    QSlider* CreateSlider();
-
     void CreateTimer();
-
-    void CreateSliders();
-
-    void CreateChartsLayout();
-
-    void CreateSimLayout();
 
     // Plot Reset
     void ResetForcePlot();

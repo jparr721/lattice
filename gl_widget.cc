@@ -2,7 +2,7 @@
 #include "colors.h"
 #include "mass.h"
 #include "spring.h"
-#include "window.h"
+#include "gl_window.h"
 
 #include <fstream>
 #include <iostream>

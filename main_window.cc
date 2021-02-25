@@ -1,5 +1,6 @@
 #include "main_window.h"
-#include "window.h"
+#include "gl_window.h"
+#include "tab_widget.h"
 
 #include <QMenu>
 #include <QMenuBar>
@@ -7,4 +8,4 @@
 
 MainWindow::MainWindow() { OnAddNew(); }
 
-void MainWindow::OnAddNew() { setCentralWidget(new Window(this)); }
+void MainWindow::OnAddNew() { setCentralWidget(new TabWidget(this)); }
