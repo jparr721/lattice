@@ -10,7 +10,7 @@ class Camera {
     float y;
     float z;
 
-    Camera() : x(0), y(0), z(-3) {}
+    Camera() : x(0), y(0), z(-10) {}
     Camera(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
     ~Camera() = default;
 

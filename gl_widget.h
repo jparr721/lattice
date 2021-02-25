@@ -66,8 +66,8 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     QOpenGLShaderProgram* program_id = nullptr;
 
     // Window Parameters
-    constexpr static int kWidth = 1200;
-    constexpr static int kHeight = 1000;
+    constexpr static int kWidth = 640;
+    constexpr static int kHeight = 720;
 
     // Positional Translation Parameters
     Eigen::Vector3f last_position = Eigen::Vector3f(0.f, 0.f, 0.f);

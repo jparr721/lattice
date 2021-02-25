@@ -79,7 +79,7 @@ void Window::CreateChartsLayout() {
 
     force_y_line_x_axis->setTickCount(5);
     force_y_line_x_axis->setRange(kMinFrame, kMaxFrame);
-    force_y_line_y_axis->setRange(0, 100);
+    force_y_line_y_axis->setRange(0, 200);
     force_y_line_y_axis->setTickCount(5);
 
     force_chart_view = new QtCharts::QChartView(force_chart);
@@ -100,7 +100,7 @@ void Window::CreateChartsLayout() {
     acceleration_y_line_x_axis->setTickCount(5);
     acceleration_y_line_x_axis->setRange(kMinFrame, kMaxFrame);
     acceleration_y_line_y_axis->setTickCount(5);
-    acceleration_y_line_y_axis->setRange(-10, 10);
+    acceleration_y_line_y_axis->setRange(-50, 50);
 
     acceleration_chart_view = new QtCharts::QChartView(acceleration_chart);
 
@@ -120,7 +120,7 @@ void Window::CreateChartsLayout() {
     velocity_y_line_x_axis->setTickCount(5);
     velocity_y_line_x_axis->setRange(kMinFrame, kMaxFrame);
     velocity_y_line_y_axis->setTickCount(5);
-    velocity_y_line_y_axis->setRange(-10, 10);
+    velocity_y_line_y_axis->setRange(-50, 50);
 
     velocity_chart_view = new QtCharts::QChartView(velocity_chart);
     // =============================================================
@@ -193,6 +193,11 @@ void Window::UpdatePlots() {
 
 void Window::ResetPlots() {
     if (widget->IsRestarted()) {
+        // If we reach the frame threshold, we need to restart the timer
+        if (!widget_poll_timeout->isActive()) {
+            widget_poll_timeout->start();
+        }
+
         ResetForcePlot();
         ResetAccelerationPlot();
         ResetVelocityPlot();
