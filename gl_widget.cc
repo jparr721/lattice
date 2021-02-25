@@ -1,8 +1,8 @@
 #include "gl_widget.h"
 #include "colors.h"
+#include "gl_window.h"
 #include "mass.h"
 #include "spring.h"
-#include "gl_window.h"
 
 #include <fstream>
 #include <iostream>

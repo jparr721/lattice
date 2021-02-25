@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QWidget>
 #include <QTabWidget>
+#include <QWidget>
 
 class TabWidget : public QWidget {
     Q_OBJECT
