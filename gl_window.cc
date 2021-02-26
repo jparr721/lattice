@@ -48,7 +48,7 @@ GLWindow::GLWindow() {
 
     setLayout(main_layout);
 
-    mass_slider->setValue(MassSpringSystem::kMinimumMassValue);
+    mass_slider->setValue(Mass::kMinimumMassValue);
     spring_constant_slider->setValue(
         MassSpringSystem::kMinimumSpringConstantValue);
     damping_constant_slider->setValue(MassSpringSystem::kMinimumDampingValue);

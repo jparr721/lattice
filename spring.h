@@ -11,6 +11,9 @@ class Mass;
 
 class Spring : public std::enable_shared_from_this<Spring> {
   public:
+    // Represents the vertices of the fixture.
+    std::vector<Eigen::Vector3f> vertices;
+
     Spring(float stiffness, float resting_length, Eigen::Vector3f color,
            std::shared_ptr<Mass>& _left_mass,
            std::shared_ptr<Mass>& _right_mass)
@@ -29,7 +32,6 @@ class Spring : public std::enable_shared_from_this<Spring> {
     // Trivial Getters
     auto size() { return vertices.size(); }
     Eigen::Vector4f Force() const { return force; }
-    std::vector<Eigen::Vector3f> Vertices() { return vertices; }
     std::vector<Eigen::Vector3f> Colors() { return colors; }
 
     // Non Trivial Getters
@@ -52,9 +54,6 @@ class Spring : public std::enable_shared_from_this<Spring> {
 
     // The force that the spring is exerting;
     Eigen::Vector4f force;
-
-    // Represents the vertices of the fixture.
-    std::vector<Eigen::Vector3f> vertices;
 
     // Represents the colors mapped to each vertex.
     std::vector<Eigen::Vector3f> colors;

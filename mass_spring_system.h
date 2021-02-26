@@ -12,14 +12,12 @@
 class MassSpringSystem {
   public:
     //  Minimum Values
-    constexpr static float kMinimumMassValue = 10.5f;
     constexpr static float kMinimumSpringConstantValue = 1.0f;
     constexpr static float kMinimumDampingValue = 0.5;
     constexpr static float kMinimumSpringRestLengthValue = 0.5f;
     constexpr static float kMinimumTimeStepChangeValue = 0.0001;
 
     //  Maxmum Values
-    constexpr static float kMaximumMassValue = 10.0f;
     constexpr static float kMaximumSpringConstantValue = 50.0f;
     constexpr static float kMaximumDampingValue = 5.0f;
     constexpr static float kMaximumSpringRestLengthValue = 10.0f;

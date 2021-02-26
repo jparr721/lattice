@@ -16,9 +16,8 @@ MassSpringSystem::MassSpringSystem() {
         const auto y = std::get<1>(xy);
 
         auto position = Eigen::Vector4f(x, y, 0.0f, 1.0f);
-        auto mass =
-            std::make_shared<Mass>(node.size, kMinimumMassValue, node.name,
-                                   node.fixed, node.color, position);
+        auto mass = std::make_shared<Mass>(node.size, node.name, node.fixed,
+                                           node.color, position);
         mass->Initialize();
         masses.push_back(std::move(mass));
 
@@ -30,7 +29,6 @@ MassSpringSystem::MassSpringSystem() {
 
         ++i;
     }
-
 
     for (const auto& [node, adjacencies] : shape_spec->graph) {
         auto center_node = GetMassByName(node.name);
@@ -115,14 +113,14 @@ void MassSpringSystem::ComputeShapes() {
         shapes.reserve(shapes_size);
 
     for (auto mass : masses) {
-        for (auto vertices : mass->Vertices()) {
-            shapes.push_back(vertices);
+        for (auto vertex_list : mass->vertices) {
+            shapes.push_back(vertex_list);
         }
     }
 
     for (auto spring : springs) {
-        for (auto vertices : spring->Vertices()) {
-            shapes.push_back(vertices);
+        for (auto vertex_list : spring->vertices) {
+            shapes.push_back(vertex_list);
         }
     }
 }
@@ -206,5 +204,5 @@ void MassSpringSystem::TranslateBottomGroup(const Eigen::Vector3f& direction) {
 }
 
 std::pair<int, int> MassSpringSystem::ComputeStartingPosition(int i) {
-    return std::pair<int, int>((i % 4), i < 4 ? 1 : -1);
+    return std::pair<int, int>((i % 4) * 4, i < 4 ? 10 : -10);
 }

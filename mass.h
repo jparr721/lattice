@@ -12,11 +12,17 @@ class Spring;
 class Mass : public std::enable_shared_from_this<Mass> {
   public:
     const bool is_fixed;
+    constexpr static float kMinimumMassValue = 10.5f;
+    constexpr static float kMaximumMassValue = 50.f;
 
-    Mass(float size, float _mass, std::string name, bool fixed,
-         Eigen::Vector3f color, Eigen::Vector4f starting_position)
+    // Represents the vertices of the fixture.
+    std::vector<Eigen::Vector3f> vertices;
+
+
+    Mass(float size, std::string name, bool fixed, Eigen::Vector3f color,
+         Eigen::Vector4f starting_position)
         : position(starting_position), kColor(color), is_fixed(fixed),
-          mass_weight(_mass), name(name), mass_size(size) {}
+          mass_weight(kMinimumMassValue), name(name), mass_size(size) {}
     ~Mass() = default;
 
     // Class Initializers
@@ -31,6 +37,7 @@ class Mass : public std::enable_shared_from_this<Mass> {
     void SetPosition(const Eigen::Vector4f& value) { position = value; }
     void SetAcceleration(const Eigen::Vector4f& value) { acceleration = value; }
     void SetVelocity(const Eigen::Vector4f& value) { velocity = value; }
+
     void AddSpring(std::shared_ptr<Spring> _spring) {
         springs.push_back(_spring);
     }
@@ -48,7 +55,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
     Eigen::Vector4f Acceleration() const { return acceleration; }
     Eigen::Vector4f Position() const { return position; }
 
-    std::vector<Eigen::Vector3f> Vertices() const { return vertices; }
     std::vector<Eigen::Vector3f> Colors() const { return colors; }
 
     auto size() const { return vertices.size(); }
@@ -79,9 +85,8 @@ class Mass : public std::enable_shared_from_this<Mass> {
     // Represents the current position of the fixture.
     Eigen::Vector4f position;
 
-    // Represents the vertices of the fixture.
-    std::vector<Eigen::Vector3f> vertices = std::vector<Eigen::Vector3f>(
-        3, Eigen::Vector3f(0.f, 0.f, 0.f));
+    // The original vertex positions
+    std::vector<Eigen::Vector3f> original_positions;
 
     // Represents the colors mapped to each vertex.
     std::vector<Eigen::Vector3f> colors;

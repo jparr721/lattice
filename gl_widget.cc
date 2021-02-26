@@ -38,14 +38,12 @@ QSize GLWidget::minimumSizeHint() const { return QSize(kWidth, kHeight); }
 
 QSize GLWidget::sizeHint() const { return QSize(kWidth, kHeight); }
 
-void GLWidget::Update() {
-    mass_spring_system->Update();
-}
+void GLWidget::Update() { mass_spring_system->Update(); }
 
 void GLWidget::SetMass(float value) {
     slider_mass_value =
-        Interpolate(MassSpringSystem::kMinimumMassValue,
-                    MassSpringSystem::kMaximumMassValue, (float)value / 100.0f);
+        Interpolate(Mass::kMinimumMassValue, Mass::kMaximumMassValue,
+                    (float)value / 100.0f);
 
     mass_spring_system->SetMassWeight(slider_mass_value);
 
@@ -119,7 +117,7 @@ void GLWidget::paintGL() {
 
     program_id->bind();
     QMatrix4x4 matrix;
-    matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+    matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 200.0f);
     matrix.translate(camera.x, camera.y, camera.z);
 
     program_id->setUniformValue(matrix_uniform, matrix);

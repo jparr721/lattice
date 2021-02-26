@@ -72,7 +72,7 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Eigen::Vector3f last_position = Eigen::Vector3f(0.f, 0.f, 0.f);
 
     // Slider Data
-    float slider_mass_value = MassSpringSystem::kMinimumMassValue;
+    float slider_mass_value = Mass::kMinimumMassValue;
     float slider_spring_constant_value =
         MassSpringSystem::kMinimumSpringConstantValue;
     float slider_damping_constant_value =
