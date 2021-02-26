@@ -80,7 +80,8 @@ class Mass : public std::enable_shared_from_this<Mass> {
     Eigen::Vector4f position;
 
     // Represents the vertices of the fixture.
-    std::vector<Eigen::Vector3f> vertices;
+    std::vector<Eigen::Vector3f> vertices = std::vector<Eigen::Vector3f>(
+        3, Eigen::Vector3f(0.f, 0.f, 0.f));
 
     // Represents the colors mapped to each vertex.
     std::vector<Eigen::Vector3f> colors;

@@ -31,7 +31,6 @@ class MassSpringSystem {
     void Update();
     void Reset();
 
-    void ComputeVertexPoints();
     void ComputeShapes();
     void ComputeColors();
 

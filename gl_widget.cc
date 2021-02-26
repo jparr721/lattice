@@ -119,7 +119,7 @@ void GLWidget::paintGL() {
 
     program_id->bind();
     QMatrix4x4 matrix;
-    matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 10.0f);
+    matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
     matrix.translate(camera.x, camera.y, camera.z);
 
     program_id->setUniformValue(matrix_uniform, matrix);

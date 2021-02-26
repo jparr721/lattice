@@ -66,11 +66,18 @@ void MassSpringSystem::Reset() {
         masses[i]->SetVelocity(zero_vector);
     }
 
+    for (auto mass : masses) {
+        mass->ComputeVertexPoints();
+    }
+
     Redraw();
 }
 
 void MassSpringSystem::Redraw() {
-    ComputeVertexPoints();
+    for (auto spring : springs) {
+        spring->ComputeVertexPoints();
+    }
+
     ComputeShapes();
 }
 
@@ -93,18 +100,6 @@ void MassSpringSystem::ComputeColors() {
         for (auto _colors : spring->Colors()) {
             colors.push_back(_colors);
         }
-    }
-}
-
-void MassSpringSystem::ComputeVertexPoints() {
-    for (auto mass : masses) {
-        // TODO(@jparr721) - Collision detection
-        mass->ComputeVertexPoints();
-    }
-
-    for (auto spring : springs) {
-        // TODO(@jparr721) - Collision detection
-        spring->ComputeVertexPoints();
     }
 }
 
