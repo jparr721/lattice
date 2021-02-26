@@ -15,7 +15,7 @@ class Camera {
     float rot;
     QVector3D translation;
 
-    Camera() : x(0), y(0), z(-25), rot(0) {}
+    Camera() : x(0), y(0), z(-50), rot(0) {}
     ~Camera() = default;
 
     void OnKeyPress(QKeyEvent* event);

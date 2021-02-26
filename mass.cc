@@ -20,7 +20,6 @@ void Mass::Update(float dt) {
     }
 
     CalculateMassForces(dt);
-    ComputeVertexPoints();
 }
 
 /**
@@ -30,9 +29,15 @@ void Mass::Update(float dt) {
 void Mass::ComputeVertexPoints() {
     for (auto i = 0u; i < vertices.size(); ++i) {
         auto vertex_triple = vertices[i];
-        vertices[i] = Eigen::Vector3f(vertex_triple.x() + position.x(),
-                                      vertex_triple.y() + position.y(),
-                                      vertex_triple.z() + position.z());
+        std::cout << "Before: " << vertex_triple << std::endl;
+        std::cout << "After: "  << Eigen::Vector3f(vertex_triple.x() + position.x(),
+                                              vertex_triple.y() + position.y(),
+                                              vertex_triple.z() + position.z())
+        << std::endl;
+        const auto triangle = Eigen::Vector3f(vertex_triple.x() + position.x(),
+                                              vertex_triple.y() + position.y(),
+                                              vertex_triple.z() + position.z());
+        vertices[i] = triangle;
     }
 }
 
@@ -52,12 +57,21 @@ void Mass::CalculateMassForces(float dt) {
     assert(!is_fixed && "Mass is fixed");
     CalculateAcceleration();
 
+    auto old_pos = position;
+
     // Calculate new velocity with respect to time.
     velocity += acceleration * dt;
 
     // Calculate new position based on the current velocity with respect to
     // time.
     position += velocity * 0.1 * dt;
+
+    if (old_pos != position) {
+        ComputeVertexPoints();
+        for (auto spring : springs) {
+            spring->ComputeVertexPoints();
+        }
+    }
 }
 
 void Mass::CalculateAcceleration() {

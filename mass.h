@@ -52,6 +52,8 @@ class Mass : public std::enable_shared_from_this<Mass> {
     std::vector<Eigen::Vector3f> Vertices() const { return vertices; }
     std::vector<Eigen::Vector3f> Colors() const { return colors; }
 
+    std::vector<std::shared_ptr<Spring>> Springs() const { return springs; }
+
     auto size() const { return vertices.size(); }
 
   private:

@@ -5,6 +5,7 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <Eigen/Dense>
@@ -31,9 +32,6 @@ class MassSpringSystem {
     void Update();
     void Reset();
 
-    void AddSpring(const std::shared_ptr<Spring>& spring);
-    void AddMass(const std::shared_ptr<Mass>& mass);
-
     void ComputeVertexPoints();
     void ComputeShapes();
     void ComputeColors();
@@ -52,10 +50,12 @@ class MassSpringSystem {
     // Mass Getter
     std::optional<std::shared_ptr<Mass>> GetMassByName(const std::string& name);
 
+    // TODO(@jparr721) - Make these work with all non-fixed masses
     // Mass Plottable Getters
     Eigen::Vector4f GetFirstMovingMassVelocity();
     Eigen::Vector4f GetFirstMovingMassAcceleration();
 
+    // TODO(@jparr721) - Make these work with all springs
     // Spring Plottable Getters
     Eigen::Vector4f GetFirstSpringForce();
 
@@ -64,13 +64,7 @@ class MassSpringSystem {
 
     auto size() { return springs.size() + masses.size(); }
 
-    // TODO(@jparr721) - Change when refactoring later!!!
-    void TranslateTopGroup(const Eigen::Vector3f& direction);
-    void TranslateBottomGroup(const Eigen::Vector3f& direction);
-
   private:
-    bool is_init = false;
-
     std::string name;
 
     float timestep_size = kMinimumTimeStepChangeValue;
@@ -87,9 +81,5 @@ class MassSpringSystem {
     // Our shapes' colors in a flat list.
     std::vector<Eigen::Vector3f> colors;
 
-    // TODO(@jparr721) - This is not a good way to do this which scales well.
-    std::vector<std::shared_ptr<Mass>> top_masses;
-    std::vector<std::shared_ptr<Mass>> bottom_masses;
-
-    void Redraw();
+    std::pair<int, int> ComputeStartingPosition(int i);
 };
