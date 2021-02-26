@@ -55,12 +55,21 @@ void Mass::CalculateMassForces(float dt) {
     assert(!is_fixed && "Mass is fixed");
     CalculateAcceleration();
 
+    auto old_pos = position;
+
     // Calculate new velocity with respect to time.
     velocity += acceleration * dt;
 
     // Calculate new position based on the current velocity with respect to
     // time.
     position += velocity * 0.1 * dt;
+
+    if (old_pos != position) {
+        ComputeVertexPoints();
+        for (auto spring : springs)  {
+            spring->ComputeVertexPoints();
+        }
+    }
 }
 
 void Mass::CalculateAcceleration() {

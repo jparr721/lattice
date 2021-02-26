@@ -7,7 +7,6 @@
 #include <memory>
 #include <string>
 
-#include <QElapsedTimer>
 #include <QLineSeries>
 #include <QMouseEvent>
 #include <QOpenGLFunctions>
@@ -86,7 +85,6 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     // Draw Timers for the sim time step
     QTimer* draw_timer;
     QTimer* update_timer;
-    QElapsedTimer delta_timer;
 
     // Simulation Params
     std::shared_ptr<MassSpringSystem> mass_spring_system;

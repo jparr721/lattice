@@ -4,6 +4,7 @@
 #include "spring.h"
 
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include <Eigen/Dense>
@@ -29,9 +30,6 @@ class MassSpringSystem {
 
     void Update();
     void Reset();
-
-    void AddSpring(const std::shared_ptr<Spring>& spring);
-    void AddMass(const std::shared_ptr<Mass>& mass);
 
     void ComputeVertexPoints();
     void ComputeShapes();
@@ -68,8 +66,6 @@ class MassSpringSystem {
     void TranslateBottomGroup(const Eigen::Vector3f& direction);
 
   private:
-    bool is_init = false;
-
     float timestep_size = kMinimumTimeStepChangeValue;
 
     // The springs in the sim
@@ -87,6 +83,8 @@ class MassSpringSystem {
     // TODO(@jparr721) - This is not a good way to do this which scales well.
     std::vector<std::shared_ptr<Mass>> top_masses;
     std::vector<std::shared_ptr<Mass>> bottom_masses;
+
+    std::pair<int, int> ComputeStartingPosition(int i);
 
     void Redraw();
 };

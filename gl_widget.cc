@@ -30,8 +30,6 @@ GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {
     update_timer = new QTimer(this);
     connect(update_timer, &QTimer::timeout, this, &GLWidget::Update);
     update_timer->start(1000.0 / updates_per_second);
-
-    delta_timer.start();
 }
 
 void GLWidget::Cleanup() { delete program_id; }
@@ -41,9 +39,6 @@ QSize GLWidget::minimumSizeHint() const { return QSize(kWidth, kHeight); }
 QSize GLWidget::sizeHint() const { return QSize(kWidth, kHeight); }
 
 void GLWidget::Update() {
-    float dt = (float)delta_timer.elapsed() / 1000;
-
-    delta_timer.restart();
     mass_spring_system->Update();
 }
 
@@ -130,7 +125,6 @@ void GLWidget::paintGL() {
     program_id->setUniformValue(matrix_uniform, matrix);
     auto shapes = mass_spring_system->Shapes();
     auto colors = mass_spring_system->Colors();
-    mass_spring_system->Update();
 
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0,
                           static_cast<void*>(shapes.data()));
