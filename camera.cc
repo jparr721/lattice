@@ -30,3 +30,8 @@ void Camera::OnKeyPress(QKeyEvent* event) {
     }
     keyboard.OnKeyReleased(key);
 }
+
+void Camera::OnMousePress(const Eigen::Vector3f& pos) {
+    rot = pos.sum();
+    translation = QVector3D(pos.x(), pos.y(), pos.z());
+}

@@ -1,10 +1,18 @@
 #include "mass_spring_system.h"
 #include "shape_spec.h"
+#include "vertex_buffer.h"
 
 #include <iostream>
 #include <memory>
 
 MassSpringSystem::MassSpringSystem(const std::string& _name) : name(_name) {
+    std::vector<Eigen::Vector3f> vertices;
+
+    // Load the obj file to represent our vertices.
+    if (!LoadObjFile("sim_specs/cube.obj", vertices)) {
+        exit(EXIT_FAILURE);
+    }
+
     auto shape_spec = std::make_unique<ShapeSpec>();
 
     assert(shape_spec->graph.size() % 2 == 0);
@@ -17,7 +25,9 @@ MassSpringSystem::MassSpringSystem(const std::string& _name) : name(_name) {
         auto position = Eigen::Vector4f(x, y, 0.0f, 1.0f);
         auto mass =
             std::make_shared<Mass>(node.size, kMinimumMassValue, node.name,
-                                   node.fixed, node.color, position);
+
+                                   node.fixed, vertices, node.color,
+    position);
         AddMass(mass);
 
         if (i < 4) {
@@ -42,13 +52,15 @@ MassSpringSystem::MassSpringSystem(const std::string& _name) : name(_name) {
 
             auto left_spring = std::make_shared<Spring>(
                 MassSpringSystem::kMinimumSpringConstantValue,
-                MassSpringSystem::kMinimumSpringRestLengthValue, colors::kGreen,
+                MassSpringSystem::kMinimumSpringRestLengthValue,
+    colors::kGreen,
                 left_adjacent_node.value(), center_node.value());
             AddSpring(left_spring);
 
             if (adjacencies.size() > 1) {
                 const MassNode right_mass_node = adjacencies[1];
-                auto right_adjacent_node = GetMassByName(right_mass_node.name);
+                auto right_adjacent_node =
+    GetMassByName(right_mass_node.name);
 
                 assert(right_adjacent_node != std::nullopt);
 
@@ -62,6 +74,17 @@ MassSpringSystem::MassSpringSystem(const std::string& _name) : name(_name) {
             }
         }
     }
+
+    /* auto mass = std::make_shared<Mass>(1, kMinimumMassValue, "foo", true, */
+    /*                                    vertices, colors::kRed, */
+    /*                                    Eigen::Vector4f(0.f, 0.f, 0.f, 1.f)); */
+
+    /* auto spring = std::make_shared<Spring>(kMinimumSpringConstantValue, */
+    /*                                        kMinimumSpringRestLengthValue, */
+    /*                                        colors::kGreen, mass, mass); */
+
+    /* AddMass(mass); */
+    /* AddSpring(spring); */
 
     for (auto mass : masses) {
         mass->Initialize();

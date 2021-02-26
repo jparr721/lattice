@@ -6,7 +6,10 @@
 void Mass::Initialize() {
     ComputeVertexPoints();
 
-    colors = std::vector<Eigen::Vector3f>{{kColor, kColor, kColor}};
+    colors.reserve(vertices.size());
+    for (auto i = 0u; i < vertices.size(); ++i) {
+        colors.push_back(kColor);
+    }
 
     is_init = true;
 }
@@ -20,19 +23,17 @@ void Mass::Update(float dt) {
     ComputeVertexPoints();
 }
 
+/**
+ * Iterates the list of existing vertices, overwriting the positions
+ * with the new vertex points offset by the current position
+ */
 void Mass::ComputeVertexPoints() {
-    // Construct our vertices centered around the origin position supplied
-    // on construction
-    const auto v1 =
-        Eigen::Vector3f(position.x() - mass_size, position.y() - mass_size,
-                        position.z()); // Bottom Left
-    const auto v2 =
-        Eigen::Vector3f(position.x() + mass_size, position.y() - mass_size,
-                        position.z()); // Bottom Right
-    const auto v3 = Eigen::Vector3f(position.x(), position.y() + mass_size,
-                                    position.z()); // Top Center
-
-    vertices = std::vector<Eigen::Vector3f>{{v1, v2, v3}};
+    for (auto i = 0u; i < vertices.size(); ++i) {
+        auto vertex_triple = vertices[i];
+        vertices[i] = Eigen::Vector3f(vertex_triple.x() + position.x(),
+                                      vertex_triple.y() + position.y(),
+                                      vertex_triple.z() + position.z());
+    }
 }
 
 void Mass::Translate(const Eigen::Vector3f& translation_vector) {

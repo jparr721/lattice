@@ -9,10 +9,12 @@
 #include <sstream>
 #include <vector>
 
+#include <QApplication>
 #include <QOpenGLContext>
 #include <QOpenGLPaintDevice>
 #include <QOpenGLShaderProgram>
 #include <QPainter>
+#include <QVector3D>
 
 GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
@@ -44,7 +46,7 @@ void GLWidget::Update() {
     float dt = (float)delta_timer.elapsed() / 1000;
 
     delta_timer.restart();
-    mass_spring_system->Update();
+    /* mass_spring_system->Update(); */
 }
 
 void GLWidget::SetMass(float value) {
@@ -124,13 +126,14 @@ void GLWidget::paintGL() {
 
     program_id->bind();
     QMatrix4x4 matrix;
-    matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 10.0f);
+    matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
     matrix.translate(camera.x, camera.y, camera.z);
+    matrix.rotate(camera.rot, camera.translation);
 
     program_id->setUniformValue(matrix_uniform, matrix);
     auto shapes = mass_spring_system->Shapes();
     auto colors = mass_spring_system->Colors();
-    mass_spring_system->Update();
+    /* mass_spring_system->Update(); */
 
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0,
                           static_cast<void*>(shapes.data()));
@@ -239,17 +242,16 @@ void GLWidget::mouseMoveEvent(QMouseEvent* event) {
     Eigen::Vector3f dposition = Eigen::Vector3f(x, y, 0.f) - last_position;
 
     // TODO(@jparr721) - This sucks.
-    Eigen::Vector3f dposition_scaled =
-        (dposition.array() * Eigen::Array3f(0.01f, 0.01f, 0.0f)).matrix();
+    /* Eigen::Vector3f dposition_scaled = */
+    /*     (dposition.array() * Eigen::Array3f(0.1f, 0.1f, 0.1f)).matrix(); */
 
-    // Click and drag with left moves top group
-    if (event->buttons() & Qt::LeftButton) {
-        mass_spring_system->TranslateTopGroup(dposition_scaled);
-    }
-
-    // Click and drag with right moved bottom group
-    if (event->buttons() & Qt::RightButton) {
-        mass_spring_system->TranslateBottomGroup(dposition_scaled);
+    if (event->buttons() & Qt::LeftButton &&
+        Qt::ShiftModifier == QApplication::keyboardModifiers()) {
+        camera.OnMousePress(dposition);
+    } else if (event->buttons() & Qt::LeftButton) {
+        /* mass_spring_system->TranslateTopGroup(dposition_scaled); */
+    } else if (event->buttons() & Qt::RightButton) {
+        /* mass_spring_system->TranslateBottomGroup(dposition_scaled); */
     }
 
     last_position = Eigen::Vector3f(x, y, 0.f);

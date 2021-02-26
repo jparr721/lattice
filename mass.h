@@ -13,10 +13,11 @@ class Mass : public std::enable_shared_from_this<Mass> {
   public:
     const bool is_fixed;
 
-    Mass(float size, float _mass, std::string name, bool fixed,
-         Eigen::Vector3f color, Eigen::Vector4f starting_position)
-        : position(starting_position), kColor(color), is_fixed(fixed),
-          mass_weight(_mass), name(name), mass_size(size) {}
+    Mass(float size, float _mass, const std::string& name, bool fixed,
+         std::vector<Eigen::Vector3f> _vertices, Eigen::Vector3f color,
+         Eigen::Vector4f starting_position)
+        : position(starting_position), vertices(_vertices), kColor(color),
+          is_fixed(fixed), mass_weight(_mass), name(name), mass_size(size) {}
     ~Mass() = default;
 
     // Class Initializers

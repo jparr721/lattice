@@ -1,17 +1,27 @@
 #include "vertex_buffer.h"
 
-/**
- * Computes the vertex points normalized around the center point. The coordinates
- * are clockwise-oriented around the center.
- */
-void VertexBuffer::ComputeVertexPoints() {
-    /* const int size = shape_size * shape_scale_factor; */
-    /* for (int i = 0; i < n_shapes; ++i) { */
-    /*     const auto vertex = Eigen::Vector3f( */
-    /*       center_point.x() */
-    /* } */
-}
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
 
-void VertexBuffer::ComputeShapes() {
-    //
+bool LoadObjFile(const std::string& obj_file_path,
+                 std::vector<Eigen::Vector3f>& vertices) {
+    Assimp::Importer importer;
+
+    const aiScene* scene = importer.ReadFile(obj_file_path, 0);
+
+    if (!scene) {
+        std::cerr << "ERROR: " << importer.GetErrorString() << std::endl;
+        return false;
+    }
+
+    const aiMesh* mesh = scene->mMeshes[0];
+
+    vertices.reserve(mesh->mNumVertices);
+    for (auto i = 0u; i < mesh->mNumVertices; ++i) {
+        aiVector3D pos = mesh->mVertices[i];
+        vertices.push_back(Eigen::Vector3f(pos.x, pos.y, pos.z));
+    }
+
+    return true;
 }
