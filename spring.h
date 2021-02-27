@@ -11,14 +11,22 @@ class Mass;
 
 class Spring : public std::enable_shared_from_this<Spring> {
   public:
+    constexpr static float kMinimumSpringConstantValue = 1.0f;
+    constexpr static float kMinimumDampingValue = 0.5;
+    constexpr static float kMinimumSpringRestLengthValue = 0.5f;
+
+    constexpr static float kMaximumSpringConstantValue = 50.0f;
+    constexpr static float kMaximumDampingValue = 5.0f;
+    constexpr static float kMaximumSpringRestLengthValue = 10.0f;
+
     // Represents the vertices of the fixture.
     std::vector<Eigen::Vector3f> vertices;
 
-    Spring(float stiffness, float resting_length, Eigen::Vector3f color,
+    Spring(Eigen::Vector3f color,
            std::shared_ptr<Mass>& _left_mass,
            std::shared_ptr<Mass>& _right_mass)
-        : kColor(colors::kGreen), stiffness(stiffness),
-          rest_length(resting_length), left_mass(_left_mass),
+        : kColor(colors::kGreen),
+          left_mass(_left_mass),
           right_mass(_right_mass) {}
 
     // Class Initializers and Mutators
@@ -28,6 +36,7 @@ class Spring : public std::enable_shared_from_this<Spring> {
     // Setters
     void SetStiffness(float value) { stiffness = value; }
     void SetRestLength(float value) { rest_length = value; }
+    void SetDampingConstant(float value) { damping_constant = value; }
 
     // Trivial Getters
     auto size() { return vertices.size(); }
@@ -42,13 +51,13 @@ class Spring : public std::enable_shared_from_this<Spring> {
     bool is_init = false;
 
     // The spring k value.
-    float stiffness;
+    float stiffness = kMinimumSpringConstantValue;
 
     // The resting length of the spring in the Y direction.
-    float rest_length;
+    float rest_length = kMinimumSpringRestLengthValue;
 
     // The spring calculation damping constant to prevent explosions.
-    float damping_constant = 0.01;
+    float damping_constant = kMinimumDampingValue;
 
     const Eigen::Vector3f kColor;
 

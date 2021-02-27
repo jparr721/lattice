@@ -11,16 +11,7 @@
 
 class MassSpringSystem {
   public:
-    //  Minimum Values
-    constexpr static float kMinimumSpringConstantValue = 1.0f;
-    constexpr static float kMinimumDampingValue = 0.5;
-    constexpr static float kMinimumSpringRestLengthValue = 0.5f;
     constexpr static float kMinimumTimeStepChangeValue = 0.0001;
-
-    //  Maxmum Values
-    constexpr static float kMaximumSpringConstantValue = 50.0f;
-    constexpr static float kMaximumDampingValue = 5.0f;
-    constexpr static float kMaximumSpringRestLengthValue = 10.0f;
     constexpr static float kMaximumTimeStepChangeValue = 0.1f;
 
     MassSpringSystem();
@@ -35,10 +26,10 @@ class MassSpringSystem {
     // Spring Mutators
     void SetSpringStiffness(float value);
     void SetSpringRestLength(float value);
+    void SetSpringDampingConstant(float value);
 
     // Mass Mutators
     void SetMassWeight(float value);
-    void SetMassDampingConstant(float value);
 
     // Time Step Mutators
     void SetTimeStep(float value) { timestep_size = value; }

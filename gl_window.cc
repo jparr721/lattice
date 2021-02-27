@@ -50,10 +50,10 @@ GLWindow::GLWindow() {
 
     mass_slider->setValue(Mass::kMinimumMassValue);
     spring_constant_slider->setValue(
-        MassSpringSystem::kMinimumSpringConstantValue);
-    damping_constant_slider->setValue(MassSpringSystem::kMinimumDampingValue);
+        Spring::kMinimumSpringConstantValue);
+    damping_constant_slider->setValue(Spring::kMinimumDampingValue);
     rest_length_slider->setValue(
-        MassSpringSystem::kMinimumSpringRestLengthValue);
+        Spring::kMinimumSpringRestLengthValue);
     time_step_slider->setValue(MassSpringSystem::kMinimumTimeStepChangeValue);
 
     setWindowTitle(tr(kWindowTitle));

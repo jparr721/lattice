@@ -74,11 +74,11 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     // Slider Data
     float slider_mass_value = Mass::kMinimumMassValue;
     float slider_spring_constant_value =
-        MassSpringSystem::kMinimumSpringConstantValue;
+        Spring::kMinimumSpringConstantValue;
     float slider_damping_constant_value =
-        MassSpringSystem::kMinimumDampingValue;
+        Spring::kMinimumDampingValue;
     float slider_rest_length_value =
-        MassSpringSystem::kMinimumSpringRestLengthValue;
+        Spring::kMinimumSpringRestLengthValue;
     float slider_time_step_value =
         MassSpringSystem::kMinimumTimeStepChangeValue;
 

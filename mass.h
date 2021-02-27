@@ -33,7 +33,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
 
     // Trivial Setters
     void SetWeight(float value) { mass_weight = value; }
-    void SetDampingConstant(float value) { damping_constant = value; }
     void SetPosition(const Eigen::Vector4f& value) { position = value; }
     void SetAcceleration(const Eigen::Vector4f& value) { acceleration = value; }
     void SetVelocity(const Eigen::Vector4f& value) { velocity = value; }
@@ -47,7 +46,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
 
     // Trivial Getters
     float Weight() const { return mass_weight; }
-    float DampingConstant() const { return damping_constant; }
 
     std::string Name() { return name; }
 
@@ -74,10 +72,7 @@ class Mass : public std::enable_shared_from_this<Mass> {
     std::string name;
 
     // The mass of the... mass...
-    float mass_weight;
-
-    // The damping constant to prevent explosiveness
-    float damping_constant;
+    float mass_weight = kMinimumMassValue;
 
     // The size of the object centered around the current position.
     float mass_size;

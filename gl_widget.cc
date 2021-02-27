@@ -53,8 +53,8 @@ void GLWidget::SetMass(float value) {
 
 void GLWidget::SetSpringConstant(float value) {
     slider_spring_constant_value = Interpolate(
-        MassSpringSystem::kMinimumSpringConstantValue,
-        MassSpringSystem::kMaximumSpringConstantValue, (float)value / 100.f);
+        Spring::kMinimumSpringConstantValue,
+        Spring::kMaximumSpringConstantValue, (float)value / 100.f);
     mass_spring_system->SetSpringStiffness(slider_spring_constant_value);
     emit OnSpringConstantChange(value);
     RestartSimulation();
@@ -62,17 +62,17 @@ void GLWidget::SetSpringConstant(float value) {
 
 void GLWidget::SetSpringDampingConstant(float value) {
     slider_damping_constant_value = Interpolate(
-        MassSpringSystem::kMinimumDampingValue,
-        MassSpringSystem::kMaximumDampingValue, (float)value / 100.f);
-    mass_spring_system->SetMassDampingConstant(slider_damping_constant_value);
+        Spring::kMinimumDampingValue,
+        Spring::kMaximumDampingValue, (float)value / 100.f);
+    mass_spring_system->SetSpringDampingConstant(slider_damping_constant_value);
     emit OnSpringDampingChange(value);
     RestartSimulation();
 }
 
 void GLWidget::SetSpringRestLength(float value) {
     slider_rest_length_value = Interpolate(
-        MassSpringSystem::kMinimumSpringRestLengthValue,
-        MassSpringSystem::kMaximumSpringRestLengthValue, (float)value / 100.f);
+        Spring::kMinimumSpringRestLengthValue,
+        Spring::kMaximumSpringRestLengthValue, (float)value / 100.f);
     mass_spring_system->SetSpringRestLength(value);
     emit OnSpringRestLengthChange(value);
     RestartSimulation();
@@ -119,6 +119,7 @@ void GLWidget::paintGL() {
     QMatrix4x4 matrix;
     matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 200.0f);
     matrix.translate(camera.x, camera.y, camera.z);
+    matrix.rotate(camera.rot, camera.direction);
 
     program_id->setUniformValue(matrix_uniform, matrix);
     auto shapes = mass_spring_system->Shapes();

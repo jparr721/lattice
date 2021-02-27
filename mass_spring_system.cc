@@ -39,7 +39,6 @@ MassSpringSystem::MassSpringSystem() {
             assert(adjacent_node != std::nullopt);
 
             auto spring = std::make_shared<Spring>(
-                kMinimumSpringConstantValue, kMinimumSpringRestLengthValue,
                 colors::kGreen, adjacent_node.value(), center_node.value());
             spring->Initialize();
             springs.push_back(std::move(spring));
@@ -143,9 +142,9 @@ void MassSpringSystem::SetMassWeight(float value) {
     }
 }
 
-void MassSpringSystem::SetMassDampingConstant(float value) {
-    for (auto mass : masses) {
-        mass->SetDampingConstant(value);
+void MassSpringSystem::SetSpringDampingConstant(float value) {
+    for (auto spring : springs) {
+        spring->SetDampingConstant(value);
     }
 }
 
