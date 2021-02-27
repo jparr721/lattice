@@ -66,7 +66,7 @@ void Mass::CalculateMassForces(float dt) {
 
     // Calculate new position based on the current velocity with respect to
     // time.
-    position += velocity * 0.1 * dt;
+    position += velocity * 0.5 * dt;
 
     auto d_position = position - old_pos;
     Translate(Eigen::Vector3f(d_position.x(), d_position.y(), d_position.z()));

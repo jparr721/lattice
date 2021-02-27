@@ -50,17 +50,16 @@ MassSpringSystem::MassSpringSystem() {
 }
 
 void MassSpringSystem::Reset() {
+    const auto last_spring_length = springs[0]->RestLength();
     for (int i = 0; i < masses.size(); ++i) {
         const auto xy = ComputeStartingPosition(i);
         const auto x = std::get<0>(xy);
-        const auto y = std::get<1>(xy);
+        const auto y = i < 4 ? last_spring_length : -last_spring_length;
         const auto position = Eigen::Vector4f(x, y, 0.0f, 1.0f);
 
-        const auto zero_vector = Eigen::Vector4f(0.f, 0.f, 0.f, 0.f);
-
         masses[i]->SetPosition(position);
-        masses[i]->SetAcceleration(zero_vector);
-        masses[i]->SetVelocity(zero_vector);
+        masses[i]->SetAcceleration(Eigen::Vector4f::Zero());
+        masses[i]->SetVelocity(Eigen::Vector4f::Zero());
     }
 
     for (auto mass : masses) {
@@ -203,5 +202,7 @@ void MassSpringSystem::TranslateBottomGroup(const Eigen::Vector3f& direction) {
 }
 
 std::pair<int, int> MassSpringSystem::ComputeStartingPosition(int i) {
-    return std::pair<int, int>((i % 4) * 4, i < 4 ? 10 : -10);
+    return std::pair<int, int>((i % 4) * 4,
+                               i < 4 ? Spring::kMinimumSpringRestLengthValue
+                                     : -Spring::kMinimumSpringRestLengthValue);
 }

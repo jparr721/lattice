@@ -89,10 +89,10 @@ class Mass : public std::enable_shared_from_this<Mass> {
     std::vector<std::shared_ptr<Spring>> springs;
 
     // The velocity the object is moving at with respect to time.
-    Eigen::Vector4f velocity = Eigen::Vector4f(0.f, 0.f, 0.f, 0.f);
+    Eigen::Vector4f velocity = Eigen::Vector4f::Zero();
 
     // The acceleration of the object with respect to time.
-    Eigen::Vector4f acceleration = Eigen::Vector4f(0.f, 0.f, 0.f, 0.f);
+    Eigen::Vector4f acceleration = Eigen::Vector4f::Zero();
 
     void CalculateAcceleration();
 };
