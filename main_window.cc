@@ -7,6 +7,6 @@
 #include <QMessageBox>
 
 MainWindow::MainWindow() {
-  setFixedSize(kWidth, kHeight);
-  setCentralWidget(new TabWidget(this));
+    setFixedSize(kWidth, kHeight);
+    setCentralWidget(new TabWidget(this));
 }

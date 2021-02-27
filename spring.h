@@ -22,11 +22,9 @@ class Spring : public std::enable_shared_from_this<Spring> {
     // Represents the vertices of the fixture.
     std::vector<Eigen::Vector3f> vertices;
 
-    Spring(Eigen::Vector3f color,
-           std::shared_ptr<Mass>& _left_mass,
+    Spring(Eigen::Vector3f color, std::shared_ptr<Mass>& _left_mass,
            std::shared_ptr<Mass>& _right_mass)
-        : kColor(colors::kGreen),
-          left_mass(_left_mass),
+        : kColor(colors::kGreen), left_mass(_left_mass),
           right_mass(_right_mass) {}
 
     // Class Initializers and Mutators

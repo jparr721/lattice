@@ -1,6 +1,6 @@
 #include "mass.h"
-#include "spring.h"
 #include "obj_loader.h"
+#include "spring.h"
 
 #include <iostream>
 
@@ -9,8 +9,8 @@ void Mass::Initialize() {
         exit(EXIT_FAILURE);
     }
 
-    vertices= std::vector<Eigen::Vector3f>(original_positions.size(),
-        Eigen::Vector3f(0.f, 0.f, 0.f));
+    vertices = std::vector<Eigen::Vector3f>(original_positions.size(),
+                                            Eigen::Vector3f(0.f, 0.f, 0.f));
 
     ComputeVertexPoints();
 
@@ -34,11 +34,8 @@ void Mass::ComputeVertexPoints() {
     // Build our vertices and "scoot" them to their starting positions.
     for (auto i = 0u; i < original_positions.size(); ++i) {
         const auto vertex = original_positions[i];
-        vertices[i] = Eigen::Vector3f(
-            vertex.x() + position.x(),
-            vertex.y() + position.y(),
-            vertex.z()
-        );
+        vertices[i] = Eigen::Vector3f(vertex.x() + position.x(),
+                                      vertex.y() + position.y(), vertex.z());
     }
 }
 

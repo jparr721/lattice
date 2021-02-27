@@ -2,9 +2,9 @@
 
 #include "keyboard.h"
 
+#include <QApplication>
 #include <QKeyEvent>
 #include <QVector3D>
-#include <QApplication>
 
 class Camera {
   public:

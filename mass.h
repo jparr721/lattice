@@ -18,7 +18,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
     // Represents the vertices of the fixture.
     std::vector<Eigen::Vector3f> vertices;
 
-
     Mass(float size, std::string name, bool fixed, Eigen::Vector3f color,
          Eigen::Vector4f starting_position)
         : position(starting_position), kColor(color), is_fixed(fixed),

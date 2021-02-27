@@ -52,18 +52,18 @@ void GLWidget::SetMass(float value) {
 }
 
 void GLWidget::SetSpringConstant(float value) {
-    slider_spring_constant_value = Interpolate(
-        Spring::kMinimumSpringConstantValue,
-        Spring::kMaximumSpringConstantValue, (float)value / 100.f);
+    slider_spring_constant_value =
+        Interpolate(Spring::kMinimumSpringConstantValue,
+                    Spring::kMaximumSpringConstantValue, (float)value / 100.f);
     mass_spring_system->SetSpringStiffness(slider_spring_constant_value);
     emit OnSpringConstantChange(value);
     RestartSimulation();
 }
 
 void GLWidget::SetSpringDampingConstant(float value) {
-    slider_damping_constant_value = Interpolate(
-        Spring::kMinimumDampingValue,
-        Spring::kMaximumDampingValue, (float)value / 100.f);
+    slider_damping_constant_value =
+        Interpolate(Spring::kMinimumDampingValue, Spring::kMaximumDampingValue,
+                    (float)value / 100.f);
     mass_spring_system->SetSpringDampingConstant(slider_damping_constant_value);
     emit OnSpringDampingChange(value);
     RestartSimulation();
