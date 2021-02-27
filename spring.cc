@@ -7,7 +7,9 @@
 void Spring::Initialize() {
     ComputeVertexPoints();
 
-    colors = std::vector<Eigen::Vector3f>{{kColor, kColor, kColor}};
+    for (auto i = 0u; i < vertices.size(); ++i) {
+        colors.push_back(kColor);
+    }
 
     left_mass->AddSpring(shared_from_this());
     right_mass->AddSpring(shared_from_this());
@@ -21,9 +23,12 @@ void Spring::ComputeVertexPoints() {
 
     const auto v1 = Eigen::Vector3f(lpos.x(), lpos.y(), lpos.z());
     const auto v2 = Eigen::Vector3f(rpos.x(), rpos.y(), rpos.z());
-    const auto v3 = Eigen::Vector3f(rpos.x() + 0.01f, rpos.y(), rpos.z());
+    const auto v3 = Eigen::Vector3f(rpos.x() + 0.1f, rpos.y(), rpos.z());
+    const auto v4 = Eigen::Vector3f(rpos.x(), rpos.y(), rpos.z());
+    const auto v5 = Eigen::Vector3f(lpos.x(), lpos.y(), lpos.z());
+    const auto v6 = Eigen::Vector3f(lpos.x() + 0.1f, lpos.y(), lpos.z());
 
-    vertices = std::vector<Eigen::Vector3f>{{v1, v2, v3}};
+    vertices = std::vector<Eigen::Vector3f>{{v1, v2, v3, v4, v5, v6}};
 }
 
 Eigen::Vector4f Spring::CalculateCurrentForce(std::shared_ptr<Mass> ref) {

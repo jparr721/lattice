@@ -119,6 +119,8 @@ void GLWidget::paintGL() {
     QMatrix4x4 matrix;
     matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 200.0f);
     matrix.translate(camera.x, camera.y, camera.z);
+
+    // Kinda sucks.. I'll make this translate the shape later instead.
     matrix.rotate(camera.rot, camera.direction);
 
     program_id->setUniformValue(matrix_uniform, matrix);
@@ -147,7 +149,7 @@ void GLWidget::resizeGL(int width, int height) { return; }
 
 void GLWidget::keyPressEvent(QKeyEvent* event) {
     camera.OnKeyPress(event);
-    int key = keyboard.OnKeyPressed(event->key());
+    const int key = keyboard.OnKeyPressed(event->key());
     if (key > 0) {
         if (key == Keyboard::kPrint) {
             PrintParameters();
