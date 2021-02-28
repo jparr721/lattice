@@ -10,7 +10,7 @@ void Mass::Initialize() {
     }
 
     vertices = std::vector<Eigen::Vector3f>(original_positions.size(),
-                                            Eigen::Vector3f(0.f, 0.f, 0.f));
+                                            Eigen::Vector3f::Zero());
 
     ComputeVertexPoints();
 
@@ -66,7 +66,7 @@ void Mass::CalculateMassForces(float dt) {
 
     // Calculate new position based on the current velocity with respect to
     // time.
-    position += velocity * 0.5 * dt;
+    position += velocity * 0.1f * dt;
 
     auto d_position = position - old_pos;
     Translate(Eigen::Vector3f(d_position.x(), d_position.y(), d_position.z()));
@@ -76,7 +76,7 @@ void Mass::CalculateAcceleration() {
     // Mass of our object x gravity.
     const Eigen::Vector4f Fg = kGravity * mass_weight;
 
-    Eigen::Vector4f Fs = Eigen::Vector4f(0.0, 0.0, 0.0, 0.0);
+    Eigen::Vector4f Fs = Eigen::Vector4f::Zero();
 
     for (const auto spring : springs) {
         Fs += spring->CalculateCurrentForce(shared_from_this());

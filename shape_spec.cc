@@ -32,6 +32,9 @@ void ShapeSpec::Parse(const std::vector<std::string>& lines) {
     for (auto line : lines) {
         if (StringStartsWith(line, kKeywordVertex)) {
             ParseVertex(line.substr(kKeywordVertex.size()), line_number);
+        } else if (StringStartsWith(line, kKeywordComment) ||
+                   line.size() == 0) {
+            continue;
         } else {
             std::cerr << "Parse error at line: " << line_number
                       << ". Invalid specifier " << line << std::endl;

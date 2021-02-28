@@ -12,7 +12,7 @@ class Spring;
 class Mass : public std::enable_shared_from_this<Mass> {
   public:
     const bool is_fixed;
-    constexpr static float kMinimumMassValue = 10.5f;
+    constexpr static float kMinimumMassValue = 0.5f;
     constexpr static float kMaximumMassValue = 50.f;
 
     // Represents the vertices of the fixture.

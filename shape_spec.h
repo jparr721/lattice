@@ -44,6 +44,7 @@ class ShapeSpec {
     ~ShapeSpec() = default;
 
   private:
+    inline static const std::string kKeywordComment = "/*";
     inline static const std::string kKeywordVertex = "vertex";
 
     void Parse(const std::vector<std::string>& lines);

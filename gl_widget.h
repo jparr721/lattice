@@ -69,7 +69,7 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     constexpr static int kHeight = 720;
 
     // Positional Translation Parameters
-    Eigen::Vector3f last_position = Eigen::Vector3f(0.f, 0.f, 0.f);
+    Eigen::Vector3f last_position = Eigen::Vector3f::Zero();
 
     // Slider Data
     float slider_mass_value = Mass::kMinimumMassValue;
