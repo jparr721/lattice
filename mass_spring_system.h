@@ -39,7 +39,7 @@ class MassSpringSystem {
 
     // Mass Plottable Getters
     Eigen::Vector4f GetFirstMovingMassVelocity();
-    Eigen::Vector4f GetFirstMovingMassAcceleration();
+    Eigen::Vector4f GetFirstMovingMassForce();
 
     // Spring Plottable Getters
     Eigen::Vector4f GetFirstSpringForce();

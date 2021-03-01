@@ -57,9 +57,9 @@ void MassSpringSystem::Reset() {
         const auto y = i < 4 ? last_spring_length : -last_spring_length;
         const auto position = Eigen::Vector4f(x, y, 0.0f, 1.0f);
 
-        masses[i]->SetPosition(position);
-        masses[i]->SetAcceleration(Eigen::Vector4f::Zero());
-        masses[i]->SetVelocity(Eigen::Vector4f::Zero());
+        masses[i]->position = position;
+        masses[i]->force = Eigen::Vector4f::Zero();
+        masses[i]->velocity = Eigen::Vector4f::Zero();
     }
 
     for (auto mass : masses) {
@@ -78,6 +78,10 @@ void MassSpringSystem::Redraw() {
 }
 
 void MassSpringSystem::Update() {
+    for (auto spring : springs) {
+        spring->CalculateCurrentForce();
+    }
+
     for (auto mass : masses) {
         mass->Update(timestep_size);
     }
@@ -150,17 +154,17 @@ void MassSpringSystem::SetSpringDampingConstant(float value) {
 Eigen::Vector4f MassSpringSystem::GetFirstMovingMassVelocity() {
     for (auto mass : masses) {
         if (!mass->is_fixed) {
-            return mass->Velocity();
+            return mass->velocity;
         }
     }
 
     return Eigen::Vector4f(0, 0, 0, 0);
 }
 
-Eigen::Vector4f MassSpringSystem::GetFirstMovingMassAcceleration() {
+Eigen::Vector4f MassSpringSystem::GetFirstMovingMassForce() {
     for (auto mass : masses) {
         if (!mass->is_fixed) {
-            return mass->Acceleration();
+            return mass->force;
         }
     }
 
@@ -183,22 +187,6 @@ MassSpringSystem::GetMassByName(const std::string& name) {
     }
 
     return std::nullopt;
-}
-
-// TODO(@jparr721) - THIS IS BAD CODE DELETE LATER
-void MassSpringSystem::TranslateTopGroup(const Eigen::Vector3f& direction) {
-    for (auto mass : top_masses) {
-        // Translate each individual mass
-        mass->Translate(direction);
-    }
-}
-
-// TODO(@jparr721) - THIS IS BAD CODE DELETE LATER
-void MassSpringSystem::TranslateBottomGroup(const Eigen::Vector3f& direction) {
-    for (auto mass : bottom_masses) {
-        // Translate each individual mass
-        mass->Translate(direction);
-    }
 }
 
 std::pair<int, int> MassSpringSystem::ComputeStartingPosition(int i) {

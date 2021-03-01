@@ -201,8 +201,8 @@ Eigen::Vector4f GLWidget::CurrentSimObjectVelocity() {
     return mass_spring_system->GetFirstMovingMassVelocity();
 }
 
-Eigen::Vector4f GLWidget::CurrentSimObjectAcceleration() {
-    return mass_spring_system->GetFirstMovingMassAcceleration();
+Eigen::Vector4f GLWidget::CurrentSimObjectForce() {
+    return mass_spring_system->GetFirstMovingMassForce();
 }
 
 Eigen::Vector4f GLWidget::CurrentSimSpringForce() {
@@ -239,12 +239,12 @@ void GLWidget::mouseMoveEvent(QMouseEvent* event) {
 
     // Click and drag with left moves top group
     if (event->buttons() & Qt::LeftButton) {
-        mass_spring_system->TranslateTopGroup(dposition_scaled);
+        /* mass_spring_system->TranslateTopGroup(dposition_scaled); */
     }
 
     // Click and drag with right moved bottom group
     if (event->buttons() & Qt::RightButton) {
-        mass_spring_system->TranslateBottomGroup(dposition_scaled);
+        /* mass_spring_system->TranslateBottomGroup(dposition_scaled); */
     }
 
     last_position = Eigen::Vector3f(x, y, 0.f);

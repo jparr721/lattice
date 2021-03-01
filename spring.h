@@ -46,9 +46,13 @@ class Spring : public std::enable_shared_from_this<Spring> {
     std::vector<Eigen::Vector3f> Colors() const { return colors; }
 
     // Non Trivial Getters
-    Eigen::Vector4f CalculateCurrentForce(std::shared_ptr<Mass> ref);
+    void CalculateCurrentForce();
 
   private:
+    // Gravitational constant vector, applies -9.81f
+    // pounds of negative force
+    const Eigen::Vector4f kGravity = Eigen::Vector4f(0.0f, -9.81f, 0.0f, 1.0f);
+
     // The initialization status of the fixture object.
     bool is_init = false;
 
@@ -74,4 +78,6 @@ class Spring : public std::enable_shared_from_this<Spring> {
 
     // The right-side mass the spring is attached to.
     std::shared_ptr<Mass> right_mass;
+
+    void CalculateDampingForce();
 };

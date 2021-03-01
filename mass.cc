@@ -55,32 +55,12 @@ void Mass::Translate(const Eigen::Vector3f& translation_vector) {
 }
 
 void Mass::CalculateMassForces(float dt) {
-    // We don't want to calculate for fixed masses, that would be bad.
-    assert(!is_fixed && "Mass is fixed");
-    CalculateAcceleration();
+    const auto old_pos = position;
 
-    auto old_pos = position;
+    position += velocity * dt;
 
-    // Calculate new velocity with respect to time.
-    velocity += acceleration * dt;
-
-    // Calculate new position based on the current velocity with respect to
-    // time.
-    position += velocity * 0.1f * dt;
+    velocity += (force / mass_weight) * dt;
 
     auto d_position = position - old_pos;
     Translate(Eigen::Vector3f(d_position.x(), d_position.y(), d_position.z()));
-}
-
-void Mass::CalculateAcceleration() {
-    // Mass of our object x gravity.
-    const Eigen::Vector4f Fg = kGravity * mass_weight;
-
-    Eigen::Vector4f Fs = Eigen::Vector4f::Zero();
-
-    for (const auto spring : springs) {
-        Fs += spring->CalculateCurrentForce(shared_from_this());
-    }
-
-    acceleration = (Fg + Fs) / mass_weight;
 }
