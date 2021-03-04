@@ -1,9 +1,11 @@
 #pragma once
 
 #include "mass.h"
+#include "shape_spec.h"
 #include "spring.h"
 
 #include <optional>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -49,10 +51,6 @@ class MassSpringSystem {
 
     auto size() { return springs.size() + masses.size(); }
 
-    // TODO(@jparr721) - Change when refactoring later!!!
-    void TranslateTopGroup(const Eigen::Vector3f& direction);
-    void TranslateBottomGroup(const Eigen::Vector3f& direction);
-
   private:
     float timestep_size = kMinimumTimeStepChangeValue;
 
@@ -62,17 +60,19 @@ class MassSpringSystem {
     // The masses in the sim
     std::vector<std::shared_ptr<Mass>> masses;
 
+    std::vector<Eigen::Vector4f> initial_positions;
+
     // Our constructed shapes in a flat list.
     std::vector<Eigen::Vector3f> shapes;
 
     // Our shapes' colors in a flat list.
     std::vector<Eigen::Vector3f> colors;
 
-    // TODO(@jparr721) - This is not a good way to do this which scales well.
-    std::vector<std::shared_ptr<Mass>> top_masses;
-    std::vector<std::shared_ptr<Mass>> bottom_masses;
+    std::unordered_map<std::string, int> mass_map;
 
-    std::pair<int, int> ComputeStartingPosition(int i);
+    std::unique_ptr<ShapeSpec> initial_conditions;
 
     void Redraw();
+
+    int ComputeStartingY(int i);
 };

@@ -120,7 +120,8 @@ void GLWidget::paintGL() {
     matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 200.0f);
     matrix.translate(camera.x, camera.y, camera.z);
 
-    // Kinda sucks.. I'll make this translate the shape later instead.
+    // TODO(@jparr721) - This kinda sucks.. I'll make this translate the shape
+    // later instead.
     matrix.rotate(camera.rot, camera.direction);
 
     program_id->setUniformValue(matrix_uniform, matrix);

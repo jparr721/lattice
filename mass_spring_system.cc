@@ -1,47 +1,53 @@
 #include "mass_spring_system.h"
-#include "shape_spec.h"
 
 #include <iostream>
 #include <memory>
 
 MassSpringSystem::MassSpringSystem() {
-    auto shape_spec = std::make_unique<ShapeSpec>();
+    initial_conditions = std::make_unique<ShapeSpec>();
 
-    assert(shape_spec->graph.size() % 2 == 0);
+    for (int i = 0; i < initial_conditions->sim_objects.size(); ++i) {
+        const auto mss = initial_conditions->sim_objects[i];
 
-    int i = 0;
-    for (const auto& [node, adjacencies] : shape_spec->graph) {
-        const auto xy = ComputeStartingPosition(i);
-        const auto x = std::get<0>(xy);
-        const auto y = std::get<1>(xy);
+        const auto mss_masses = mss.masses;
+        const auto mss_positions = mss.positions;
 
-        auto position = Eigen::Vector4f(x, y, 0.0f, 1.0f);
-        auto mass = std::make_shared<Mass>(node.size, node.name, node.fixed,
-                                           node.color, position);
-        mass->Initialize();
-        masses.push_back(std::move(mass));
+        assert(mss_masses.size() == mss_positions.size());
 
-        if (i < 4) {
-            top_masses.push_back(mass);
-        } else {
-            bottom_masses.push_back(mass);
+        // Set up all masses with initial positions
+        for (int j = 0; j < mss_masses.size(); ++j) {
+            const auto mass_node = mss_masses[j];
+            auto pos = mss_positions[j];
+
+            const int new_y = ComputeStartingY(j);
+            auto position = Eigen::Vector4f(pos.x(), new_y, pos.z(), 1.f);
+            initial_positions.push_back(position);
+
+            auto mass = std::make_shared<Mass>(mass_node.name, mass_node.fixed,
+                                               mass_node.color, position);
+            mass->Initialize();
+            masses.push_back(std::move(mass));
+
+            // Useful for lookups later
+            mass_map.insert(std::pair(mass_node.name, masses.size() - 1));
         }
 
-        ++i;
-    }
+        for (int j = mss_masses.size() * i;
+             j < (mss_masses.size() * i) + mss_masses.size(); ++j) {
+            const auto mass_node = mss_masses[j % 8];
+            const auto mass = masses[j];
+            auto center_node = masses[mass_map.at(mass->Name())];
 
-    for (const auto& [node, adjacencies] : shape_spec->graph) {
-        auto center_node = GetMassByName(node.name);
-        assert(center_node != std::nullopt);
+            for (const auto adjacent_node_name : mass_node.adjacencies) {
+                // TODO(@jparr721) - Error handling
+                auto adjacent_node = masses[mass_map.at(adjacent_node_name)];
 
-        for (auto adjacent_mass_node : adjacencies) {
-            auto adjacent_node = GetMassByName(adjacent_mass_node.name);
-            assert(adjacent_node != std::nullopt);
+                auto spring = std::make_shared<Spring>(
+                    colors::kGreen, adjacent_node, center_node);
 
-            auto spring = std::make_shared<Spring>(
-                colors::kGreen, adjacent_node.value(), center_node.value());
-            spring->Initialize();
-            springs.push_back(std::move(spring));
+                spring->Initialize();
+                springs.push_back(std::move(spring));
+            }
         }
     }
 
@@ -52,10 +58,8 @@ MassSpringSystem::MassSpringSystem() {
 void MassSpringSystem::Reset() {
     const auto last_spring_length = springs[0]->RestLength();
     for (int i = 0; i < masses.size(); ++i) {
-        const auto xy = ComputeStartingPosition(i);
-        const auto x = std::get<0>(xy);
-        const auto y = i < 4 ? last_spring_length : -last_spring_length;
-        const auto position = Eigen::Vector4f(x, y, 0.0f, 1.0f);
+        auto mass = masses[i];
+        const auto position = initial_positions[i];
 
         masses[i]->position = position;
         masses[i]->force = Eigen::Vector4f::Zero();
@@ -189,8 +193,7 @@ MassSpringSystem::GetMassByName(const std::string& name) {
     return std::nullopt;
 }
 
-std::pair<int, int> MassSpringSystem::ComputeStartingPosition(int i) {
-    return std::pair<int, int>((i % 4) * 4,
-                               i < 4 ? Spring::kMinimumSpringRestLengthValue
-                                     : -Spring::kMinimumSpringRestLengthValue);
+int MassSpringSystem::ComputeStartingY(int i) {
+    return i < 4 ? Spring::kMinimumSpringRestLengthValue
+                 : -Spring::kMinimumSpringRestLengthValue;
 }

@@ -27,10 +27,10 @@ class Mass : public std::enable_shared_from_this<Mass> {
     // Represents the vertices of the fixture.
     std::vector<Eigen::Vector3f> vertices;
 
-    Mass(float size, std::string name, bool fixed, Eigen::Vector3f color,
+    Mass(std::string name, bool fixed, Eigen::Vector3f color,
          Eigen::Vector4f starting_position)
         : position(starting_position), kColor(color), is_fixed(fixed),
-          mass_weight(kMinimumMassValue), name(name), mass_size(size) {}
+          mass_weight(kMinimumMassValue), name(name) {}
     ~Mass() = default;
 
     // Class Initializers
@@ -70,9 +70,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
 
     // The mass of the... mass...
     float mass_weight = kMinimumMassValue;
-
-    // The size of the object centered around the current position.
-    float mass_size;
 
     // The original vertex positions
     std::vector<Eigen::Vector3f> original_positions;
