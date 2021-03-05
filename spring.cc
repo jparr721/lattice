@@ -7,7 +7,9 @@
 void Spring::Initialize() {
     ComputeVertexPoints();
 
-    colors = std::vector<Eigen::Vector3f>{{kColor, kColor, kColor}};
+    for (auto i = 0u; i < vertices.size(); ++i) {
+        colors.push_back(kColor);
+    }
 
     left_mass->AddSpring(shared_from_this());
     right_mass->AddSpring(shared_from_this());
@@ -16,42 +18,47 @@ void Spring::Initialize() {
 }
 
 void Spring::ComputeVertexPoints() {
-    const auto lpos = left_mass->Position();
-    const auto rpos = right_mass->Position();
+    const auto lpos = left_mass->position;
+    const auto rpos = right_mass->position;
 
     const auto v1 = Eigen::Vector3f(lpos.x(), lpos.y(), lpos.z());
     const auto v2 = Eigen::Vector3f(rpos.x(), rpos.y(), rpos.z());
-    const auto v3 = Eigen::Vector3f(rpos.x() + 0.01f, rpos.y(), rpos.z());
+    const auto v3 = Eigen::Vector3f(rpos.x() + 0.1f, rpos.y() + 0.1f, rpos.z());
+    const auto v4 = Eigen::Vector3f(rpos.x(), rpos.y(), rpos.z());
+    const auto v5 = Eigen::Vector3f(lpos.x(), lpos.y(), lpos.z());
+    const auto v6 = Eigen::Vector3f(lpos.x() + 0.1f, lpos.y() + 0.1f, lpos.z());
 
-    vertices = std::vector<Eigen::Vector3f>{{v1, v2, v3}};
+    vertices = std::vector<Eigen::Vector3f>{{v1, v2, v3, v4, v5, v6}};
 }
 
-Eigen::Vector4f Spring::CalculateCurrentForce(std::shared_ptr<Mass> ref) {
-    const float current_spring_length = utility::EuclideanDistance(
-        left_mass->Position(), right_mass->Position());
+void Spring::CalculateCurrentForce() {
+    left_mass->force = kGravity;
+    right_mass->force = kGravity;
 
-    const float hooke_scalar =
-        stiffness * (current_spring_length - rest_length);
+    const Eigen::Vector3f lr_difference =
+        left_mass->position - right_mass->position;
 
-    const Eigen::Vector4f force_direction =
-        (right_mass->Position() - left_mass->Position()).normalized();
+    const float rest_distance =
+        (left_mass->rest_position - right_mass->rest_position).norm();
+    const float distance = (lr_difference).norm();
+    const float x = distance - rest_distance;
 
-    // Contraction/Expansion rate for damping force with respect to the
-    // direction its applied
-    const float left_spring_response =
-        left_mass->Velocity().dot(force_direction);
-    const float right_spring_response =
-        right_mass->Velocity().dot(force_direction);
+    const Eigen::Vector3f left_direction = (lr_difference).normalized();
+    const Eigen::Vector3f right_direction = -left_direction;
 
-    // Multiply our damping by the sum of the spring forces in either direction.
-    const float damping =
-        damping_constant * (left_spring_response + right_spring_response);
+    const Eigen::Vector3f spring_force = -(stiffness * x) * left_direction;
 
-    if (ref == left_mass) {
-        force = (hooke_scalar + damping_constant) * force_direction;
-        return force;
-    } else {
-        force = (-hooke_scalar + damping_constant) * force_direction;
-        return force;
-    }
+    left_mass->force += spring_force;
+    right_mass->force += -spring_force;
+
+    const float left_velocity_dir = left_mass->velocity.dot(left_direction);
+    const float right_velocity_dir = right_mass->velocity.dot(right_direction);
+
+    const Eigen::Vector3f left_force_difference =
+        -damping_constant * left_direction * left_velocity_dir;
+    const Eigen::Vector3f right_force_difference =
+        -damping_constant * right_direction * right_velocity_dir;
+
+    left_mass->force += left_force_difference;
+    right_mass->force += right_force_difference;
 }

@@ -16,6 +16,9 @@ set(Qt5_DIR /opt/homebrew/opt/qt/lib/cmake/Qt5)
 
 file(GLOB SOURCES *.cc)
 
+# Apple Silicon Brew Mac-Hacks
+include_directories(/opt/homebrew/opt/assimp/include)
+link_directories(/opt/homebrew/opt/assimp/lib)
 include_directories(/opt/homebrew/opt/qt/include)
 link_directories(/opt/homebrew/opt/qt/lib)
 
@@ -23,6 +26,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+find_package(ASSIMP REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt5 COMPONENTS Gui REQUIRED)
@@ -42,4 +46,5 @@ target_link_libraries(
   Qt5::Charts
   Qt5::Quick
   Eigen3::Eigen
+  assimp
 )

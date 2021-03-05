@@ -7,7 +7,6 @@
 #include <memory>
 #include <string>
 
-#include <QElapsedTimer>
 #include <QLineSeries>
 #include <QMouseEvent>
 #include <QOpenGLFunctions>
@@ -27,9 +26,9 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
 
-    Eigen::Vector4f CurrentSimObjectVelocity();
-    Eigen::Vector4f CurrentSimObjectAcceleration();
-    Eigen::Vector4f CurrentSimSpringForce();
+    Eigen::Vector3f CurrentSimObjectVelocity();
+    Eigen::Vector3f CurrentSimObjectForce();
+    Eigen::Vector3f CurrentSimSpringForce();
 
     bool IsRestarted();
 
@@ -70,23 +69,19 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     constexpr static int kHeight = 720;
 
     // Positional Translation Parameters
-    Eigen::Vector3f last_position = Eigen::Vector3f(0.f, 0.f, 0.f);
+    Eigen::Vector3f last_position = Eigen::Vector3f::Zero();
 
     // Slider Data
-    float slider_mass_value = MassSpringSystem::kMinimumMassValue;
-    float slider_spring_constant_value =
-        MassSpringSystem::kMinimumSpringConstantValue;
-    float slider_damping_constant_value =
-        MassSpringSystem::kMinimumDampingValue;
-    float slider_rest_length_value =
-        MassSpringSystem::kMinimumSpringRestLengthValue;
+    float slider_mass_value = Mass::kMinimumMassValue;
+    float slider_spring_constant_value = Spring::kMinimumSpringConstantValue;
+    float slider_damping_constant_value = Spring::kMinimumDampingValue;
+    float slider_rest_length_value = Spring::kMinimumSpringRestLengthValue;
     float slider_time_step_value =
         MassSpringSystem::kMinimumTimeStepChangeValue;
 
     // Draw Timers for the sim time step
     QTimer* draw_timer;
     QTimer* update_timer;
-    QElapsedTimer delta_timer;
 
     // Simulation Params
     std::shared_ptr<MassSpringSystem> mass_spring_system;

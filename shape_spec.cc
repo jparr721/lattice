@@ -12,7 +12,7 @@ ShapeSpec::ShapeSpec() {
 
     std::ifstream input{spec_file};
     if (!input) {
-        std::cerr << "No input specified." << std::endl;
+        std::cerr << "No shape spec input specified." << std::endl;
         exit(1);
     }
 
@@ -20,24 +20,104 @@ ShapeSpec::ShapeSpec() {
     while (std::getline(input, current_line)) {
         lines.push_back(current_line);
     }
+    this->lines = lines;
 
-    Parse(lines);
-    ComputeDiGraph();
+    Parse();
 }
 
-void ShapeSpec::Parse(const std::vector<std::string>& lines) {
-    bool shape_matched = false;
+void ShapeSpec::Parse() {
+    MSS sim;
 
-    int line_number = 1;
-    for (auto line : lines) {
-        if (StringStartsWith(line, kKeywordVertex)) {
-            ParseVertex(line.substr(kKeywordVertex.size()), line_number);
-        } else {
-            std::cerr << "Parse error at line: " << line_number
-                      << ". Invalid specifier " << line << std::endl;
+    for (;;) {
+        // Ignore whitespace
+        if (lines[current_line] == "" || lines[current_line] == " ") {
+            ++current_line;
+            continue;
         }
-        ++line_number;
+
+        if (Peek(kKeywordName)) {
+            if (sim.masses.size() > 0) {
+                sim_objects.push_back(sim);
+            }
+
+            sim = {};
+            ++current_line;
+            ParseName(sim);
+            ++current_line;
+        } else if (Peek(kKeywordVertices)) {
+            ++current_line;
+            while (!Peek(kKeywordPositions)) {
+                ParseVertices(sim);
+                ++current_line;
+            }
+
+            ++current_line;
+
+            int end_line = current_line + sim.masses.size();
+            // Need a position for each mass
+            while (current_line < end_line) {
+                ParsePositions(sim);
+                ++current_line;
+            }
+        } else { // End of the file
+            sim_objects.push_back(sim);
+            break;
+        }
     }
+}
+
+void ShapeSpec::ParseName(MSS& sim) {
+    const std::string line = lines[current_line];
+    // Line should always just be the name
+    sim.name = line;
+}
+
+void ShapeSpec::ParsePositions(MSS& sim) {
+    const auto line = lines[current_line];
+    const auto xyz = Split(line);
+
+    if (xyz.size() < PositionValues::Z) {
+        std::cerr << "Parse error at line: " << current_line
+                  << ", missing coordinate value" << std::endl;
+    }
+
+    const float x = std::stof(xyz[PositionValues::X]);
+    const float y = std::stof(xyz[PositionValues::Y]);
+    const float z = std::stof(xyz[PositionValues::Z]);
+
+    sim.positions.push_back(Eigen::Vector3f(x, y, z));
+}
+
+void ShapeSpec::ParseVertices(MSS& sim) {
+    const auto line = lines[current_line];
+    const auto params = Split(line);
+
+    if (params.size() < VertexParameters::ADJACENCIES) {
+        std::cerr << "Parse error at line: " << current_line
+                  << ", missing parameter" << std::endl;
+    }
+
+    auto name = params[VertexParameters::NAME];
+    auto color = colors::from_string(params[VertexParameters::COLOR]);
+    auto fixed = params[VertexParameters::FIXED] == "Fixed";
+
+    std::vector<std::string> adjacencies;
+
+    for (int i = VertexParameters::ADJACENCIES; i < params.size(); ++i) {
+        adjacencies.push_back(params[i]);
+    }
+
+    sim.masses.push_back(MassNode{
+        .name = name,
+        .color = color,
+        .fixed = fixed,
+        .adjacencies = adjacencies,
+    });
+}
+
+// ===========================================================
+bool ShapeSpec::Peek(const std::string& next) {
+    return lines[current_line] == next;
 }
 
 bool ShapeSpec::StringStartsWith(const std::string& s,
@@ -49,59 +129,4 @@ std::vector<std::string> ShapeSpec::Split(const std::string& s) {
     std::istringstream iss(s);
     return std::vector<std::string>(std::istream_iterator<std::string>{iss},
                                     std::istream_iterator<std::string>());
-}
-
-void ShapeSpec::ParseVertex(const std::string& parameters_string,
-                            int line_number) {
-
-    auto params = Split(parameters_string);
-    if (params.size() < VertexParameters::ADJACENCIES) {
-        std::cerr << "Parse error at line: " << line_number
-                  << ", missing parameter" << std::endl;
-    }
-
-    auto name = params[VertexParameters::NAME];
-    auto color = colors::from_string(params[VertexParameters::COLOR]);
-    auto size = std::stof(params[VertexParameters::SIZE]);
-    auto fixed = params[VertexParameters::FIXED] == "Fixed";
-
-    std::vector<std::string> adjacencies;
-
-    for (int i = VertexParameters::ADJACENCIES; i < params.size(); ++i) {
-        adjacencies.push_back(params[i]);
-    }
-
-    masses.push_back(MassNode{
-        .name = name,
-        .color = color,
-        .size = size,
-        .fixed = fixed,
-        .adjacencies = adjacencies,
-    });
-}
-
-void ShapeSpec::ComputeDiGraph() {
-    for (auto mass : masses) {
-        std::vector<MassNode> adjacent_mass_nodes;
-
-        for (auto adjacency : mass.adjacencies) {
-            const auto node = FindByName(adjacency);
-
-            // Die immediately if the mass node not found
-            assert(node != std::nullopt && "Invalid Adjacency Node Name");
-
-            adjacent_mass_nodes.push_back(node.value());
-        }
-
-        graph[mass] = adjacent_mass_nodes;
-    }
-}
-
-std::optional<MassNode> ShapeSpec::FindByName(const std::string& name) {
-    for (auto mass : masses) {
-        if (mass.name == name) {
-            return mass;
-        }
-    }
-    return std::nullopt;
 }

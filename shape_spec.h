@@ -9,22 +9,21 @@
 
 enum VertexParameters {
     NAME = 0x00,
-    SIZE,
     COLOR,
     FIXED,
     ADJACENCIES,
 };
 
+enum PositionValues { X = 0x00, Y, Z };
+
 struct MassNode {
     std::string name;
     Eigen::Vector3f color;
-    float size;
     bool fixed;
     std::vector<std::string> adjacencies;
 
     bool operator==(const MassNode& mn) const {
-        return name == mn.name && color == mn.color && size == mn.size &&
-               fixed == mn.fixed;
+        return name == mn.name && color == mn.color && fixed == mn.fixed;
     }
 };
 
@@ -34,23 +33,39 @@ struct MassNodeHash {
     }
 };
 
+using spec_graph =
+    std::unordered_map<MassNode, std::vector<MassNode>, MassNodeHash>;
+
+struct MSS {
+    std::string name;
+    std::vector<MassNode> masses;
+    std::vector<Eigen::Vector3f> positions;
+    spec_graph topology;
+};
+
 class ShapeSpec {
   public:
-    std::unordered_map<MassNode, std::vector<MassNode>, MassNodeHash> graph;
+    int current_line = 0;
+    std::vector<std::string> lines;
 
-    std::vector<MassNode> masses;
+    std::vector<MSS> sim_objects;
 
     ShapeSpec();
     ~ShapeSpec() = default;
 
   private:
-    inline static const std::string kKeywordVertex = "vertex";
+    inline static const std::string kKeywordComment = "/*";
+    inline static const std::string kKeywordName = "name";
+    inline static const std::string kKeywordVertices = "vertices";
+    inline static const std::string kKeywordPositions = "positions";
 
-    void Parse(const std::vector<std::string>& lines);
-    void ParseVertex(const std::string& parameters_string, int line_number);
-    void ComputeDiGraph();
+    void Parse();
+    void ParseVertices(MSS& sim);
+    void ParsePositions(MSS& sim);
+    void ParseName(MSS& sim);
 
     bool StringStartsWith(const std::string& s, const std::string& start);
+    bool Peek(const std::string& next);
 
     std::vector<std::string> Split(const std::string& s);
 

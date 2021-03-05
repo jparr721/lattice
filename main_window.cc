@@ -6,6 +6,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 
-MainWindow::MainWindow() { OnAddNew(); }
-
-void MainWindow::OnAddNew() { setCentralWidget(new TabWidget(this)); }
+MainWindow::MainWindow() {
+    setFixedSize(kWidth, kHeight);
+    setCentralWidget(new TabWidget(this));
+}

@@ -30,8 +30,6 @@ GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {
     update_timer = new QTimer(this);
     connect(update_timer, &QTimer::timeout, this, &GLWidget::Update);
     update_timer->start(1000.0 / updates_per_second);
-
-    delta_timer.start();
 }
 
 void GLWidget::Cleanup() { delete program_id; }
@@ -40,17 +38,12 @@ QSize GLWidget::minimumSizeHint() const { return QSize(kWidth, kHeight); }
 
 QSize GLWidget::sizeHint() const { return QSize(kWidth, kHeight); }
 
-void GLWidget::Update() {
-    float dt = (float)delta_timer.elapsed() / 1000;
-
-    delta_timer.restart();
-    mass_spring_system->Update();
-}
+void GLWidget::Update() { mass_spring_system->Update(); }
 
 void GLWidget::SetMass(float value) {
     slider_mass_value =
-        Interpolate(MassSpringSystem::kMinimumMassValue,
-                    MassSpringSystem::kMaximumMassValue, (float)value / 100.0f);
+        Interpolate(Mass::kMinimumMassValue, Mass::kMaximumMassValue,
+                    (float)value / 100.0f);
 
     mass_spring_system->SetMassWeight(slider_mass_value);
 
@@ -59,27 +52,27 @@ void GLWidget::SetMass(float value) {
 }
 
 void GLWidget::SetSpringConstant(float value) {
-    slider_spring_constant_value = Interpolate(
-        MassSpringSystem::kMinimumSpringConstantValue,
-        MassSpringSystem::kMaximumSpringConstantValue, (float)value / 100.f);
+    slider_spring_constant_value =
+        Interpolate(Spring::kMinimumSpringConstantValue,
+                    Spring::kMaximumSpringConstantValue, (float)value / 100.f);
     mass_spring_system->SetSpringStiffness(slider_spring_constant_value);
     emit OnSpringConstantChange(value);
     RestartSimulation();
 }
 
 void GLWidget::SetSpringDampingConstant(float value) {
-    slider_damping_constant_value = Interpolate(
-        MassSpringSystem::kMinimumDampingValue,
-        MassSpringSystem::kMaximumDampingValue, (float)value / 100.f);
-    mass_spring_system->SetMassDampingConstant(slider_damping_constant_value);
+    slider_damping_constant_value =
+        Interpolate(Spring::kMinimumDampingValue, Spring::kMaximumDampingValue,
+                    (float)value / 100.f);
+    mass_spring_system->SetSpringDampingConstant(slider_damping_constant_value);
     emit OnSpringDampingChange(value);
     RestartSimulation();
 }
 
 void GLWidget::SetSpringRestLength(float value) {
     slider_rest_length_value = Interpolate(
-        MassSpringSystem::kMinimumSpringRestLengthValue,
-        MassSpringSystem::kMaximumSpringRestLengthValue, (float)value / 100.f);
+        Spring::kMinimumSpringRestLengthValue,
+        Spring::kMaximumSpringRestLengthValue, (float)value / 100.f);
     mass_spring_system->SetSpringRestLength(value);
     emit OnSpringRestLengthChange(value);
     RestartSimulation();
@@ -124,13 +117,16 @@ void GLWidget::paintGL() {
 
     program_id->bind();
     QMatrix4x4 matrix;
-    matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 10.0f);
+    matrix.perspective(45.0f, 4.0f / 3.0f, 0.1f, 200.0f);
     matrix.translate(camera.x, camera.y, camera.z);
+
+    // TODO(@jparr721) - This kinda sucks.. I'll make this translate the shape
+    // later instead.
+    matrix.rotate(camera.rot, camera.direction);
 
     program_id->setUniformValue(matrix_uniform, matrix);
     auto shapes = mass_spring_system->Shapes();
     auto colors = mass_spring_system->Colors();
-    mass_spring_system->Update();
 
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0,
                           static_cast<void*>(shapes.data()));
@@ -154,7 +150,7 @@ void GLWidget::resizeGL(int width, int height) { return; }
 
 void GLWidget::keyPressEvent(QKeyEvent* event) {
     camera.OnKeyPress(event);
-    int key = keyboard.OnKeyPressed(event->key());
+    const int key = keyboard.OnKeyPressed(event->key());
     if (key > 0) {
         if (key == Keyboard::kPrint) {
             PrintParameters();
@@ -202,15 +198,15 @@ void GLWidget::PrintParameters() {
     std::cout << "==============================" << std::endl;
 }
 
-Eigen::Vector4f GLWidget::CurrentSimObjectVelocity() {
+Eigen::Vector3f GLWidget::CurrentSimObjectVelocity() {
     return mass_spring_system->GetFirstMovingMassVelocity();
 }
 
-Eigen::Vector4f GLWidget::CurrentSimObjectAcceleration() {
-    return mass_spring_system->GetFirstMovingMassAcceleration();
+Eigen::Vector3f GLWidget::CurrentSimObjectForce() {
+    return mass_spring_system->GetFirstMovingMassForce();
 }
 
-Eigen::Vector4f GLWidget::CurrentSimSpringForce() {
+Eigen::Vector3f GLWidget::CurrentSimSpringForce() {
     return mass_spring_system->GetFirstSpringForce();
 }
 
@@ -244,12 +240,12 @@ void GLWidget::mouseMoveEvent(QMouseEvent* event) {
 
     // Click and drag with left moves top group
     if (event->buttons() & Qt::LeftButton) {
-        mass_spring_system->TranslateTopGroup(dposition_scaled);
+        /* mass_spring_system->TranslateTopGroup(dposition_scaled); */
     }
 
     // Click and drag with right moved bottom group
     if (event->buttons() & Qt::RightButton) {
-        mass_spring_system->TranslateBottomGroup(dposition_scaled);
+        /* mass_spring_system->TranslateBottomGroup(dposition_scaled); */
     }
 
     last_position = Eigen::Vector3f(x, y, 0.f);

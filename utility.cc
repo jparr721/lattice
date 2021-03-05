@@ -4,8 +4,8 @@
 #include <iostream>
 
 namespace utility {
-float EuclideanDistance(const Eigen::Vector4f& left,
-                        const Eigen::Vector4f& right) {
+float EuclideanDistance(const Eigen::Vector3f& left,
+                        const Eigen::Vector3f& right) {
     const auto lx = left(0);
     const auto ly = left(1);
     const auto lz = left(2);

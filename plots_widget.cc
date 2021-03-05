@@ -123,7 +123,7 @@ void PlotsWidget::ResetAccelerationPlot() { acceleration_y_line->clear(); }
 
 void PlotsWidget::UpdateAccelerationPlot() {
     const auto current_acceleration_vector =
-        window->widget->CurrentSimObjectAcceleration();
+        window->widget->CurrentSimObjectForce();
     acceleration_y_line->append(frame, current_acceleration_vector.y());
 }
 
