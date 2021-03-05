@@ -43,16 +43,13 @@ MassSpringSystem::MassSpringSystem() {
                 auto adjacent_node = masses[mass_map.at(adjacent_node_name)];
 
                 auto spring = std::make_shared<Spring>(
-                    colors::kGreen, adjacent_node, center_node);
+                    colors::kGreen, center_node, adjacent_node);
 
                 spring->Initialize();
                 springs.push_back(std::move(spring));
             }
         }
     }
-
-    std::cout << "Springs: " << springs.size() << std::endl;
-    std::cout << "Masses: " << masses.size() << std::endl;
 
     ComputeShapes();
     ComputeColors();
