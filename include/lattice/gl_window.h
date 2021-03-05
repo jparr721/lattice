@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gl_widget.h"
+#include <lattice/gl_widget.h>
 
 #include <QChart>
 #include <QChartView>

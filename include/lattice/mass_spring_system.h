@@ -1,8 +1,8 @@
 #pragma once
 
-#include "mass.h"
-#include "shape_spec.h"
-#include "spring.h"
+#include <lattice/mass.h>
+#include <lattice/shape_spec.h>
+#include <lattice/spring.h>
 
 #include <optional>
 #include <unordered_map>

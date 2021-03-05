@@ -1,8 +1,8 @@
 #pragma once
 
-#include "camera.h"
-#include "keyboard.h"
-#include "mass_spring_system.h"
+#include <lattice/camera.h>
+#include <lattice/keyboard.h>
+#include <lattice/mass_spring_system.h>
 
 #include <memory>
 #include <string>

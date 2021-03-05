@@ -1,6 +1,6 @@
 #pragma once
 
-#include "colors.h"
+#include <lattice/colors.h>
 
 #include <string>
 
