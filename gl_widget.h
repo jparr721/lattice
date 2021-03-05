@@ -26,9 +26,9 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
 
-    Eigen::Vector4f CurrentSimObjectVelocity();
-    Eigen::Vector4f CurrentSimObjectForce();
-    Eigen::Vector4f CurrentSimSpringForce();
+    Eigen::Vector3f CurrentSimObjectVelocity();
+    Eigen::Vector3f CurrentSimObjectForce();
+    Eigen::Vector3f CurrentSimSpringForce();
 
     bool IsRestarted();
 

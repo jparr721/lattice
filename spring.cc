@@ -35,16 +35,18 @@ void Spring::CalculateCurrentForce() {
     left_mass->force = kGravity;
     right_mass->force = kGravity;
 
-    const Eigen::Vector4f lr_difference =
+    const Eigen::Vector3f lr_difference =
         left_mass->position - right_mass->position;
 
-    const float distance = (left_mass->position - right_mass->position).norm();
-    const float x = distance - rest_length;
+    const float rest_distance =
+        (left_mass->rest_position - right_mass->rest_position).norm();
+    const float distance = (lr_difference).norm();
+    const float x = distance - rest_distance;
 
-    const Eigen::Vector4f left_direction = (lr_difference).normalized();
-    const Eigen::Vector4f right_direction = -left_direction;
+    const Eigen::Vector3f left_direction = (lr_difference).normalized();
+    const Eigen::Vector3f right_direction = -left_direction;
 
-    const Eigen::Vector4f spring_force = -(stiffness * x) * left_direction;
+    const Eigen::Vector3f spring_force = -(stiffness * x) * left_direction;
 
     left_mass->force += spring_force;
     right_mass->force += -spring_force;
@@ -52,9 +54,9 @@ void Spring::CalculateCurrentForce() {
     const float left_velocity_dir = left_mass->velocity.dot(left_direction);
     const float right_velocity_dir = right_mass->velocity.dot(right_direction);
 
-    const Eigen::Vector4f left_force_difference =
+    const Eigen::Vector3f left_force_difference =
         -damping_constant * left_direction * left_velocity_dir;
-    const Eigen::Vector4f right_force_difference =
+    const Eigen::Vector3f right_force_difference =
         -damping_constant * right_direction * right_velocity_dir;
 
     left_mass->force += left_force_difference;

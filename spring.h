@@ -41,7 +41,7 @@ class Spring : public std::enable_shared_from_this<Spring> {
 
     float RestLength() const { return rest_length; }
 
-    Eigen::Vector4f Force() const { return force; }
+    Eigen::Vector3f Force() const { return force; }
 
     std::vector<Eigen::Vector3f> Colors() const { return colors; }
 
@@ -51,7 +51,7 @@ class Spring : public std::enable_shared_from_this<Spring> {
   private:
     // Gravitational constant vector, applies -9.81f
     // pounds of negative force
-    const Eigen::Vector4f kGravity = Eigen::Vector4f(0.0f, -9.81f, 0.0f, 1.0f);
+    const Eigen::Vector3f kGravity = Eigen::Vector3f(0.0f, -9.81f, 0.0f);
 
     // The initialization status of the fixture object.
     bool is_init = false;
@@ -68,7 +68,7 @@ class Spring : public std::enable_shared_from_this<Spring> {
     const Eigen::Vector3f kColor;
 
     // The force that the spring is exerting;
-    Eigen::Vector4f force;
+    Eigen::Vector3f force;
 
     // Represents the colors mapped to each vertex.
     std::vector<Eigen::Vector3f> colors;

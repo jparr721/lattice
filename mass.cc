@@ -12,6 +12,7 @@ void Mass::Initialize() {
     vertices = std::vector<Eigen::Vector3f>(original_positions.size(),
                                             Eigen::Vector3f::Zero());
 
+    rest_position = position;
     ComputeVertexPoints();
 
     for (auto i = 0u; i < vertices.size(); ++i) {
@@ -23,6 +24,8 @@ void Mass::Initialize() {
 
 void Mass::Update(float dt) {
     if (is_fixed) {
+        force = Eigen::Vector3f::Zero();
+        velocity = Eigen::Vector3f::Zero();
         return;
     }
 
@@ -49,6 +52,7 @@ void Mass::Translate(const Eigen::Vector3f& translation_vector) {
         Eigen::Vector4f transform =
             translation_matrix *
             Eigen::Vector4f(vertex.x(), vertex.y(), vertex.z(), 1.f);
+
         vertices[i] =
             Eigen::Vector3f(transform.x(), transform.y(), transform.z());
     }

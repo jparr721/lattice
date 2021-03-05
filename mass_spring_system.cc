@@ -19,9 +19,10 @@ MassSpringSystem::MassSpringSystem() {
             const auto mass_node = mss_masses[j];
             auto pos = mss_positions[j];
 
-            const int y = (j % 8) < 4 ? Spring::kMinimumSpringRestLengthValue
-                         : -Spring::kMinimumSpringRestLengthValue;
-            auto position = Eigen::Vector4f(pos.x(), y, pos.z(), 1.f);
+            const int y = ComputeY(j, mss_masses.size(),
+                                   Spring::kMinimumSpringRestLengthValue);
+
+            auto position = Eigen::Vector3f(pos.x(), y, pos.z());
 
             initial_positions.push_back(position);
 
@@ -36,7 +37,7 @@ MassSpringSystem::MassSpringSystem() {
 
         for (int j = mss_masses.size() * i;
              j < (mss_masses.size() * i) + mss_masses.size(); ++j) {
-            const auto mass_node = mss_masses[j % 8];
+            const auto mass_node = mss_masses[j % mss_masses.size()];
             const auto mass = masses[j];
             auto center_node = masses[mass_map.at(mass->Name())];
 
@@ -62,11 +63,15 @@ void MassSpringSystem::Reset() {
     for (int i = 0; i < masses.size(); ++i) {
         auto mass = masses[i];
         auto position = initial_positions[i];
-        position(1) = (i % 8) < 4 ? last_spring_length : -last_spring_length;
+        const int y =
+            ComputeY(i, initial_conditions->sim_objects[0].masses.size(),
+                     last_spring_length);
+        position(1) = y;
 
         masses[i]->position = position;
-        masses[i]->force = Eigen::Vector4f::Zero();
-        masses[i]->velocity = Eigen::Vector4f::Zero();
+        masses[i]->force = Eigen::Vector3f::Zero();
+        masses[i]->velocity = Eigen::Vector3f::Zero();
+        masses[i]->rest_position = position;
     }
 
     for (auto mass : masses) {
@@ -158,27 +163,27 @@ void MassSpringSystem::SetSpringDampingConstant(float value) {
     }
 }
 
-Eigen::Vector4f MassSpringSystem::GetFirstMovingMassVelocity() {
+Eigen::Vector3f MassSpringSystem::GetFirstMovingMassVelocity() {
     for (auto mass : masses) {
         if (!mass->is_fixed) {
             return mass->velocity;
         }
     }
 
-    return Eigen::Vector4f(0, 0, 0, 0);
+    return Eigen::Vector3f(0, 0, 0);
 }
 
-Eigen::Vector4f MassSpringSystem::GetFirstMovingMassForce() {
+Eigen::Vector3f MassSpringSystem::GetFirstMovingMassForce() {
     for (auto mass : masses) {
         if (!mass->is_fixed) {
             return mass->force;
         }
     }
 
-    return Eigen::Vector4f(0, 0, 0, 0);
+    return Eigen::Vector3f(0, 0, 0);
 }
 
-Eigen::Vector4f MassSpringSystem::GetFirstSpringForce() {
+Eigen::Vector3f MassSpringSystem::GetFirstSpringForce() {
     assert(springs.size() > 0);
     const auto spring = springs[0];
 
@@ -194,4 +199,10 @@ MassSpringSystem::GetMassByName(const std::string& name) {
     }
 
     return std::nullopt;
+}
+
+int MassSpringSystem::ComputeY(int index, int total_masses, int rest_length) {
+    const int split_point = total_masses / 2;
+
+    return (index % total_masses) < split_point ? rest_length : -rest_length;
 }

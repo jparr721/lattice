@@ -16,19 +16,22 @@ class Mass : public std::enable_shared_from_this<Mass> {
     constexpr static float kMaximumMassValue = 50.f;
 
     // The velocity the object is moving at with respect to time.
-    Eigen::Vector4f velocity = Eigen::Vector4f::Zero();
+    Eigen::Vector3f velocity = Eigen::Vector3f::Zero();
 
     // The force of the object with respect to time.
-    Eigen::Vector4f force = Eigen::Vector4f::Zero();
+    Eigen::Vector3f force = Eigen::Vector3f::Zero();
 
     // Represents the current position of the fixture.
-    Eigen::Vector4f position;
+    Eigen::Vector3f position;
+
+    // The initial position of the mass object.
+    Eigen::Vector3f rest_position;
 
     // Represents the vertices of the fixture.
     std::vector<Eigen::Vector3f> vertices;
 
     Mass(std::string name, bool fixed, Eigen::Vector3f color,
-         Eigen::Vector4f starting_position)
+         Eigen::Vector3f starting_position)
         : position(starting_position), kColor(color), is_fixed(fixed),
           mass_weight(kMinimumMassValue), name(name) {}
     ~Mass() = default;

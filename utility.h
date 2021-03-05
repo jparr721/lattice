@@ -10,6 +10,6 @@ enum VectorPosition {
     W,
 };
 
-float EuclideanDistance(const Eigen::Vector4f& left,
-                        const Eigen::Vector4f& right);
+float EuclideanDistance(const Eigen::Vector3f& left,
+                        const Eigen::Vector3f& right);
 } // namespace utility

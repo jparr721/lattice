@@ -198,15 +198,15 @@ void GLWidget::PrintParameters() {
     std::cout << "==============================" << std::endl;
 }
 
-Eigen::Vector4f GLWidget::CurrentSimObjectVelocity() {
+Eigen::Vector3f GLWidget::CurrentSimObjectVelocity() {
     return mass_spring_system->GetFirstMovingMassVelocity();
 }
 
-Eigen::Vector4f GLWidget::CurrentSimObjectForce() {
+Eigen::Vector3f GLWidget::CurrentSimObjectForce() {
     return mass_spring_system->GetFirstMovingMassForce();
 }
 
-Eigen::Vector4f GLWidget::CurrentSimSpringForce() {
+Eigen::Vector3f GLWidget::CurrentSimSpringForce() {
     return mass_spring_system->GetFirstSpringForce();
 }
 

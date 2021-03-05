@@ -40,11 +40,11 @@ class MassSpringSystem {
     std::optional<std::shared_ptr<Mass>> GetMassByName(const std::string& name);
 
     // Mass Plottable Getters
-    Eigen::Vector4f GetFirstMovingMassVelocity();
-    Eigen::Vector4f GetFirstMovingMassForce();
+    Eigen::Vector3f GetFirstMovingMassVelocity();
+    Eigen::Vector3f GetFirstMovingMassForce();
 
     // Spring Plottable Getters
-    Eigen::Vector4f GetFirstSpringForce();
+    Eigen::Vector3f GetFirstSpringForce();
 
     std::vector<Eigen::Vector3f> Colors() { return colors; }
     std::vector<Eigen::Vector3f> Shapes() { return shapes; }
@@ -60,7 +60,7 @@ class MassSpringSystem {
     // The masses in the sim
     std::vector<std::shared_ptr<Mass>> masses;
 
-    std::vector<Eigen::Vector4f> initial_positions;
+    std::vector<Eigen::Vector3f> initial_positions;
 
     // Our constructed shapes in a flat list.
     std::vector<Eigen::Vector3f> shapes;
@@ -73,4 +73,6 @@ class MassSpringSystem {
     std::unique_ptr<ShapeSpec> initial_conditions;
 
     void Redraw();
+
+    int ComputeY(int index, int total_masses, int rest_length);
 };
