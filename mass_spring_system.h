@@ -73,6 +73,4 @@ class MassSpringSystem {
     std::unique_ptr<ShapeSpec> initial_conditions;
 
     void Redraw();
-
-    int ComputeStartingY(int i);
 };

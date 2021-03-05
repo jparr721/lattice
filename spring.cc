@@ -47,7 +47,7 @@ void Spring::CalculateCurrentForce() {
     const Eigen::Vector4f spring_force = -(stiffness * x) * left_direction;
 
     left_mass->force += spring_force;
-    right_mass->force += spring_force;
+    right_mass->force += -spring_force;
 
     const float left_velocity_dir = left_mass->velocity.dot(left_direction);
     const float right_velocity_dir = right_mass->velocity.dot(right_direction);

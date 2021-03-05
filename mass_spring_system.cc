@@ -19,8 +19,10 @@ MassSpringSystem::MassSpringSystem() {
             const auto mass_node = mss_masses[j];
             auto pos = mss_positions[j];
 
-            const int y = ComputeStartingY(j);
+            const int y = (j % 8) < 4 ? Spring::kMinimumSpringRestLengthValue
+                         : -Spring::kMinimumSpringRestLengthValue;
             auto position = Eigen::Vector4f(pos.x(), y, pos.z(), 1.f);
+
             initial_positions.push_back(position);
 
             auto mass = std::make_shared<Mass>(mass_node.name, mass_node.fixed,
@@ -60,7 +62,7 @@ void MassSpringSystem::Reset() {
     for (int i = 0; i < masses.size(); ++i) {
         auto mass = masses[i];
         auto position = initial_positions[i];
-        position(1) = i < 4 ? last_spring_length : -last_spring_length;
+        position(1) = (i % 8) < 4 ? last_spring_length : -last_spring_length;
 
         masses[i]->position = position;
         masses[i]->force = Eigen::Vector4f::Zero();
@@ -192,9 +194,4 @@ MassSpringSystem::GetMassByName(const std::string& name) {
     }
 
     return std::nullopt;
-}
-
-int MassSpringSystem::ComputeStartingY(int i) {
-    return i < 4 ? Spring::kMinimumSpringRestLengthValue
-                 : -Spring::kMinimumSpringRestLengthValue;
 }
