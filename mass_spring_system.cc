@@ -19,8 +19,8 @@ MassSpringSystem::MassSpringSystem() {
             const auto mass_node = mss_masses[j];
             auto pos = mss_positions[j];
 
-            const int new_y = ComputeStartingY(j);
-            auto position = Eigen::Vector4f(pos.x(), new_y, pos.z(), 1.f);
+            const int y = ComputeStartingY(j);
+            auto position = Eigen::Vector4f(pos.x(), y, pos.z(), 1.f);
             initial_positions.push_back(position);
 
             auto mass = std::make_shared<Mass>(mass_node.name, mass_node.fixed,
@@ -51,6 +51,9 @@ MassSpringSystem::MassSpringSystem() {
         }
     }
 
+    std::cout << "Springs: " << springs.size() << std::endl;
+    std::cout << "Masses: " << masses.size() << std::endl;
+
     ComputeShapes();
     ComputeColors();
 }
@@ -59,7 +62,8 @@ void MassSpringSystem::Reset() {
     const auto last_spring_length = springs[0]->RestLength();
     for (int i = 0; i < masses.size(); ++i) {
         auto mass = masses[i];
-        const auto position = initial_positions[i];
+        auto position = initial_positions[i];
+        position(1) = i < 4 ? last_spring_length : -last_spring_length;
 
         masses[i]->position = position;
         masses[i]->force = Eigen::Vector4f::Zero();
