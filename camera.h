@@ -20,6 +20,8 @@ class Camera {
     void OnKeyPress(QKeyEvent* event);
 
   private:
+    constexpr static float translate_amount = 1.f;
+
     Keyboard keyboard;
 
     void OnRotate(int key);

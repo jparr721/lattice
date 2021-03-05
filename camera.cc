@@ -21,22 +21,22 @@ void Camera::OnKeyPress(QKeyEvent* event) {
 void Camera::OnTranslate(int key) {
     switch (key) {
     case Keyboard::kForward:
-        z += 0.1;
+        z += translate_amount;
         break;
     case Keyboard::kBackward:
-        z -= 0.1;
+        z -= translate_amount;
         break;
     case Keyboard::kLeft:
-        x += 0.1;
+        x += translate_amount;
         break;
     case Keyboard::kRight:
-        x -= 0.1;
+        x -= translate_amount;
         break;
     case Keyboard::kUp:
-        y -= 0.1;
+        y -= translate_amount;
         break;
     case Keyboard::kDown:
-        y += 0.1;
+        y += translate_amount;
         break;
     default:
         break;

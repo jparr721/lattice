@@ -1,9 +1,9 @@
 name
 g1
 vertices
-v1 BLUE NotFixed v5
-v2 BLUE NotFixed v6
-v3 BLUE NotFixed v7
+v1 BLUE NotFixed v2 v5
+v2 BLUE NotFixed v3 v6
+v3 BLUE NotFixed v4 v7
 v4 BLUE NotFixed v8
 v5 RED Fixed
 v6 RED Fixed
@@ -26,9 +26,9 @@ v9 BLUE Fixed v10 v13
 v10 BLUE Fixed v11 v14
 v11 BLUE Fixed v12 v15
 v12 BLUE Fixed v12 v16
-v13 RED NotFixed v14
-v14 RED NotFixed v15
-v15 RED NotFixed v16
+v13 RED NotFixed
+v14 RED NotFixed
+v15 RED NotFixed
 v16 RED NotFixed
 positions
 -19.0 0.0 0.0
