@@ -1,6 +1,6 @@
-#include "mass.h"
-#include "obj_loader.h"
-#include "spring.h"
+#include <lattice/mass.h>
+#include <lattice/obj_loader.h>
+#include <lattice/spring.h>
 
 #include <iostream>
 

@@ -1,4 +1,4 @@
-#include "mass_spring_system.h"
+#include <lattice/mass_spring_system.h>
 
 #include <iostream>
 #include <memory>

@@ -1,4 +1,4 @@
-#include "keyboard.h"
+#include <lattice/keyboard.h>
 
 #include <iostream>
 

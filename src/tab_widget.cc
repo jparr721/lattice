@@ -1,6 +1,6 @@
-#include "tab_widget.h"
-#include "gl_window.h"
-#include "plots_widget.h"
+#include <lattice/tab_widget.h>
+#include <lattice/gl_window.h>
+#include <lattice/plots_widget.h>
 
 #include <QVBoxLayout>
 

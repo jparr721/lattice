@@ -1,6 +1,6 @@
-#include "main_window.h"
-#include "gl_window.h"
-#include "tab_widget.h"
+#include <lattice/main_window.h>
+#include <lattice/gl_window.h>
+#include <lattice/tab_widget.h>
 
 #include <QMenu>
 #include <QMenuBar>

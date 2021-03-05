@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd build
-while sleep 1; do find .. -maxdepth 1 -name '*.cc' -o -name '*.h' | entr -d ninja; done
+while sleep 1; do find ../src ../include -maxdepth 3 -name '*.cc' -o -name '*.h' | entr -d ninja; done

@@ -1,4 +1,4 @@
-#include "obj_loader.h"
+#include <lattice/obj_loader.h>
 
 #include <iostream>
 

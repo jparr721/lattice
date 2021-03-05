@@ -1,5 +1,5 @@
-#include "gl_window.h"
-#include "main_window.h"
+#include <lattice/gl_window.h>
+#include <lattice/main_window.h>
 
 #include <cstdlib>
 #include <iostream>

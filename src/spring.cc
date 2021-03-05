@@ -1,6 +1,5 @@
-#include "spring.h"
-#include "mass.h"
-#include "utility.h"
+#include <lattice/spring.h>
+#include <lattice/mass.h>
 
 #include <iostream>
 

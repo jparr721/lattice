@@ -1,7 +1,6 @@
 #pragma once
 
 #include "colors.h"
-#include "utility.h"
 
 #include <iostream>
 #include <memory>

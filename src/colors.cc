@@ -1,4 +1,4 @@
-#include "colors.h"
+#include <lattice/colors.h>
 
 #include <cmath>
 

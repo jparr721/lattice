@@ -1,5 +1,5 @@
-#include "plots_widget.h"
-#include "gl_window.h"
+#include <lattice/plots_widget.h>
+#include <lattice/gl_window.h>
 
 #include <iostream>
 

@@ -14,7 +14,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(Qt5_DIR /opt/homebrew/opt/qt/lib/cmake/Qt5)
 
-file(GLOB SOURCES *.cc)
+file(GLOB SOURCES src/*.cc)
+file(GLOB HEADERS include/lattice/*.h)
 
 # Apple Silicon Brew Mac-Hacks
 include_directories(/opt/homebrew/opt/assimp/include)
@@ -35,7 +36,12 @@ find_package(Qt5 COMPONENTS OpenGL REQUIRED)
 find_package(Qt5 COMPONENTS Charts REQUIRED)
 find_package(Qt5 COMPONENTS Quick REQUIRED)
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+
+target_include_directories(${PROJECT_NAME} PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
 
 target_link_libraries(
   ${PROJECT_NAME}
