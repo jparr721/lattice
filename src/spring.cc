@@ -1,5 +1,5 @@
-#include <lattice/spring.h>
 #include <lattice/mass.h>
+#include <lattice/spring.h>
 
 #include <iostream>
 

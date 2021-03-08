@@ -1,5 +1,5 @@
-#include <lattice/plots_widget.h>
 #include <lattice/gl_window.h>
+#include <lattice/plots_widget.h>
 
 #include <iostream>
 
@@ -115,22 +115,23 @@ void PlotsWidget::ResetPlots() {
 void PlotsWidget::ResetForcePlot() { force_y_line->clear(); }
 
 void PlotsWidget::UpdateForcePlot() {
-    const auto current_force_vector = window->widget->CurrentSimSpringForce();
-    force_y_line->append(frame, current_force_vector.y());
+    /* const auto current_force_vector =
+     * window->widget->CurrentSimSpringForce(); */
+    /* force_y_line->append(frame, current_force_vector.y()); */
 }
 
 void PlotsWidget::ResetAccelerationPlot() { acceleration_y_line->clear(); }
 
 void PlotsWidget::UpdateAccelerationPlot() {
-    const auto current_acceleration_vector =
-        window->widget->CurrentSimObjectForce();
-    acceleration_y_line->append(frame, current_acceleration_vector.y());
+    /* const auto current_acceleration_vector = */
+    /*     window->widget->CurrentSimObjectForce(); */
+    /* acceleration_y_line->append(frame, current_acceleration_vector.y()); */
 }
 
 void PlotsWidget::ResetVelocityPlot() { velocity_y_line->clear(); }
 
 void PlotsWidget::UpdateVelocityPlot() {
-    const auto current_velocity_vector =
-        window->widget->CurrentSimObjectVelocity();
-    velocity_y_line->append(frame, current_velocity_vector.y());
+    /* const auto current_velocity_vector = */
+    /*     window->widget->CurrentSimObjectVelocity(); */
+    /* velocity_y_line->append(frame, current_velocity_vector.y()); */
 }

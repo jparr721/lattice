@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lattice/gl_widget.h>
+#include <lattice/shape_spec.h>
 
 #include <QChart>
 #include <QChartView>
@@ -26,9 +27,9 @@ class GLWindow : public QWidget {
     Q_OBJECT
 
   public:
-    GLWidget* widget = new GLWidget;
+    GLWidget* widget;
 
-    GLWindow();
+    explicit GLWindow(std::shared_ptr<ShapeSpec> shape_spec);
 
   protected:
     void keyPressEvent(QKeyEvent* event) override;

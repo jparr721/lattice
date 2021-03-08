@@ -29,6 +29,9 @@ class Mass : public std::enable_shared_from_this<Mass> {
     // Represents the vertices of the fixture.
     std::vector<Eigen::Vector3f> vertices;
 
+    // The name of the mass node
+    std::string name;
+
     Mass(std::string name, bool fixed, Eigen::Vector3f color,
          Eigen::Vector3f starting_position)
         : position(starting_position), kColor(color), is_fixed(fixed),
@@ -54,8 +57,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
     // Trivial Getters
     float Weight() const { return mass_weight; }
 
-    std::string Name() { return name; }
-
     std::vector<Eigen::Vector3f> Colors() const { return colors; }
 
     auto size() const { return vertices.size(); }
@@ -66,9 +67,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
 
     // The color of the mass object.
     const Eigen::Vector3f kColor;
-
-    // The name of the mass node
-    std::string name;
 
     // The mass of the... mass...
     float mass_weight = kMinimumMassValue;

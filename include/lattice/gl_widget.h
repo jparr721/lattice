@@ -2,7 +2,8 @@
 
 #include <lattice/camera.h>
 #include <lattice/keyboard.h>
-#include <lattice/mass_spring_system.h>
+#include <lattice/shape_spec.h>
+#include <lattice/supervisor.h>
 
 #include <memory>
 #include <string>
@@ -18,7 +19,7 @@ QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
   public:
-    explicit GLWidget(QWidget* parent = nullptr);
+    GLWidget(std::shared_ptr<ShapeSpec> shape_spec, QWidget* parent = nullptr);
     ~GLWidget() = default;
 
     void RestartSimulation();
@@ -84,7 +85,7 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     QTimer* update_timer;
 
     // Simulation Params
-    std::shared_ptr<MassSpringSystem> mass_spring_system;
+    std::shared_ptr<Supervisor> supervisor;
 
     // Camera Controller
     Camera camera;

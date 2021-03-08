@@ -40,8 +40,6 @@ class Spring : public std::enable_shared_from_this<Spring> {
 
     float RestLength() const { return rest_length; }
 
-    Eigen::Vector3f Force() const { return force; }
-
     std::vector<Eigen::Vector3f> Colors() const { return colors; }
 
     // Non Trivial Getters
@@ -65,9 +63,6 @@ class Spring : public std::enable_shared_from_this<Spring> {
     float damping_constant = kMinimumDampingValue;
 
     const Eigen::Vector3f kColor;
-
-    // The force that the spring is exerting;
-    Eigen::Vector3f force;
 
     // Represents the colors mapped to each vertex.
     std::vector<Eigen::Vector3f> colors;

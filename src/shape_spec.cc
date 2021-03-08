@@ -1,5 +1,5 @@
-#include <lattice/shape_spec.h>
 #include <lattice/colors.h>
+#include <lattice/shape_spec.h>
 
 #include <fstream>
 #include <iostream>

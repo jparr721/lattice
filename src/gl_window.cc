@@ -14,7 +14,9 @@
 #include <QSplineSeries>
 #include <QStringLiteral>
 
-GLWindow::GLWindow() {
+GLWindow::GLWindow(std::shared_ptr<ShapeSpec> shape_spec) {
+    widget = new GLWidget(shape_spec);
+
     CreateSliders();
 
     sim_layout->addWidget(widget);
