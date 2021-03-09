@@ -55,7 +55,7 @@ void MassSpringSystem::Reset() {
         auto mass = masses[i];
         auto position = initial_positions[i];
         const int y =
-            ComputeY(i, initial_conditions.masses.size(), last_spring_length);
+            ComputeY(i, masses.size(), last_spring_length);
         position(1) = y;
 
         masses[i]->position = position;
@@ -194,7 +194,7 @@ Eigen::Vector3f MassSpringSystem::GetFirstMovingMassForce() {
 int MassSpringSystem::ComputeY(int index, int total_masses, int rest_length) {
     const int split_point = total_masses / 2;
 
-    return (index % total_masses) <= split_point ? rest_length : -rest_length;
+    return (index % total_masses) < split_point ? rest_length : -rest_length;
 }
 
 void MassSpringSystem::PreloadModelData() {
