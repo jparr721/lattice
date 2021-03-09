@@ -1,7 +1,7 @@
 #include <lattice/gl_window.h>
 #include <lattice/main_window.h>
 #include <lattice/shape_spec.h>
-#include <lattice/tab_widget.h>
+#include <lattice/gl_window.h>
 
 #include <memory>
 
@@ -13,5 +13,5 @@ MainWindow::MainWindow() {
     auto shape_spec = std::make_shared<ShapeSpec>();
 
     setFixedSize(kWidth, kHeight);
-    setCentralWidget(new TabWidget(shape_spec, this));
+    setCentralWidget(new GLWindow(shape_spec));
 }
