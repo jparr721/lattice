@@ -25,6 +25,8 @@ MSSConfig Square(std::string name, int width, int height, int depth,
     for (int i = 0; i < depth; ++i) {
         const auto z = z_distribution[i];
         for (int j = 0; j < width * height; ++j) {
+            auto color = colors::kRed;
+
             const auto x = x_distribution[j % x_distribution.size()];
 
             const auto position = Eigen::Vector3f(x, 0.f, z);
@@ -36,17 +38,17 @@ MSSConfig Square(std::string name, int width, int height, int depth,
             // "Right"
             if (width - j > 0) {
                 // The one next to the current node is always one greater
-                adjacencies.push_back(i + 1);
+                adjacencies.push_back(number + 1);
             }
 
             // "Down"
-            if (j < (x_distribution.size() / 2)) {
+            if (j < width) {
                 // The one below the current node is always <width> greater
-                adjacencies.push_back(i + width);
+                adjacencies.push_back(number + width);
             }
 
             // "Behind"
-            if (depth > 1 && number < (total_masses - depth * height)) {
+            if (depth > 1) {
                 // The one behind the current node is always <height> * <width>
                 // greater
                 adjacencies.push_back(j + (width * height));
@@ -55,7 +57,7 @@ MSSConfig Square(std::string name, int width, int height, int depth,
             positions.push_back(position);
             masses.push_back({
                 .number = number,
-                .color = colors::kRed,
+                .color = color,
                 .fixed = j > width - 1,
                 .adjacencies = adjacencies,
             });
