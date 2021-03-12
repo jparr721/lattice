@@ -1,5 +1,6 @@
 #include <lattice/generator.h>
 
+#include <algorithm>
 #include <iostream>
 
 namespace generator {
@@ -13,7 +14,8 @@ MSSConfig Square(std::string name, int width, int height, int depth,
 
     // Make a uniform distribution of x values around the center.
     const auto x_distribution = UniformCoordinateDistribution(width);
-    const auto z_distribution = UniformCoordinateDistribution(depth);
+    auto z_distribution = UniformCoordinateDistribution(depth);
+    std::reverse(z_distribution.begin(), z_distribution.end());
 
     assert(total_masses % x_distribution.size() == 0);
 
@@ -26,6 +28,7 @@ MSSConfig Square(std::string name, int width, int height, int depth,
         const auto z = z_distribution[i];
         for (int j = 0; j < width * height; ++j) {
             auto color = colors::kRed;
+            const bool fixed = j > width - 1;
 
             const auto x = x_distribution[j % x_distribution.size()];
 
@@ -36,7 +39,8 @@ MSSConfig Square(std::string name, int width, int height, int depth,
             std::vector<int> adjacencies;
 
             // "Right"
-            if (width - j > 0) {
+            // If the node is not a right-edge node.
+            if (!((j + 1) % width == 0)) {
                 // The one next to the current node is always one greater
                 adjacencies.push_back(number + 1);
             }
@@ -51,14 +55,14 @@ MSSConfig Square(std::string name, int width, int height, int depth,
             if (depth > 1) {
                 // The one behind the current node is always <height> * <width>
                 // greater
-                adjacencies.push_back(j + (width * height));
+                // adjacencies.push_back(j + (width * height));
             }
 
             positions.push_back(position);
             masses.push_back({
                 .number = number,
                 .color = color,
-                .fixed = j > width - 1,
+                .fixed = fixed,
                 .adjacencies = adjacencies,
             });
             ++number;
