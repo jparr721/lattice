@@ -14,11 +14,11 @@
 #include <QOpenGLShaderProgram>
 #include <QPainter>
 
-GLWidget::GLWidget(std::shared_ptr<ShapeSpec> shape_spec, QWidget* parent)
+GLWidget::GLWidget(const generator::MSSConfig& config, QWidget* parent)
     : QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
 
-    supervisor = std::make_unique<Supervisor>(shape_spec);
+    supervisor = std::make_unique<Supervisor>(config);
 
     float updates_per_second = 120;
     float draws_per_second = 30;

@@ -1,7 +1,7 @@
+#include <lattice/colors.h>
+#include <lattice/generator.h>
 #include <lattice/gl_window.h>
 #include <lattice/main_window.h>
-#include <lattice/shape_spec.h>
-#include <lattice/gl_window.h>
 
 #include <memory>
 
@@ -10,8 +10,9 @@
 #include <QMessageBox>
 
 MainWindow::MainWindow() {
-    auto shape_spec = std::make_shared<ShapeSpec>();
+    generator::MSSConfig config = generator::Square(
+        "sim1", 4 /* Width */, 2 /* Height */, 4 /* Depth */, colors::kRed);
 
     setFixedSize(kWidth, kHeight);
-    setCentralWidget(new GLWindow(shape_spec));
+    setCentralWidget(new GLWindow(config));
 }

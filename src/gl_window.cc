@@ -14,8 +14,8 @@
 #include <QSplineSeries>
 #include <QStringLiteral>
 
-GLWindow::GLWindow(std::shared_ptr<ShapeSpec> shape_spec) {
-    widget = new GLWidget(shape_spec);
+GLWindow::GLWindow(generator::MSSConfig config) {
+    widget = new GLWidget(config);
 
     CreateSliders();
 

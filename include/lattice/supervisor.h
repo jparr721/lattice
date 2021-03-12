@@ -1,7 +1,7 @@
 #pragma once
 
+#include <lattice/generator.h>
 #include <lattice/mass_spring_system.h>
-#include <lattice/shape_spec.h>
 
 #include <memory>
 #include <vector>
@@ -19,7 +19,7 @@ class Supervisor {
 
     std::vector<std::shared_ptr<MassSpringSystem>> simulations;
 
-    explicit Supervisor(std::shared_ptr<ShapeSpec>& shape_spec);
+    explicit Supervisor(const generator::MSSConfig& config);
     ~Supervisor() = default;
 
     // Setters
@@ -39,9 +39,18 @@ class Supervisor {
     void RecompileVertexBuffer();
 
     // Samplers
-    Eigen::Vector3f SampleMassVelocity();
-    Eigen::Vector3f SampleMassForce();
+    std::unordered_map<std::string, std::unordered_map<int, Eigen::Vector3f>>
+    SampleMassVelocities();
+
+    std::unordered_map<std::string, std::unordered_map<int, Eigen::Vector3f>>
+    SampleMassForces();
 
   private:
     float timestep_size = kMinimumTimeStepChangeValue;
+
+    std::unordered_map<std::string, std::unordered_map<int, Eigen::Vector3f>>
+        current_mass_velocities;
+
+    std::unordered_map<std::string, std::unordered_map<int, Eigen::Vector3f>>
+        current_mass_forces;
 };

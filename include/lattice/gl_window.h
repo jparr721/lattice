@@ -1,7 +1,7 @@
 #pragma once
 
+#include <lattice/generator.h>
 #include <lattice/gl_widget.h>
-#include <lattice/shape_spec.h>
 
 #include <QChart>
 #include <QChartView>
@@ -29,7 +29,7 @@ class GLWindow : public QWidget {
   public:
     GLWidget* widget;
 
-    explicit GLWindow(std::shared_ptr<ShapeSpec> shape_spec);
+    explicit GLWindow(generator::MSSConfig config);
 
   protected:
     void keyPressEvent(QKeyEvent* event) override;

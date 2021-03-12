@@ -2,19 +2,18 @@
 
 #include <iostream>
 
-Supervisor::Supervisor(std::shared_ptr<ShapeSpec>& shape_spec) {
-    for (const auto& initial_conditions : shape_spec->sim_objects) {
-        simulations.push_back(
-            std::make_shared<MassSpringSystem>(initial_conditions));
-    }
+Supervisor::Supervisor(const generator::MSSConfig& config) {
+    // TODO(@jparr721) Should add multi-shape support later.
+    simulations.push_back(std::make_shared<MassSpringSystem>(config));
 
     for (const auto simulation : simulations) {
         for (const auto color : simulation->Colors()) {
             colors.push_back(color);
         }
     }
-    
-    shapes = std::vector<Eigen::Vector3f>(colors.size(), Eigen::Vector3f::Zero());
+
+    shapes =
+        std::vector<Eigen::Vector3f>(colors.size(), Eigen::Vector3f::Zero());
     RecompileVertexBuffer();
 }
 
@@ -67,6 +66,22 @@ void Supervisor::SetSpringRestLength(float value) {
     }
 }
 
-Eigen::Vector3f Supervisor::SampleMassVelocity() {}
+std::unordered_map<std::string, std::unordered_map<int, Eigen::Vector3f>>
+Supervisor::SampleMassVelocities() {
+    for (const auto& simulation : simulations) {
+        const auto velocities = simulation->GetMassVelocities();
+        current_mass_velocities[simulation->name] = velocities;
+    }
 
-Eigen::Vector3f Supervisor::SampleMassForce() {}
+    return current_mass_velocities;
+}
+
+std::unordered_map<std::string, std::unordered_map<int, Eigen::Vector3f>>
+Supervisor::SampleMassForces() {
+    for (const auto& simulation : simulations) {
+        const auto forces = simulation->GetMassForces();
+        current_mass_forces[simulation->name] = forces;
+    }
+
+    return current_mass_forces;
+}

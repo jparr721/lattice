@@ -1,7 +1,7 @@
 #pragma once
 
+#include <lattice/generator.h>
 #include <lattice/mass.h>
-#include <lattice/shape_spec.h>
 #include <lattice/spring.h>
 
 #include <optional>
@@ -18,7 +18,7 @@ class MassSpringSystem {
 
     std::string name;
 
-    explicit MassSpringSystem(const MSS& initial_conditions);
+    explicit MassSpringSystem(const generator::MSSConfig& config);
     ~MassSpringSystem() = default;
 
     void Update(float dt);
@@ -36,8 +36,8 @@ class MassSpringSystem {
     void SetMassWeight(float value);
 
     // Training Data Signals
-    std::unordered_map<std::string, Eigen::Vector3f> GetMassVelocities();
-    std::unordered_map<std::string, Eigen::Vector3f> GetMassForces();
+    std::unordered_map<int, Eigen::Vector3f> GetMassVelocities();
+    std::unordered_map<int, Eigen::Vector3f> GetMassForces();
 
     // DEPRECATED
     Eigen::Vector3f GetFirstMovingMassVelocity();
@@ -65,12 +65,12 @@ class MassSpringSystem {
     // Our shapes' colors in a flat list.
     std::vector<Eigen::Vector3f> colors;
 
-    std::unordered_map<std::string, int> mass_map;
+    std::unordered_map<int, int> mass_map;
 
-    std::unordered_map<std::string, Eigen::Vector3f> mass_forces;
-    std::unordered_map<std::string, Eigen::Vector3f> mass_velocities;
+    std::unordered_map<int, Eigen::Vector3f> mass_forces;
+    std::unordered_map<int, Eigen::Vector3f> mass_velocities;
 
-    MSS initial_conditions;
+    generator::MSSConfig initial_conditions;
 
     void Redraw();
     void PreloadModelData();

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <lattice/camera.h>
+#include <lattice/generator.h>
 #include <lattice/keyboard.h>
-#include <lattice/shape_spec.h>
 #include <lattice/supervisor.h>
 
 #include <memory>
@@ -19,7 +19,7 @@ QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
   public:
-    GLWidget(std::shared_ptr<ShapeSpec> shape_spec, QWidget* parent = nullptr);
+    GLWidget(const generator::MSSConfig& config, QWidget* parent = nullptr);
     ~GLWidget() = default;
 
     void RestartSimulation();

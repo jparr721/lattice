@@ -2,7 +2,7 @@
 
 set -euox pipefail
 
-rm -r build
+if [ -d "build" ] && rm -r build
 
 mkdir build
 cd build
