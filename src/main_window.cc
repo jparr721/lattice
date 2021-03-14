@@ -10,7 +10,7 @@
 
 MainWindow::MainWindow() {
     generator::MSSConfig config = generator::Square(
-        "sim1", 4 /* Width */, 2 /* Height */, 4 /* Depth */, colors::kRed);
+        "sim1", 4 /* Width */, 2 /* Height */, 4 /* Depth */, Colors::kRed);
 
     setFixedSize(kWidth, kHeight);
     setCentralWidget(new GLWindow(config));

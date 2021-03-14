@@ -36,7 +36,7 @@ MassSpringSystem::MassSpringSystem(const generator::MSSConfig& config) {
         for (const auto adjacent_node_number : mass_node.adjacencies) {
             auto adjacent_node = masses[mass_map.at(adjacent_node_number)];
 
-            auto spring = std::make_shared<Spring>(colors::kGreen, center_node,
+            auto spring = std::make_shared<Spring>(Colors::kGreen, center_node,
                                                    adjacent_node);
 
             spring->Initialize();

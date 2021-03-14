@@ -23,7 +23,7 @@ class Spring : public std::enable_shared_from_this<Spring> {
 
     Spring(Eigen::Vector3f color, std::shared_ptr<Mass>& _left_mass,
            std::shared_ptr<Mass>& _right_mass)
-        : kColor(colors::kGreen), left_mass(_left_mass),
+        : kColor(Colors::kGreen), left_mass(_left_mass),
           right_mass(_right_mass) {}
 
     // Class Initializers and Mutators

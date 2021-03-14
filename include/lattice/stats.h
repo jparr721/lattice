@@ -42,10 +42,14 @@ class Stats : public QObject {
         auto dt = QDateTime::currentDateTime();
         dt.setTimeSpec(Qt::UTC);
 
-        velocity_filename = std::string("../../velocity-stats-") + GetCurrentDate() +
+        if (!std::filesystem::exists("../../stats")) {
+            std::filesystem::create_directory("../../stats");
+        }
+
+        velocity_filename = std::string("../../stats/velocity-stats-") + GetCurrentDate() +
                             std::string(".csv");
 
-        force_filename = std::string("../../force-stats-") + GetCurrentDate() +
+        force_filename = std::string("../../stats/force-stats-") + GetCurrentDate() +
                          std::string(".csv");
     }
 
