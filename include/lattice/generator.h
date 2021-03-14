@@ -5,6 +5,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <Eigen/Dense>
@@ -24,13 +25,13 @@ struct MSSConfig {
     std::vector<Eigen::Vector3f> positions;
 
     MSSConfig() = default;
-    MSSConfig(const std::string& _name, const std::vector<MassNode>& _masses,
-              const std::vector<Eigen::Vector3f> _positions)
-        : name(_name), masses(_masses), positions(_positions) {}
+    MSSConfig(std::string  _name, std::vector<MassNode>  _masses,
+              std::vector<Eigen::Vector3f>  _positions)
+        : name(std::move(_name)), masses(std::move(_masses)), positions(std::move(_positions)) {}
 };
 
 MSSConfig Square(std::string name, int width, int height, int depth,
-                 Eigen::Vector3f color);
+                 const Eigen::Vector3f& color);
 constexpr int kDefaultMidpoint = 0;
 constexpr int kMinimumSeparationDistance = 4;
 

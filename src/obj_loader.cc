@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include <assimp/Importer.hpp>
-#include <assimp/postprocess.h>
 #include <assimp/scene.h>
 
 bool LoadObjFile(const std::string& obj_file_path,
@@ -22,7 +21,7 @@ bool LoadObjFile(const std::string& obj_file_path,
     vertices.reserve(mesh->mNumVertices);
     for (auto i = 0u; i < mesh->mNumVertices; ++i) {
         aiVector3D pos = mesh->mVertices[i];
-        vertices.push_back(Eigen::Vector3f(pos.x, pos.y, pos.z));
+        vertices.emplace_back(pos.x, pos.y, pos.z);
     }
 
     return true;

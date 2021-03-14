@@ -7,7 +7,6 @@
 
 #include <QMenu>
 #include <QMenuBar>
-#include <QMessageBox>
 
 MainWindow::MainWindow() {
     generator::MSSConfig config = generator::Square(

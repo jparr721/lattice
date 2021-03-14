@@ -6,8 +6,8 @@ Supervisor::Supervisor(const generator::MSSConfig& config) {
     // TODO(@jparr721) Should add multi-shape support later.
     simulations.push_back(std::make_shared<MassSpringSystem>(config));
 
-    for (const auto simulation : simulations) {
-        for (const auto color : simulation->Colors()) {
+    for (const auto& simulation : simulations) {
+        for (const auto& color : simulation->Colors()) {
             colors.push_back(color);
         }
     }
@@ -19,8 +19,8 @@ Supervisor::Supervisor(const generator::MSSConfig& config) {
 
 void Supervisor::RecompileVertexBuffer() {
     shapes.clear();
-    for (const auto simulation : simulations) {
-        for (const auto shape : simulation->Shapes()) {
+    for (const auto& simulation : simulations) {
+        for (const auto& shape : simulation->Shapes()) {
             shapes.push_back(shape);
         }
     }

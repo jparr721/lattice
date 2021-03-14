@@ -1,4 +1,3 @@
-#include <lattice/colors.h>
 #include <lattice/gl_widget.h>
 #include <lattice/gl_window.h>
 #include <lattice/mass.h>
@@ -18,28 +17,49 @@ GLWidget::GLWidget(const generator::MSSConfig& config, QWidget* parent)
     : QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
 
-    supervisor = std::make_unique<Supervisor>(config);
+    supervisor = std::make_shared<Supervisor>(config);
 
-    float updates_per_second = 120;
-    float draws_per_second = 30;
+    constexpr int msec_conversion = 1000;
+    constexpr int updates_per_second = 120;
+    constexpr int draws_per_second = 30;
 
     draw_timer = new QTimer(this);
     connect(draw_timer, &QTimer::timeout, this,
             QOverload<>::of(&GLWidget::update));
-    draw_timer->start(1000.0 / draws_per_second);
+    draw_timer->start(msec_conversion / draws_per_second);
 
     update_timer = new QTimer(this);
     connect(update_timer, &QTimer::timeout, this, &GLWidget::Update);
-    update_timer->start(1000.0 / updates_per_second);
+    update_timer->start(msec_conversion / updates_per_second);
+
+    // Configure background stats thread
+    stats = new Stats(supervisor);
+    stats->moveToThread(&worker_thread);
+    connect(&worker_thread, &QThread::finished, stats, &QObject::deleteLater);
+    connect(update_timer, &QTimer::timeout, this, &GLWidget::SaveCurrentStats);
+    worker_thread.start();
 }
 
-void GLWidget::Cleanup() { delete program_id; }
+GLWidget::~GLWidget() {
+    worker_thread.quit();
+    worker_thread.wait();
+}
+
+void GLWidget::Cleanup() {
+    delete program_id;
+}
 
 QSize GLWidget::minimumSizeHint() const { return QSize(kWidth, kHeight); }
 
 QSize GLWidget::sizeHint() const { return QSize(kWidth, kHeight); }
 
-void GLWidget::Update() { supervisor->Update(); }
+void GLWidget::SaveCurrentStats() {
+    stats->DropReading();
+}
+
+void GLWidget::Update() {
+    supervisor->Update();
+}
 
 void GLWidget::SetMass(float value) {
     slider_mass_value =
@@ -147,7 +167,7 @@ void GLWidget::paintGL() {
 }
 
 // Don't allow resizing for now.
-void GLWidget::resizeGL(int width, int height) { return; }
+void GLWidget::resizeGL(int width, int height) {}
 
 void GLWidget::keyPressEvent(QKeyEvent* event) {
     camera.OnKeyPress(event);
@@ -167,14 +187,14 @@ void GLWidget::keyReleaseEvent(QKeyEvent* event) {
 
 std::string GLWidget::ReadVertexShader() {
     std::ostringstream sstr;
-    auto stream = std::ifstream{"./shaders/core.vs"};
+    auto stream = std::ifstream{"../../shaders/core.vs"};
     sstr << stream.rdbuf();
     return sstr.str();
 }
 
 std::string GLWidget::ReadFragmentShader() {
     std::ostringstream sstr;
-    auto stream = std::ifstream{"./shaders/core.frag"};
+    auto stream = std::ifstream{"../../shaders/core.frag"};
     sstr << stream.rdbuf();
     return sstr.str();
 }
@@ -186,10 +206,10 @@ float GLWidget::Interpolate(float v0, float v1, float t) {
 void GLWidget::RestartSimulation() {
     supervisor->Reset();
 
-    is_restarted = frame == 0 ? false : true;
+    is_restarted = frame == 0;
 }
 
-void GLWidget::PrintParameters() {
+void GLWidget::PrintParameters() const {
     std::cout << "        Parameters:           " << std::endl;
     std::cout << "==============================" << std::endl;
     std::cout << "Mass: " << slider_mass_value << std::endl;
@@ -197,35 +217,4 @@ void GLWidget::PrintParameters() {
     std::cout << "Damping: " << slider_damping_constant_value << std::endl;
     std::cout << "Rest Length: " << slider_rest_length_value << std::endl;
     std::cout << "==============================" << std::endl;
-}
-
-bool GLWidget::IsRestarted() {
-    if (is_restarted) {
-        is_restarted = false;
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * This is here because we are not translating vectors via absolute
- * positions, so when we initially click, we need to set the "last"
- * position vector so we know how much, and in what direction, we've
- * translated"
- */
-void GLWidget::mousePressEvent(QMouseEvent* event) {
-    last_position = Eigen::Vector3f(event->x(), event->y(), 0.f);
-}
-
-void GLWidget::mouseMoveEvent(QMouseEvent* event) {
-    int x = event->x();
-    int y = event->y();
-    Eigen::Vector3f dposition = Eigen::Vector3f(x, y, 0.f) - last_position;
-
-    // TODO(@jparr721) - This sucks.
-    Eigen::Vector3f dposition_scaled =
-        (dposition.array() * Eigen::Array3f(0.01f, 0.01f, 0.0f)).matrix();
-
-    last_position = Eigen::Vector3f(x, y, 0.f);
 }

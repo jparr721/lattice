@@ -3,13 +3,12 @@
 
 #include <lattice/stats.h>
 
-void Stats::DropReading(
-    std::unordered_map<std::string, std::unordered_map<int, Eigen::Vector3f>>
-        current_mass_velocities,
-    std::unordered_map<std::string, std::unordered_map<int, Eigen::Vector3f>>
-        current_mass_forces) {
-    const auto velocity_csv_rows = Compress(current_mass_velocities);
-    const auto force_csv_rows = Compress(current_mass_forces);
+void Stats::DropReading() {
+    const auto mass_velocities = supervisor->SampleMassForces();
+    const auto mass_forces = supervisor->SampleMassVelocities();
+
+    const auto velocity_csv_rows = Compress(mass_velocities);
+    const auto force_csv_rows = Compress(mass_forces);
 
     WriteCSVData(velocity_csv_rows, velocity_filename);
     WriteCSVData(force_csv_rows, force_filename);
@@ -22,12 +21,16 @@ void Stats::WriteCSVData(const std::vector<StatsCSVRow>& rows,
     if (!FileExists(filename)) {
         file_ptr.open(filename, std::fstream::in | std::fstream::out |
                                     std::fstream::trunc);
+
+        // If the file doesn't exist, add the headers to it.
+        file_ptr << StatsCSVRow::Headers();
     } else {
+        // Otherwise, open in append mode.
         file_ptr.open(filename,
                       std::fstream::in | std::fstream::out | std::fstream::app);
     }
 
-    for (const auto row : rows) {
+    for (const auto& row : rows) {
         file_ptr << row.to_string();
     }
 
@@ -35,8 +38,11 @@ void Stats::WriteCSVData(const std::vector<StatsCSVRow>& rows,
 }
 
 bool Stats::FileExists(const std::string& filename) {
-    struct stat buf;
-    return (stat(filename.c_str(), &buf) == 0);
+    return std::filesystem::exists(filename);
+}
+
+std::string Stats::GetCurrentDate() {
+    return QDateTime::currentDateTime().toString(Qt::ISODate).toUtf8().constData();
 }
 
 std::vector<StatsCSVRow> Stats::Compress(
@@ -46,7 +52,7 @@ std::vector<StatsCSVRow> Stats::Compress(
 
     for (const auto& [mss_name, velocities_by_mass] : values) {
         for (const auto& [mass_number, velocity] : velocities_by_mass) {
-            output.push_back(StatsCSVRow(mss_name, mass_number, velocity));
+            output.emplace_back(mss_name, mass_number, velocity);
         }
     }
 

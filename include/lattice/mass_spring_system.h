@@ -27,9 +27,6 @@ class MassSpringSystem {
     void ComputeShapes();
     void ComputeColors();
 
-    // Stats
-    void RecordSystemStatus();
-
     // Spring Mutators
     void SetSpringConstant(float value);
     void SetSpringRestLength(float value);
@@ -71,6 +68,4 @@ class MassSpringSystem {
 
     void Redraw();
     void PreloadModelData();
-
-    int ComputeY(int index, int total_masses, int rest_length);
 };

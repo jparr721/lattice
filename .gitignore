@@ -34,3 +34,5 @@ build/
 
 # Xcode Build
 xc/
+
+cmake-build-debug/

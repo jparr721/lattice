@@ -1,20 +1,13 @@
 #include <lattice/gl_window.h>
 #include <lattice/main_window.h>
 
-#include <cstdlib>
-#include <iostream>
-
 #include <QGuiApplication>
-#include <QKeyEvent>
 #include <QLabel>
-#include <QMessageBox>
-#include <QPushButton>
 #include <QScreen>
 #include <QSlider>
-#include <QSplineSeries>
 #include <QStringLiteral>
 
-GLWindow::GLWindow(generator::MSSConfig config) {
+GLWindow::GLWindow(const generator::MSSConfig& config) {
     widget = new GLWidget(config);
 
     CreateSliders();

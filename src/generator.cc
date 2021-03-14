@@ -2,10 +2,11 @@
 
 #include <algorithm>
 #include <iostream>
+#include <utility>
 
 namespace generator {
 MSSConfig Square(std::string name, int width, int height, int depth,
-                 Eigen::Vector3f color) {
+                 const Eigen::Vector3f& color) {
     assert(width > 0);
     assert(depth > 0);
     assert(height > 1);
@@ -27,7 +28,6 @@ MSSConfig Square(std::string name, int width, int height, int depth,
     for (int i = 0; i < depth; ++i) {
         const auto z = z_distribution[i];
         for (int j = 0; j < width * height; ++j) {
-            auto color = colors::kRed;
             const bool fixed = j > width - 1;
 
             const auto x = x_distribution[j % x_distribution.size()];
@@ -40,7 +40,7 @@ MSSConfig Square(std::string name, int width, int height, int depth,
 
             // "Right"
             // If the node is not a right-edge node.
-            if (!((j + 1) % width == 0)) {
+            if ((j + 1) % width != 0) {
                 // The one next to the current node is always one greater
                 adjacencies.push_back(number + 1);
             }
@@ -61,15 +61,15 @@ MSSConfig Square(std::string name, int width, int height, int depth,
             positions.push_back(position);
             masses.push_back({
                 .number = number,
-                .color = color,
                 .fixed = fixed,
+                .color = color,
                 .adjacencies = adjacencies,
             });
             ++number;
         }
     }
 
-    return MSSConfig(name, masses, positions);
+    return MSSConfig(std::move(name), masses, positions);
 }
 
 std::vector<int> UniformCoordinateDistribution(int n) {
@@ -85,6 +85,7 @@ std::vector<int> UniformCoordinateDistribution(int n) {
 
     // Adjust left the minimum points per value before center
     int bottom = -kMinimumSeparationDistance * midpoint;
+    output.reserve(n);
     for (int i = 0; i < n; ++i) {
         output.push_back(bottom + (4 * i));
     }

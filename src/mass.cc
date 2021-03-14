@@ -5,7 +5,7 @@
 #include <iostream>
 
 void Mass::Initialize() {
-    if (!LoadObjFile("sim_specs/cube.obj", original_positions)) {
+    if (!LoadObjFile("../../sim_specs/cube.obj", original_positions)) {
         exit(EXIT_FAILURE);
     }
 
