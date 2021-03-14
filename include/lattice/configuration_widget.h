@@ -5,11 +5,11 @@
 #include <QPushButton>
 #include <QWidget>
 
-class ShapeSpecWidget : public QWidget {
+class ConfigurationWidget : public QWidget {
     Q_OBJECT
 
   public:
-    ShapeSpecWidget(QWidget* parent = nullptr);
+    ConfigurationWidget(QWidget* parent = nullptr);
 
   private slots:
     void SaveSpecification(generator::MSSConfig mss);

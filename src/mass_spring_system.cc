@@ -168,26 +168,6 @@ std::unordered_map<int, Eigen::Vector3f> MassSpringSystem::GetMassForces() {
     return mass_forces;
 }
 
-Eigen::Vector3f MassSpringSystem::GetFirstMovingMassVelocity() {
-    for (auto mass : masses) {
-        if (!mass->fixed) {
-            return mass->velocity;
-        }
-    }
-
-    return Eigen::Vector3f(0, 0, 0);
-}
-
-Eigen::Vector3f MassSpringSystem::GetFirstMovingMassForce() {
-    for (auto mass : masses) {
-        if (!mass->fixed) {
-            return mass->force;
-        }
-    }
-
-    return Eigen::Vector3f(0, 0, 0);
-}
-
 int MassSpringSystem::ComputeY(int index, int total_masses, int rest_length) {
     const int split_point = total_masses / 2;
 

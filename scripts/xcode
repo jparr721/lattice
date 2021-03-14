@@ -2,7 +2,9 @@
 
 set -euox pipefail
 
-if [ -d "xc" ] && rm -r build
+if [ -d "xc" ]; then
+  rm -r build
+fi
 
 mkdir xc
 cd xc

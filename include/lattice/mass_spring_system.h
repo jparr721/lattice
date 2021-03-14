@@ -27,6 +27,9 @@ class MassSpringSystem {
     void ComputeShapes();
     void ComputeColors();
 
+    // Stats
+    void RecordSystemStatus();
+
     // Spring Mutators
     void SetSpringConstant(float value);
     void SetSpringRestLength(float value);
@@ -38,12 +41,6 @@ class MassSpringSystem {
     // Training Data Signals
     std::unordered_map<int, Eigen::Vector3f> GetMassVelocities();
     std::unordered_map<int, Eigen::Vector3f> GetMassForces();
-
-    // DEPRECATED
-    Eigen::Vector3f GetFirstMovingMassVelocity();
-    Eigen::Vector3f GetFirstMovingMassForce();
-    Eigen::Vector3f GetFirstSpringForce();
-    // = DEPRECATED
 
     std::vector<Eigen::Vector3f> Colors() { return colors; }
     std::vector<Eigen::Vector3f> Shapes() { return shapes; }
