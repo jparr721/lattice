@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Supervisor::Supervisor(const generator::MSSConfig& config) {
+Supervisor::Supervisor(const MSSConfig& config) {
     // TODO(@jparr721) Should add multi-shape support later.
     simulations.push_back(std::make_shared<MassSpringSystem>(config));
 

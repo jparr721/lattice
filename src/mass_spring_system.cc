@@ -2,7 +2,7 @@
 
 #include <memory>
 
-MassSpringSystem::MassSpringSystem(const generator::MSSConfig& config) {
+MassSpringSystem::MassSpringSystem(const MSSConfig& config) {
     name = config.name;
     const auto mss_masses = config.masses;
     const auto mss_positions = config.positions;

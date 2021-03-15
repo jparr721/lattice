@@ -18,7 +18,7 @@ class MassSpringSystem {
 
     std::string name;
 
-    explicit MassSpringSystem(const generator::MSSConfig& config);
+    explicit MassSpringSystem(const MSSConfig& config);
     ~MassSpringSystem() = default;
 
     void Update(float dt);
@@ -63,8 +63,6 @@ class MassSpringSystem {
 
     std::unordered_map<int, Eigen::Vector3f> mass_forces;
     std::unordered_map<int, Eigen::Vector3f> mass_velocities;
-
-    generator::MSSConfig initial_conditions;
 
     void Redraw();
     void PreloadModelData();

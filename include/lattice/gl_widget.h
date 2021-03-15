@@ -21,7 +21,7 @@ QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
   public:
-    explicit GLWidget(const generator::MSSConfig& config, QWidget* parent = nullptr);
+    explicit GLWidget(const MSSConfig& config, QWidget* parent = nullptr);
     ~GLWidget() override;
 
     void RestartSimulation();

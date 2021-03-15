@@ -12,7 +12,7 @@ class ConfigurationWidget : public QWidget {
     ConfigurationWidget(QWidget* parent = nullptr);
 
   private slots:
-    void SaveSpecification(generator::MSSConfig mss);
+    void SaveSpecification(MSSConfig mss);
 
   private:
     // Widget Combo Boxes

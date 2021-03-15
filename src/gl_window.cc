@@ -7,7 +7,7 @@
 #include <QSlider>
 #include <QStringLiteral>
 
-GLWindow::GLWindow(const generator::MSSConfig& config) {
+GLWindow::GLWindow(const MSSConfig& config) {
     widget = new GLWidget(config);
 
     CreateSliders();

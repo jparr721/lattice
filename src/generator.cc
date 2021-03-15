@@ -1,12 +1,14 @@
 #include <lattice/generator.h>
 
 #include <algorithm>
-#include <iostream>
 #include <utility>
 
-namespace generator {
-MSSConfig Square(std::string name, int width, int height, int depth,
-                 const Eigen::Vector3f& color) {
+MSSConfig::MSSConfig(std::string _name, int _width, int _height, int _depth)
+    : name(std::move(_name)), depth(_depth), height(_height), width(_width) {
+    Initialize();
+}
+
+void MSSConfig::Initialize() {
     assert(width > 0);
     assert(depth > 0);
     assert(height > 1);
@@ -20,8 +22,8 @@ MSSConfig Square(std::string name, int width, int height, int depth,
 
     assert(total_masses % x_distribution.size() == 0);
 
-    std::vector<MassNode> masses;
-    std::vector<Eigen::Vector3f> positions;
+    std::vector<MassNode> _masses;
+    std::vector<Eigen::Vector3f> _positions;
 
     // Render in layers front to back
     int number = 0;
@@ -55,24 +57,33 @@ MSSConfig Square(std::string name, int width, int height, int depth,
             if (depth > 1) {
                 // The one behind the current node is always <height> * <width>
                 // greater
-                // adjacencies.push_back(j + (width * height));
+
+                // Right now, only connect the fixed nodes backward.
+                if (fixed) {
+                    adjacencies.push_back(j + (width * height));
+                }
             }
 
-            positions.push_back(position);
-            masses.push_back({
+            _positions.push_back(position);
+            _masses.push_back({
                 .number = number,
                 .fixed = fixed,
                 .color = color,
                 .adjacencies = adjacencies,
             });
+
+            node_states[number] = PermutationStateMachine{};
+
             ++number;
         }
     }
 
-    return MSSConfig(std::move(name), masses, positions);
+    masses = _masses;
+    positions = _positions;
+    kLastNodeIndex = masses.size();
 }
 
-std::vector<int> UniformCoordinateDistribution(int n) {
+std::vector<int> MSSConfig::UniformCoordinateDistribution(int n) {
     if (n == 1) {
         return std::vector<int>{kDefaultMidpoint};
     } else if (n == 2) {
@@ -92,4 +103,19 @@ std::vector<int> UniformCoordinateDistribution(int n) {
 
     return output;
 }
-} // namespace generator
+
+void MSSConfig::Permute() {
+    if (last_mutated_node == kLastNodeIndex) {
+        last_mutated_node = kFirstNodeIndex;
+    }
+
+    // Shift the state and prepare to spool the compiler
+    node_states[++last_mutated_node].Forward();
+}
+
+void MSSConfig::CompileShapeMutation() {
+    // Terminal mutation state reached.
+    if (last_mutated_node == -1) {
+        return;
+    }
+}

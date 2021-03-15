@@ -13,7 +13,7 @@
 #include <QOpenGLShaderProgram>
 #include <QPainter>
 
-GLWidget::GLWidget(const generator::MSSConfig& config, QWidget* parent)
+GLWidget::GLWidget(const MSSConfig& config, QWidget* parent)
     : QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
 

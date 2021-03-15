@@ -19,7 +19,7 @@ class Supervisor {
 
     std::vector<std::shared_ptr<MassSpringSystem>> simulations;
 
-    explicit Supervisor(const generator::MSSConfig& config);
+    explicit Supervisor(const MSSConfig& config);
     ~Supervisor() = default;
 
     // Setters

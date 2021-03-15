@@ -9,8 +9,7 @@
 #include <QMenuBar>
 
 MainWindow::MainWindow() {
-    generator::MSSConfig config = generator::Square(
-        "sim1", 4 /* Width */, 2 /* Height */, 4 /* Depth */, Colors::kRed);
+    MSSConfig config = MSSConfig("sim1", 4, 2, 4);
 
     setFixedSize(kWidth, kHeight);
     setCentralWidget(new GLWindow(config));

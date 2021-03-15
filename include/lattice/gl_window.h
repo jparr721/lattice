@@ -29,7 +29,7 @@ class GLWindow : public QWidget {
   public:
     GLWidget* widget;
 
-    explicit GLWindow(const generator::MSSConfig& config);
+    explicit GLWindow(const MSSConfig& config);
 
   protected:
     void keyPressEvent(QKeyEvent* event) override;
