@@ -38,7 +38,8 @@ class Stats : public QObject {
     Q_OBJECT
 
   public:
-    explicit Stats(std::shared_ptr<Supervisor>  supervisor) : supervisor(std::move(supervisor)) {
+    explicit Stats(std::shared_ptr<Supervisor> supervisor)
+        : supervisor(std::move(supervisor)) {
         auto dt = QDateTime::currentDateTime();
         dt.setTimeSpec(Qt::UTC);
 
@@ -46,11 +47,11 @@ class Stats : public QObject {
             std::filesystem::create_directory("../../stats");
         }
 
-        velocity_filename = std::string("../../stats/velocity-stats-") + GetCurrentDate() +
-                            std::string(".csv");
+        velocity_filename = std::string("../../stats/velocity-stats-") +
+                            GetCurrentDate() + std::string(".csv");
 
-        force_filename = std::string("../../stats/force-stats-") + GetCurrentDate() +
-                         std::string(".csv");
+        force_filename = std::string("../../stats/force-stats-") +
+                         GetCurrentDate() + std::string(".csv");
     }
 
   public slots:

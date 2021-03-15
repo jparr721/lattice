@@ -42,7 +42,10 @@ bool Stats::FileExists(const std::string& filename) {
 }
 
 std::string Stats::GetCurrentDate() {
-    return QDateTime::currentDateTime().toString(Qt::ISODate).toUtf8().constData();
+    return QDateTime::currentDateTime()
+        .toString(Qt::ISODate)
+        .toUtf8()
+        .constData();
 }
 
 std::vector<StatsCSVRow> Stats::Compress(

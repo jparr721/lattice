@@ -3,17 +3,17 @@
 #include <lattice/camera.h>
 #include <lattice/generator.h>
 #include <lattice/keyboard.h>
-#include <lattice/supervisor.h>
 #include <lattice/stats.h>
+#include <lattice/supervisor.h>
 
 #include <memory>
 #include <string>
 
-#include <QThread>
 #include <QLineSeries>
 #include <QMouseEvent>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
+#include <QThread>
 #include <QTimer>
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)

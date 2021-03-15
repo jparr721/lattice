@@ -45,21 +45,15 @@ GLWidget::~GLWidget() {
     worker_thread.wait();
 }
 
-void GLWidget::Cleanup() {
-    delete program_id;
-}
+void GLWidget::Cleanup() { delete program_id; }
 
 QSize GLWidget::minimumSizeHint() const { return QSize(kWidth, kHeight); }
 
 QSize GLWidget::sizeHint() const { return QSize(kWidth, kHeight); }
 
-void GLWidget::SaveCurrentStats() {
-    stats->DropReading();
-}
+void GLWidget::SaveCurrentStats() { stats->DropReading(); }
 
-void GLWidget::Update() {
-    supervisor->Update();
-}
+void GLWidget::Update() { supervisor->Update(); }
 
 void GLWidget::SetMass(float value) {
     slider_mass_value =
