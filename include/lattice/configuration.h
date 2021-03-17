@@ -86,7 +86,7 @@ class MSSConfig {
     constexpr static int kFirstNodeIndex = 0;
     constexpr static int kTerminalMutationState = -1;
 
-    int kLastNodeIndex;
+    int kLastNodeIndex = kFirstNodeIndex;
 
     int current_state_machine_node = kFirstNodeIndex;
 
