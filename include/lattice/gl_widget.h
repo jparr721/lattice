@@ -66,7 +66,7 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     constexpr static int kHeight = 720;
 
     // 10 Second Permute Timeout Interval
-    constexpr static int kPermutationTimeout = 50;
+    constexpr static int kPermutationTimeout = 10000;
 
     // Slider Data
     float slider_mass_value = Mass::kMinimumMassValue;
