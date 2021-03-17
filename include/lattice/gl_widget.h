@@ -1,7 +1,7 @@
 #pragma once
 
 #include <lattice/camera.h>
-#include <lattice/generator.h>
+#include <lattice/configuration.h>
 #include <lattice/keyboard.h>
 #include <lattice/stats.h>
 #include <lattice/supervisor.h>

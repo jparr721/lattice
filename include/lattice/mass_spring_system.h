@@ -1,6 +1,6 @@
 #pragma once
 
-#include <lattice/generator.h>
+#include <lattice/configuration.h>
 #include <lattice/mass.h>
 #include <lattice/spring.h>
 

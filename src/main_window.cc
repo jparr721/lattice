@@ -1,5 +1,4 @@
-#include <lattice/colors.h>
-#include <lattice/generator.h>
+#include <lattice/configuration.h>
 #include <lattice/gl_window.h>
 #include <lattice/main_window.h>
 

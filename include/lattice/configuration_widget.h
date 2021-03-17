@@ -1,6 +1,6 @@
 #pragma once
 
-#include <lattice/generator.h>
+#include <lattice/configuration.h>
 
 #include <QPushButton>
 #include <QWidget>

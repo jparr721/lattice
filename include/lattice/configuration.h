@@ -45,11 +45,10 @@ class PermutationStateMachine {
         }
     }
 
-    bool IsTerminalState() {
+    [[nodiscard]] bool IsTerminalState() const {
         return current_state > PermutationState::ACROSS_DIAGONAL;
     }
 
-  private:
     PermutationState current_state = PermutationState::NORMAL;
 };
 
@@ -89,9 +88,21 @@ class MSSConfig {
 
     int kLastNodeIndex;
 
-    int last_mutated_node = kFirstNodeIndex;
+    int current_state_machine_node = kFirstNodeIndex;
 
     std::unordered_map<int, PermutationStateMachine> node_states;
 
     void CompileShapeMutation();
+
+    void AssignRightAdjacency(MassNode& node) const;
+    void AssignBottomAdjacency(MassNode& node) const;
+    void AssignBehindAdjacency(MassNode& node) const;
+    void AssignFrontDiagonalAdjacency(MassNode& node) const;
+    void AssignAcrossDiagonalAdjacency(MassNode& node) const;
+
+    [[nodiscard]] bool IsBackLayerNode(const MassNode& node) const;
+    [[nodiscard]] bool IsBottomLayerNode(const MassNode& node) const;
+    [[nodiscard]] bool IsTopLayerNode(const MassNode& node) const;
+    [[nodiscard]] bool IsRightCornerNode(const MassNode& node) const;
+    [[nodiscard]] bool IsLeftCornerNode(const MassNode& node) const;
 };
