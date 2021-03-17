@@ -21,7 +21,7 @@ QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
   public:
-    explicit GLWidget(const MSSConfig& config, QWidget* parent = nullptr);
+    explicit GLWidget(MSSConfig config, QWidget* parent = nullptr);
     ~GLWidget() override;
 
     void RestartSimulation();
@@ -32,6 +32,8 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
   public slots:
     void Update();
     void SaveCurrentStats();
+
+    void Permute();
 
     void SetMass(float value);
     void SetSpringConstant(float value);
@@ -63,6 +65,9 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     constexpr static int kWidth = 640;
     constexpr static int kHeight = 720;
 
+    // 10 Second Permute Timeout Interval
+    constexpr static int kPermutationTimeout = 50;
+
     // Slider Data
     float slider_mass_value = Mass::kMinimumMassValue;
     float slider_spring_constant_value = Spring::kMinimumSpringConstantValue;
@@ -74,6 +79,9 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     // Draw Timers for the sim time step
     QTimer* draw_timer;
     QTimer* update_timer;
+
+    // Simulation Timer For Object Permutations
+    QTimer* permutation_timeout;
 
     // Simulation Params
     std::shared_ptr<Supervisor> supervisor;
@@ -90,6 +98,9 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     // Stats Worker Thread
     QThread worker_thread;
 
+    // Internal Config Object
+    MSSConfig config;
+
     // Other misc params
     GLint position = 0;
     GLint color = 0;
@@ -97,7 +108,6 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     int frame = 0;
 
     bool is_init = false;
-    bool is_restarted = false;
 
     static std::string ReadVertexShader();
     static std::string ReadFragmentShader();

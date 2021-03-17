@@ -13,8 +13,8 @@
 #include <QOpenGLShaderProgram>
 #include <QPainter>
 
-GLWidget::GLWidget(const MSSConfig& config, QWidget* parent)
-    : QOpenGLWidget(parent) {
+GLWidget::GLWidget(MSSConfig config, QWidget* parent)
+    : config(config), QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
 
     supervisor = std::make_shared<Supervisor>(config);
@@ -22,6 +22,10 @@ GLWidget::GLWidget(const MSSConfig& config, QWidget* parent)
     constexpr int msec_conversion = 1000;
     constexpr int updates_per_second = 120;
     constexpr int draws_per_second = 30;
+
+    permutation_timeout = new QTimer(this);
+    connect(permutation_timeout, &QTimer::timeout, this, &GLWidget::Permute);
+    permutation_timeout->start(kPermutationTimeout);
 
     draw_timer = new QTimer(this);
     connect(draw_timer, &QTimer::timeout, this,
@@ -197,10 +201,16 @@ float GLWidget::Interpolate(float v0, float v1, float t) {
     return v0 + t * (v1 - v0);
 }
 
-void GLWidget::RestartSimulation() {
-    supervisor->Reset();
+void GLWidget::RestartSimulation() { supervisor->Reset(); }
 
-    is_restarted = frame == 0;
+void GLWidget::Permute() {
+    config.Permute();
+    supervisor = std::make_shared<Supervisor>(config);
+    supervisor->SetMassWeight(slider_mass_value);
+    supervisor->SetSpringConstant(slider_spring_constant_value);
+    supervisor->SetSpringDampingConstant(slider_damping_constant_value);
+    supervisor->SetSpringRestLength(slider_rest_length_value);
+    supervisor->SetTimeStep(slider_time_step_value);
 }
 
 void GLWidget::PrintParameters() const {
@@ -210,5 +220,6 @@ void GLWidget::PrintParameters() const {
     std::cout << "K: " << slider_spring_constant_value << std::endl;
     std::cout << "Damping: " << slider_damping_constant_value << std::endl;
     std::cout << "Rest Length: " << slider_rest_length_value << std::endl;
+    std::cout << "Time Step: " << slider_time_step_value << std::endl;
     std::cout << "==============================" << std::endl;
 }

@@ -9,7 +9,8 @@
 class Supervisor {
   public:
     constexpr static float kMinimumTimeStepChangeValue = 0.0001;
-    constexpr static float kMaximumTimeStepChangeValue = 0.1f;
+
+    float timestep_size = kMinimumTimeStepChangeValue;
 
     // VBO Shapes
     std::vector<Eigen::Vector3f> shapes;
@@ -46,8 +47,6 @@ class Supervisor {
     SampleMassForces();
 
   private:
-    float timestep_size = kMinimumTimeStepChangeValue;
-
     std::unordered_map<std::string, std::unordered_map<int, Eigen::Vector3f>>
         current_mass_velocities;
 

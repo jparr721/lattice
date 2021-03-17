@@ -96,31 +96,46 @@ void MSSConfig::Permute() {
 
     // Shift the state and prepare to spool the compiler
     node_states[current_state_machine_node].Forward();
+
+    CompileShapeMutation();
+
     ++current_state_machine_node;
 }
 
 void MSSConfig::CompileShapeMutation() {
-    for (auto& mass : masses) {
-        mass.adjacencies.clear();
-        AssignRightAdjacency(mass);
-        AssignBottomAdjacency(mass);
+    auto mass = masses[current_state_machine_node];
 
-        switch (node_states[mass.number].current_state) {
-        case PermutationStateMachine::PermutationState::NORMAL:
-            AssignBehindAdjacency(mass);
-        case PermutationStateMachine::PermutationState::FRONT_DIAGONAL:
-            AssignFrontDiagonalAdjacency(mass);
-        case PermutationStateMachine::PermutationState::ACROSS_DIAGONAL:
-            AssignAcrossDiagonalAdjacency(mass);
-        case PermutationStateMachine::PermutationState::DISCONNECTED:
-            mass.adjacencies.clear();
+    mass.adjacencies.clear();
+    AssignRightAdjacency(mass);
+    AssignBottomAdjacency(mass);
+
+    switch (node_states[mass.number].current_state) {
+    case PermutationStateMachine::PermutationState::NORMAL:
+        AssignBehindAdjacency(mass);
+        break;
+    case PermutationStateMachine::PermutationState::FRONT_DIAGONAL:
+        if (IsBackLayerNode(mass)) {
+            break;
         }
+        AssignFrontDiagonalAdjacency(mass);
+        break;
+    case PermutationStateMachine::PermutationState::ACROSS_DIAGONAL:
+        if (IsBackLayerNode(mass)) {
+            break;
+        }
+        AssignAcrossDiagonalAdjacency(mass);
+        break;
+    case PermutationStateMachine::PermutationState::DISCONNECTED:
+        mass.adjacencies.clear();
+        break;
     }
+
+    masses[current_state_machine_node] = mass;
 }
 
 void MSSConfig::AssignRightAdjacency(MSSConfig::MassNode& node) const {
     // If the current node is not an end node, assign an adjacent connection.
-    if (!IsRightCornerNode(node) && !IsBackLayerNode(node)) {
+    if (!IsRightCornerNode(node)) {
         // The right-adjacent node is always <node.number> + 1.
         node.adjacencies.push_back(node.number + 1);
     }
@@ -212,8 +227,7 @@ void MSSConfig::AssignAcrossDiagonalAdjacency(MSSConfig::MassNode& node) const {
 }
 
 bool MSSConfig::IsBackLayerNode(const MSSConfig::MassNode& node) const {
-    // Since the node numbers are 0-indexed, start at number - 1.
-    return node.number - 1 >= (width * height * depth) - (width * height);
+    return node.number >= (width * height * depth) - (width * height);
 }
 
 bool MSSConfig::IsTopLayerNode(const MSSConfig::MassNode& node) const {

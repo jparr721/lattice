@@ -23,10 +23,13 @@ class PermutationStateMachine {
         switch (current_state) {
         case PermutationState::NORMAL:
             current_state = PermutationState::FRONT_DIAGONAL;
+            break;
         case PermutationState::FRONT_DIAGONAL:
             current_state = PermutationState::ACROSS_DIAGONAL;
+            break;
         case PermutationState::ACROSS_DIAGONAL:
             current_state = PermutationState::DISCONNECTED;
+            break;
         case PermutationState::DISCONNECTED:
             break;
         }
@@ -38,10 +41,13 @@ class PermutationStateMachine {
             break;
         case PermutationState::FRONT_DIAGONAL:
             current_state = PermutationState::NORMAL;
+            break;
         case PermutationState::ACROSS_DIAGONAL:
             current_state = PermutationState::FRONT_DIAGONAL;
+            break;
         case PermutationState::DISCONNECTED:
             current_state = PermutationState::ACROSS_DIAGONAL;
+            break;
         }
     }
 
