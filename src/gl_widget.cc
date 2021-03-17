@@ -1,5 +1,4 @@
 #include <lattice/gl_widget.h>
-#include <lattice/colors.h>
 #include <lattice/gl_window.h>
 #include <lattice/mass.h>
 #include <lattice/spring.h>
@@ -14,22 +13,40 @@
 #include <QOpenGLShaderProgram>
 #include <QPainter>
 
-GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent) {
+GLWidget::GLWidget(MSSConfig config, QWidget* parent)
+    : config(config), QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
 
-    mass_spring_system = std::make_unique<MassSpringSystem>();
+    supervisor = std::make_shared<Supervisor>(config);
 
-    float updates_per_second = 120;
-    float draws_per_second = 30;
+    constexpr int msec_conversion = 1000;
+    constexpr int updates_per_second = 120;
+    constexpr int draws_per_second = 30;
+
+    permutation_timeout = new QTimer(this);
+    connect(permutation_timeout, &QTimer::timeout, this, &GLWidget::Permute);
+    permutation_timeout->start(kPermutationTimeout);
 
     draw_timer = new QTimer(this);
     connect(draw_timer, &QTimer::timeout, this,
             QOverload<>::of(&GLWidget::update));
-    draw_timer->start(1000.0 / draws_per_second);
+    draw_timer->start(msec_conversion / draws_per_second);
 
     update_timer = new QTimer(this);
     connect(update_timer, &QTimer::timeout, this, &GLWidget::Update);
-    update_timer->start(1000.0 / updates_per_second);
+    update_timer->start(msec_conversion / updates_per_second);
+
+    // Configure background stats thread
+    stats = new Stats(supervisor);
+    stats->moveToThread(&worker_thread);
+    connect(&worker_thread, &QThread::finished, stats, &QObject::deleteLater);
+    connect(update_timer, &QTimer::timeout, this, &GLWidget::SaveCurrentStats);
+    worker_thread.start();
+}
+
+GLWidget::~GLWidget() {
+    worker_thread.quit();
+    worker_thread.wait();
 }
 
 void GLWidget::Cleanup() { delete program_id; }
@@ -38,14 +55,16 @@ QSize GLWidget::minimumSizeHint() const { return QSize(kWidth, kHeight); }
 
 QSize GLWidget::sizeHint() const { return QSize(kWidth, kHeight); }
 
-void GLWidget::Update() { mass_spring_system->Update(); }
+void GLWidget::SaveCurrentStats() { stats->DropReading(); }
+
+void GLWidget::Update() { supervisor->Update(); }
 
 void GLWidget::SetMass(float value) {
     slider_mass_value =
         Interpolate(Mass::kMinimumMassValue, Mass::kMaximumMassValue,
                     (float)value / 100.0f);
 
-    mass_spring_system->SetMassWeight(slider_mass_value);
+    supervisor->SetMassWeight(slider_mass_value);
 
     emit OnMassChange(value);
     RestartSimulation();
@@ -55,7 +74,7 @@ void GLWidget::SetSpringConstant(float value) {
     slider_spring_constant_value =
         Interpolate(Spring::kMinimumSpringConstantValue,
                     Spring::kMaximumSpringConstantValue, (float)value / 100.f);
-    mass_spring_system->SetSpringStiffness(slider_spring_constant_value);
+    supervisor->SetSpringConstant(slider_spring_constant_value);
     emit OnSpringConstantChange(value);
     RestartSimulation();
 }
@@ -64,7 +83,7 @@ void GLWidget::SetSpringDampingConstant(float value) {
     slider_damping_constant_value =
         Interpolate(Spring::kMinimumDampingValue, Spring::kMaximumDampingValue,
                     (float)value / 100.f);
-    mass_spring_system->SetSpringDampingConstant(slider_damping_constant_value);
+    supervisor->SetSpringDampingConstant(slider_damping_constant_value);
     emit OnSpringDampingChange(value);
     RestartSimulation();
 }
@@ -73,7 +92,7 @@ void GLWidget::SetSpringRestLength(float value) {
     slider_rest_length_value = Interpolate(
         Spring::kMinimumSpringRestLengthValue,
         Spring::kMaximumSpringRestLengthValue, (float)value / 100.f);
-    mass_spring_system->SetSpringRestLength(value);
+    supervisor->SetSpringRestLength(value);
     emit OnSpringRestLengthChange(value);
     RestartSimulation();
 }
@@ -82,7 +101,7 @@ void GLWidget::SetTimeStep(float value) {
     slider_time_step_value = Interpolate(
         MassSpringSystem::kMinimumTimeStepChangeValue,
         MassSpringSystem::kMaximumTimeStepChangeValue, (float)value / 100.f);
-    mass_spring_system->SetTimeStep(slider_time_step_value);
+    supervisor->SetTimeStep(slider_time_step_value);
     emit OnTimeStepChange(value);
     RestartSimulation();
 }
@@ -125,8 +144,8 @@ void GLWidget::paintGL() {
     matrix.rotate(camera.rot, camera.direction);
 
     program_id->setUniformValue(matrix_uniform, matrix);
-    auto shapes = mass_spring_system->Shapes();
-    auto colors = mass_spring_system->Colors();
+    auto shapes = supervisor->shapes;
+    auto colors = supervisor->colors;
 
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0,
                           static_cast<void*>(shapes.data()));
@@ -146,7 +165,7 @@ void GLWidget::paintGL() {
 }
 
 // Don't allow resizing for now.
-void GLWidget::resizeGL(int width, int height) { return; }
+void GLWidget::resizeGL(int width, int height) {}
 
 void GLWidget::keyPressEvent(QKeyEvent* event) {
     camera.OnKeyPress(event);
@@ -166,14 +185,14 @@ void GLWidget::keyReleaseEvent(QKeyEvent* event) {
 
 std::string GLWidget::ReadVertexShader() {
     std::ostringstream sstr;
-    auto stream = std::ifstream{"./shaders/core.vs"};
+    auto stream = std::ifstream{"../../shaders/core.vs"};
     sstr << stream.rdbuf();
     return sstr.str();
 }
 
 std::string GLWidget::ReadFragmentShader() {
     std::ostringstream sstr;
-    auto stream = std::ifstream{"./shaders/core.frag"};
+    auto stream = std::ifstream{"../../shaders/core.frag"};
     sstr << stream.rdbuf();
     return sstr.str();
 }
@@ -182,71 +201,25 @@ float GLWidget::Interpolate(float v0, float v1, float t) {
     return v0 + t * (v1 - v0);
 }
 
-void GLWidget::RestartSimulation() {
-    mass_spring_system->Reset();
+void GLWidget::RestartSimulation() { supervisor->Reset(); }
 
-    is_restarted = frame == 0 ? false : true;
+void GLWidget::Permute() {
+    config.Permute();
+    supervisor = std::make_shared<Supervisor>(config);
+    supervisor->SetMassWeight(slider_mass_value);
+    supervisor->SetSpringConstant(slider_spring_constant_value);
+    supervisor->SetSpringDampingConstant(slider_damping_constant_value);
+    supervisor->SetSpringRestLength(slider_rest_length_value);
+    supervisor->SetTimeStep(slider_time_step_value);
 }
 
-void GLWidget::PrintParameters() {
+void GLWidget::PrintParameters() const {
     std::cout << "        Parameters:           " << std::endl;
     std::cout << "==============================" << std::endl;
     std::cout << "Mass: " << slider_mass_value << std::endl;
     std::cout << "K: " << slider_spring_constant_value << std::endl;
     std::cout << "Damping: " << slider_damping_constant_value << std::endl;
     std::cout << "Rest Length: " << slider_rest_length_value << std::endl;
+    std::cout << "Time Step: " << slider_time_step_value << std::endl;
     std::cout << "==============================" << std::endl;
-}
-
-Eigen::Vector3f GLWidget::CurrentSimObjectVelocity() {
-    return mass_spring_system->GetFirstMovingMassVelocity();
-}
-
-Eigen::Vector3f GLWidget::CurrentSimObjectForce() {
-    return mass_spring_system->GetFirstMovingMassForce();
-}
-
-Eigen::Vector3f GLWidget::CurrentSimSpringForce() {
-    return mass_spring_system->GetFirstSpringForce();
-}
-
-bool GLWidget::IsRestarted() {
-    if (is_restarted) {
-        is_restarted = false;
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * This is here because we are not translating vectors via absolute
- * positions, so when we initially click, we need to set the "last"
- * position vector so we know how much, and in what direction, we've
- * translated"
- */
-void GLWidget::mousePressEvent(QMouseEvent* event) {
-    last_position = Eigen::Vector3f(event->x(), event->y(), 0.f);
-}
-
-void GLWidget::mouseMoveEvent(QMouseEvent* event) {
-    int x = event->x();
-    int y = event->y();
-    Eigen::Vector3f dposition = Eigen::Vector3f(x, y, 0.f) - last_position;
-
-    // TODO(@jparr721) - This sucks.
-    Eigen::Vector3f dposition_scaled =
-        (dposition.array() * Eigen::Array3f(0.01f, 0.01f, 0.0f)).matrix();
-
-    // Click and drag with left moves top group
-    if (event->buttons() & Qt::LeftButton) {
-        /* mass_spring_system->TranslateTopGroup(dposition_scaled); */
-    }
-
-    // Click and drag with right moved bottom group
-    if (event->buttons() & Qt::RightButton) {
-        /* mass_spring_system->TranslateBottomGroup(dposition_scaled); */
-    }
-
-    last_position = Eigen::Vector3f(x, y, 0.f);
 }

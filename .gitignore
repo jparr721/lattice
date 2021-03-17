@@ -31,3 +31,12 @@ build/
 *.exe
 *.out
 *.app
+
+# Xcode Build
+xc/
+
+# CLion Cmake Build Folder
+cmake-build-debug/
+
+# Project Runtime Stats
+stats/

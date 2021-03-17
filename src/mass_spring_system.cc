@@ -1,59 +1,50 @@
 #include <lattice/mass_spring_system.h>
 
-#include <iostream>
 #include <memory>
 
-MassSpringSystem::MassSpringSystem() {
-    initial_conditions = std::make_unique<ShapeSpec>();
+MassSpringSystem::MassSpringSystem(const MSSConfig& config) {
+    name = config.name;
+    const auto mss_masses = config.masses;
+    const auto mss_positions = config.positions;
 
-    for (int i = 0; i < initial_conditions->sim_objects.size(); ++i) {
-        const auto mss = initial_conditions->sim_objects[i];
+    assert(mss_masses.size() == mss_positions.size());
 
-        const auto mss_masses = mss.masses;
-        const auto mss_positions = mss.positions;
+    // Set up all masses with initial positions
+    for (int j = 0; j < mss_masses.size(); ++j) {
+        const auto mass_node = mss_masses[j];
+        const auto pos = mss_positions[j];
 
-        assert(mss_masses.size() == mss_positions.size());
+        const int y = mass_node.fixed ? -Spring::kMinimumSpringRestLengthValue
+                                      : Spring::kMinimumSpringRestLengthValue;
 
-        // Set up all masses with initial positions
-        for (int j = 0; j < mss_masses.size(); ++j) {
-            const auto mass_node = mss_masses[j];
-            auto pos = mss_positions[j];
+        const auto position = Eigen::Vector3f(pos.x(), y, pos.z());
 
-            const int y = ComputeY(j, mss_masses.size(),
-                                   Spring::kMinimumSpringRestLengthValue);
+        initial_positions.push_back(position);
 
-            auto position = Eigen::Vector3f(pos.x(), y, pos.z());
+        const auto mass = std::make_shared<Mass>(
+            mass_node.number, mass_node.fixed, mass_node.color, position);
+        mass->Initialize();
+        masses.push_back(mass);
+        mass_map.insert(std::pair(mass_node.number, masses.size() - 1));
+    }
 
-            initial_positions.push_back(position);
+    for (int j = 0; j < mss_masses.size(); ++j) {
+        const auto mass_node = mss_masses[j];
+        const auto mass = masses[j];
+        auto center_node = masses[mass_map.at(mass->number)];
 
-            auto mass = std::make_shared<Mass>(mass_node.name, mass_node.fixed,
-                                               mass_node.color, position);
-            mass->Initialize();
-            masses.push_back(std::move(mass));
+        for (const auto adjacent_node_number : mass_node.adjacencies) {
+            auto adjacent_node = masses[mass_map.at(adjacent_node_number)];
 
-            // Useful for lookups later
-            mass_map.insert(std::pair(mass_node.name, masses.size() - 1));
-        }
+            auto spring = std::make_shared<Spring>(Colors::kGreen, center_node,
+                                                   adjacent_node);
 
-        for (int j = mss_masses.size() * i;
-             j < (mss_masses.size() * i) + mss_masses.size(); ++j) {
-            const auto mass_node = mss_masses[j % mss_masses.size()];
-            const auto mass = masses[j];
-            auto center_node = masses[mass_map.at(mass->Name())];
-
-            for (const auto adjacent_node_name : mass_node.adjacencies) {
-                // TODO(@jparr721) - Error handling
-                auto adjacent_node = masses[mass_map.at(adjacent_node_name)];
-
-                auto spring = std::make_shared<Spring>(
-                    colors::kGreen, center_node, adjacent_node);
-
-                spring->Initialize();
-                springs.push_back(std::move(spring));
-            }
+            spring->Initialize();
+            springs.push_back(std::move(spring));
         }
     }
 
+    PreloadModelData();
     ComputeShapes();
     ComputeColors();
 }
@@ -63,9 +54,7 @@ void MassSpringSystem::Reset() {
     for (int i = 0; i < masses.size(); ++i) {
         auto mass = masses[i];
         auto position = initial_positions[i];
-        const int y =
-            ComputeY(i, initial_conditions->sim_objects[0].masses.size(),
-                     last_spring_length);
+        const int y = mass->fixed ? -last_spring_length : last_spring_length;
         position(1) = y;
 
         masses[i]->position = position;
@@ -74,7 +63,7 @@ void MassSpringSystem::Reset() {
         masses[i]->rest_position = position;
     }
 
-    for (auto mass : masses) {
+    for (const auto& mass : masses) {
         mass->ComputeVertexPoints();
     }
 
@@ -82,34 +71,34 @@ void MassSpringSystem::Reset() {
 }
 
 void MassSpringSystem::Redraw() {
-    for (auto spring : springs) {
+    for (const auto& spring : springs) {
         spring->ComputeVertexPoints();
     }
 
     ComputeShapes();
 }
 
-void MassSpringSystem::Update() {
-    for (auto spring : springs) {
+void MassSpringSystem::Update(float dt) {
+    for (const auto& spring : springs) {
         spring->CalculateCurrentForce();
     }
 
-    for (auto mass : masses) {
-        mass->Update(timestep_size);
+    for (const auto& mass : masses) {
+        mass->Update(dt);
     }
 
     Redraw();
 }
 
 void MassSpringSystem::ComputeColors() {
-    for (auto mass : masses) {
-        for (auto _colors : mass->Colors()) {
+    for (const auto& mass : masses) {
+        for (const auto& _colors : mass->Colors()) {
             colors.push_back(_colors);
         }
     }
 
-    for (auto spring : springs) {
-        for (auto _colors : spring->Colors()) {
+    for (const auto& spring : springs) {
+        for (const auto& _colors : spring->Colors()) {
             colors.push_back(_colors);
         }
     }
@@ -126,83 +115,64 @@ void MassSpringSystem::ComputeShapes() {
     if (shapes_size > 0)
         shapes.reserve(shapes_size);
 
-    for (auto mass : masses) {
-        for (auto vertex_list : mass->vertices) {
+    for (const auto& mass : masses) {
+        for (const auto& vertex_list : mass->vertices) {
             shapes.push_back(vertex_list);
         }
     }
 
-    for (auto spring : springs) {
-        for (auto vertex_list : spring->vertices) {
+    for (const auto& spring : springs) {
+        for (const auto& vertex_list : spring->vertices) {
             shapes.push_back(vertex_list);
         }
     }
 }
 
-void MassSpringSystem::SetSpringStiffness(float value) {
-    for (auto spring : springs) {
+void MassSpringSystem::SetSpringConstant(float value) {
+    for (const auto& spring : springs) {
         spring->SetStiffness(value);
     }
 }
 
 void MassSpringSystem::SetSpringRestLength(float value) {
-    for (auto spring : springs) {
+    for (const auto& spring : springs) {
         spring->SetRestLength(value);
     }
 }
 
 void MassSpringSystem::SetMassWeight(float value) {
-    for (auto mass : masses) {
+    for (const auto& mass : masses) {
         mass->SetWeight(value);
     }
 }
 
 void MassSpringSystem::SetSpringDampingConstant(float value) {
-    for (auto spring : springs) {
+    for (const auto& spring : springs) {
         spring->SetDampingConstant(value);
     }
 }
 
-Eigen::Vector3f MassSpringSystem::GetFirstMovingMassVelocity() {
-    for (auto mass : masses) {
-        if (!mass->is_fixed) {
-            return mass->velocity;
-        }
+std::unordered_map<int, Eigen::Vector3f> MassSpringSystem::GetMassVelocities() {
+    for (const auto& mass : masses) {
+        mass_velocities[mass->number] = mass->velocity;
     }
 
-    return Eigen::Vector3f(0, 0, 0);
+    return mass_velocities;
 }
 
-Eigen::Vector3f MassSpringSystem::GetFirstMovingMassForce() {
-    for (auto mass : masses) {
-        if (!mass->is_fixed) {
-            return mass->force;
-        }
+std::unordered_map<int, Eigen::Vector3f> MassSpringSystem::GetMassForces() {
+    for (const auto& mass : masses) {
+        mass_forces[mass->number] = mass->force;
     }
 
-    return Eigen::Vector3f(0, 0, 0);
+    return mass_forces;
 }
 
-Eigen::Vector3f MassSpringSystem::GetFirstSpringForce() {
-    assert(springs.size() > 0);
-    const auto spring = springs[0];
+void MassSpringSystem::PreloadModelData() {
+    for (const auto& mass : masses) {
+        mass_forces.insert(std::pair(mass->number, Eigen::Vector3f::Zero()));
 
-    return spring->Force();
-}
-
-std::optional<std::shared_ptr<Mass>>
-MassSpringSystem::GetMassByName(const std::string& name) {
-    for (auto mass : masses) {
-        if (mass->Name() == name) {
-            return mass;
-        }
+        mass_velocities.insert(
+            std::pair(mass->number, Eigen::Vector3f::Zero()));
     }
-
-    return std::nullopt;
-}
-
-int MassSpringSystem::ComputeY(int index, int total_masses, int rest_length) {
-    const int split_point = total_masses / 2;
-
-    return (index % total_masses) < split_point ? rest_length : -rest_length;
 }

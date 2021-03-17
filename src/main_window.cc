@@ -1,12 +1,15 @@
-#include <lattice/main_window.h>
+#include <lattice/configuration.h>
 #include <lattice/gl_window.h>
-#include <lattice/tab_widget.h>
+#include <lattice/main_window.h>
+
+#include <memory>
 
 #include <QMenu>
 #include <QMenuBar>
-#include <QMessageBox>
 
 MainWindow::MainWindow() {
+    MSSConfig config = MSSConfig("sim1", 4, 2, 4);
+
     setFixedSize(kWidth, kHeight);
-    setCentralWidget(new TabWidget(this));
+    setCentralWidget(new GLWindow(config));
 }

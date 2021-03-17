@@ -1,8 +1,10 @@
 #pragma once
 
 #include <lattice/camera.h>
+#include <lattice/configuration.h>
 #include <lattice/keyboard.h>
-#include <lattice/mass_spring_system.h>
+#include <lattice/stats.h>
+#include <lattice/supervisor.h>
 
 #include <memory>
 #include <string>
@@ -11,6 +13,7 @@
 #include <QMouseEvent>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
+#include <QThread>
 #include <QTimer>
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
@@ -18,22 +21,19 @@ QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
   public:
-    explicit GLWidget(QWidget* parent = nullptr);
-    ~GLWidget() = default;
+    explicit GLWidget(MSSConfig config, QWidget* parent = nullptr);
+    ~GLWidget() override;
 
     void RestartSimulation();
 
-    QSize minimumSizeHint() const override;
-    QSize sizeHint() const override;
-
-    Eigen::Vector3f CurrentSimObjectVelocity();
-    Eigen::Vector3f CurrentSimObjectForce();
-    Eigen::Vector3f CurrentSimSpringForce();
-
-    bool IsRestarted();
+    [[nodiscard]] QSize minimumSizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
   public slots:
     void Update();
+    void SaveCurrentStats();
+
+    void Permute();
 
     void SetMass(float value);
     void SetSpringConstant(float value);
@@ -58,9 +58,6 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
 
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-
   private:
     QOpenGLShaderProgram* program_id = nullptr;
 
@@ -68,8 +65,8 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     constexpr static int kWidth = 640;
     constexpr static int kHeight = 720;
 
-    // Positional Translation Parameters
-    Eigen::Vector3f last_position = Eigen::Vector3f::Zero();
+    // 10 Second Permute Timeout Interval
+    constexpr static int kPermutationTimeout = 10000;
 
     // Slider Data
     float slider_mass_value = Mass::kMinimumMassValue;
@@ -83,14 +80,26 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     QTimer* draw_timer;
     QTimer* update_timer;
 
+    // Simulation Timer For Object Permutations
+    QTimer* permutation_timeout;
+
     // Simulation Params
-    std::shared_ptr<MassSpringSystem> mass_spring_system;
+    std::shared_ptr<Supervisor> supervisor;
 
     // Camera Controller
     Camera camera;
 
     // Keyboard Controller
     Keyboard keyboard;
+
+    // Stats Controller
+    Stats* stats;
+
+    // Stats Worker Thread
+    QThread worker_thread;
+
+    // Internal Config Object
+    MSSConfig config;
 
     // Other misc params
     GLint position = 0;
@@ -99,12 +108,11 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     int frame = 0;
 
     bool is_init = false;
-    bool is_restarted = false;
 
-    std::string ReadVertexShader();
-    std::string ReadFragmentShader();
+    static std::string ReadVertexShader();
+    static std::string ReadFragmentShader();
 
-    float Interpolate(float v0, float v1, float t);
+    static float Interpolate(float v0, float v1, float t);
 
-    void PrintParameters();
+    void PrintParameters() const;
 };

@@ -5,7 +5,7 @@
 #include <iostream>
 
 void Mass::Initialize() {
-    if (!LoadObjFile("sim_specs/cube.obj", original_positions)) {
+    if (!LoadObjFile("../../sim_specs/cube.obj", original_positions)) {
         exit(EXIT_FAILURE);
     }
 
@@ -23,7 +23,7 @@ void Mass::Initialize() {
 }
 
 void Mass::Update(float dt) {
-    if (is_fixed) {
+    if (fixed) {
         force = Eigen::Vector3f::Zero();
         velocity = Eigen::Vector3f::Zero();
         return;
@@ -38,7 +38,8 @@ void Mass::ComputeVertexPoints() {
     for (auto i = 0u; i < original_positions.size(); ++i) {
         const auto vertex = original_positions[i];
         vertices[i] = Eigen::Vector3f(vertex.x() + position.x(),
-                                      vertex.y() + position.y(), vertex.z());
+                                      vertex.y() + position.y(),
+                                      vertex.z() + position.z());
     }
 }
 

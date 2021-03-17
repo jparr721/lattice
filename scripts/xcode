@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -euox pipefail
+
+if [ -d "xc" ]; then
+  rm -r build
+fi
+
+mkdir xc
+cd xc
+cmake -GXcode -DCMAKE_APPLE_SILICON_PROCESSOR=arm64 ..
+cd ..
+
+cp -r sim_specs shaders xc/bin/Debug

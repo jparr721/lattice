@@ -1,7 +1,5 @@
 #include <lattice/camera.h>
 
-#include <iostream>
-
 void Camera::OnKeyPress(QKeyEvent* event) {
     const auto key = event->key();
     const auto shift_modifier_pressed =

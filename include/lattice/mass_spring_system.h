@@ -1,7 +1,7 @@
 #pragma once
 
+#include <lattice/configuration.h>
 #include <lattice/mass.h>
-#include <lattice/shape_spec.h>
 #include <lattice/spring.h>
 
 #include <optional>
@@ -16,35 +16,28 @@ class MassSpringSystem {
     constexpr static float kMinimumTimeStepChangeValue = 0.0001;
     constexpr static float kMaximumTimeStepChangeValue = 0.1f;
 
-    MassSpringSystem();
+    std::string name;
+
+    explicit MassSpringSystem(const MSSConfig& config);
     ~MassSpringSystem() = default;
 
-    void Update();
+    void Update(float dt);
     void Reset();
 
     void ComputeShapes();
     void ComputeColors();
 
     // Spring Mutators
-    void SetSpringStiffness(float value);
+    void SetSpringConstant(float value);
     void SetSpringRestLength(float value);
     void SetSpringDampingConstant(float value);
 
     // Mass Mutators
     void SetMassWeight(float value);
 
-    // Time Step Mutators
-    void SetTimeStep(float value) { timestep_size = value; }
-
-    // Mass Getter
-    std::optional<std::shared_ptr<Mass>> GetMassByName(const std::string& name);
-
-    // Mass Plottable Getters
-    Eigen::Vector3f GetFirstMovingMassVelocity();
-    Eigen::Vector3f GetFirstMovingMassForce();
-
-    // Spring Plottable Getters
-    Eigen::Vector3f GetFirstSpringForce();
+    // Training Data Signals
+    std::unordered_map<int, Eigen::Vector3f> GetMassVelocities();
+    std::unordered_map<int, Eigen::Vector3f> GetMassForces();
 
     std::vector<Eigen::Vector3f> Colors() { return colors; }
     std::vector<Eigen::Vector3f> Shapes() { return shapes; }
@@ -52,8 +45,6 @@ class MassSpringSystem {
     auto size() { return springs.size() + masses.size(); }
 
   private:
-    float timestep_size = kMinimumTimeStepChangeValue;
-
     // The springs in the sim
     std::vector<std::shared_ptr<Spring>> springs;
 
@@ -68,11 +59,11 @@ class MassSpringSystem {
     // Our shapes' colors in a flat list.
     std::vector<Eigen::Vector3f> colors;
 
-    std::unordered_map<std::string, int> mass_map;
+    std::unordered_map<int, int> mass_map;
 
-    std::unique_ptr<ShapeSpec> initial_conditions;
+    std::unordered_map<int, Eigen::Vector3f> mass_forces;
+    std::unordered_map<int, Eigen::Vector3f> mass_velocities;
 
     void Redraw();
-
-    int ComputeY(int index, int total_masses, int rest_length);
+    void PreloadModelData();
 };

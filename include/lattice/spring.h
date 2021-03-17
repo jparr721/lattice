@@ -23,7 +23,7 @@ class Spring : public std::enable_shared_from_this<Spring> {
 
     Spring(Eigen::Vector3f color, std::shared_ptr<Mass>& _left_mass,
            std::shared_ptr<Mass>& _right_mass)
-        : kColor(colors::kGreen), left_mass(_left_mass),
+        : kColor(Colors::kGreen), left_mass(_left_mass),
           right_mass(_right_mass) {}
 
     // Class Initializers and Mutators
@@ -39,8 +39,6 @@ class Spring : public std::enable_shared_from_this<Spring> {
     auto size() const { return vertices.size(); }
 
     float RestLength() const { return rest_length; }
-
-    Eigen::Vector3f Force() const { return force; }
 
     std::vector<Eigen::Vector3f> Colors() const { return colors; }
 
@@ -65,9 +63,6 @@ class Spring : public std::enable_shared_from_this<Spring> {
     float damping_constant = kMinimumDampingValue;
 
     const Eigen::Vector3f kColor;
-
-    // The force that the spring is exerting;
-    Eigen::Vector3f force;
 
     // Represents the colors mapped to each vertex.
     std::vector<Eigen::Vector3f> colors;

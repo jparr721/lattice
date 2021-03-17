@@ -1,7 +1,5 @@
-#include <lattice/spring.h>
 #include <lattice/mass.h>
-
-#include <iostream>
+#include <lattice/spring.h>
 
 void Spring::Initialize() {
     ComputeVertexPoints();

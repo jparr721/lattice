@@ -2,4 +2,4 @@
 
 set -euox pipefail
 
-clang-format *.cc *.h -i
+clang-format $(find src include -maxdepth 3 -name '*.cc' -o -name '*.h') -i

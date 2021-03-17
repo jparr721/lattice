@@ -10,7 +10,7 @@ class Spring;
 
 class Mass : public std::enable_shared_from_this<Mass> {
   public:
-    const bool is_fixed;
+    const bool fixed;
     constexpr static float kMinimumMassValue = 0.5f;
     constexpr static float kMaximumMassValue = 50.f;
 
@@ -29,10 +29,13 @@ class Mass : public std::enable_shared_from_this<Mass> {
     // Represents the vertices of the fixture.
     std::vector<Eigen::Vector3f> vertices;
 
-    Mass(std::string name, bool fixed, Eigen::Vector3f color,
+    // The vertex number of the node.
+    int number;
+
+    Mass(int number, bool fixed, Eigen::Vector3f color,
          Eigen::Vector3f starting_position)
-        : position(starting_position), kColor(color), is_fixed(fixed),
-          mass_weight(kMinimumMassValue), name(name) {}
+        : position(starting_position), kColor(color), fixed(fixed),
+          mass_weight(kMinimumMassValue), number(number) {}
     ~Mass() = default;
 
     // Class Initializers
@@ -54,8 +57,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
     // Trivial Getters
     float Weight() const { return mass_weight; }
 
-    std::string Name() { return name; }
-
     std::vector<Eigen::Vector3f> Colors() const { return colors; }
 
     auto size() const { return vertices.size(); }
@@ -66,9 +67,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
 
     // The color of the mass object.
     const Eigen::Vector3f kColor;
-
-    // The name of the mass node
-    std::string name;
 
     // The mass of the... mass...
     float mass_weight = kMinimumMassValue;
