@@ -4,8 +4,8 @@
 #include <lattice/stats.h>
 
 void Stats::DropReading() {
-    const auto mass_velocities = supervisor->SampleMassForces();
-    const auto mass_forces = supervisor->SampleMassVelocities();
+    const auto mass_forces = supervisor->SampleMassForces();
+    const auto mass_velocities = supervisor->SampleMassVelocities();
 
     const auto velocity_csv_rows = Compress(mass_velocities);
     const auto force_csv_rows = Compress(mass_forces);

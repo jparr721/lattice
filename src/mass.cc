@@ -44,8 +44,7 @@ void Mass::ComputeVertexPoints() {
 }
 
 void Mass::Translate(const Eigen::Vector3f& translation_vector) {
-    for (auto i = 0u; i < vertices.size(); ++i) {
-        auto vertex = vertices[i];
+    for (auto& vertex : vertices) {
         Eigen::Matrix4f translation_matrix;
         translation_matrix.setIdentity();
         translation_matrix.block<3, 1>(0, 3) = translation_vector;
@@ -54,8 +53,7 @@ void Mass::Translate(const Eigen::Vector3f& translation_vector) {
             translation_matrix *
             Eigen::Vector4f(vertex.x(), vertex.y(), vertex.z(), 1.f);
 
-        vertices[i] =
-            Eigen::Vector3f(transform.x(), transform.y(), transform.z());
+        vertex = Eigen::Vector3f(transform.x(), transform.y(), transform.z());
     }
 }
 

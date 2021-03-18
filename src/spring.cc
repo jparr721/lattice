@@ -43,6 +43,7 @@ void Spring::CalculateCurrentForce() {
     const Eigen::Vector3f left_direction = (lr_difference).normalized();
     const Eigen::Vector3f right_direction = -left_direction;
 
+    // F = -kx
     const Eigen::Vector3f spring_force = -(stiffness * x) * left_direction;
 
     left_mass->force += spring_force;
