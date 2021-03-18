@@ -9,10 +9,10 @@ class ConfigurationWidget : public QWidget {
     Q_OBJECT
 
   public:
-    ConfigurationWidget(QWidget* parent = nullptr);
+    explicit ConfigurationWidget(QWidget* parent = nullptr);
 
   private slots:
-    void SaveSpecification(MSSConfig mss);
+    void SaveSpecification(const MSSConfig& mss);
 
   private:
     // Widget Combo Boxes

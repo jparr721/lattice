@@ -1,3 +1,3 @@
 #include <lattice/configuration_widget.h>
 
-void ConfigurationWidget::SaveSpecification(MSSConfig mss) {}
+void ConfigurationWidget::SaveSpecification(const MSSConfig& mss) {}

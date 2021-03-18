@@ -1,10 +1,6 @@
 #include <lattice/main_window.h>
 
 #include <QApplication>
-#include <QMatrix4x4>
-#include <QOpenGLShaderProgram>
-#include <QScreen>
-#include <iostream>
 
 int main(int argc, char** argv) {
     QApplication app(argc, argv);
@@ -14,5 +10,5 @@ int main(int argc, char** argv) {
     main_window.resize(main_window.sizeHint());
     main_window.showMaximized();
 
-    return app.exec();
+    return QApplication::exec();
 }

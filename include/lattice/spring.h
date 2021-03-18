@@ -21,7 +21,7 @@ class Spring : public std::enable_shared_from_this<Spring> {
     // Represents the vertices of the fixture.
     std::vector<Eigen::Vector3f> vertices;
 
-    Spring(Eigen::Vector3f color, std::shared_ptr<Mass>& _left_mass,
+    Spring(std::shared_ptr<Mass>& _left_mass,
            std::shared_ptr<Mass>& _right_mass)
         : kColor(Colors::kGreen), left_mass(_left_mass),
           right_mass(_right_mass) {}
@@ -50,9 +50,6 @@ class Spring : public std::enable_shared_from_this<Spring> {
     // pounds of negative force
     const Eigen::Vector3f kGravity = Eigen::Vector3f(0.0f, -9.81f, 0.0f);
 
-    // The initialization status of the fixture object.
-    bool is_init = false;
-
     // The spring k value.
     float stiffness = kMinimumSpringConstantValue;
 
@@ -72,6 +69,4 @@ class Spring : public std::enable_shared_from_this<Spring> {
 
     // The right-side mass the spring is attached to.
     std::shared_ptr<Mass> right_mass;
-
-    void CalculateDampingForce();
 };

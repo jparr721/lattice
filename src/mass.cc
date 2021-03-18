@@ -2,8 +2,6 @@
 #include <lattice/obj_loader.h>
 #include <lattice/spring.h>
 
-#include <iostream>
-
 void Mass::Initialize() {
     if (!LoadObjFile("../../sim_specs/cube.obj", original_positions)) {
         exit(EXIT_FAILURE);
@@ -18,8 +16,6 @@ void Mass::Initialize() {
     for (auto i = 0u; i < vertices.size(); ++i) {
         colors.push_back(kColor);
     }
-
-    is_init = true;
 }
 
 void Mass::Update(float dt) {

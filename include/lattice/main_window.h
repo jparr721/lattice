@@ -10,5 +10,5 @@ class MainWindow : public QMainWindow {
     constexpr static int kHeight = 800;
 
     MainWindow();
-    ~MainWindow() = default;
+    ~MainWindow() override = default;
 };

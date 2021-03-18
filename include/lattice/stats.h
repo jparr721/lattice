@@ -12,14 +12,14 @@
 #include <QDateTime>
 #include <QObject>
 
-struct StatsCSVRow {
+struct VelocityCSVRow {
     std::string name;
     int mass_number;
     float x;
     float y;
     float z;
 
-    StatsCSVRow(std::string name, int number, Eigen::Vector3f value)
+    VelocityCSVRow(std::string name, int number, Eigen::Vector3f value)
         : name(std::move(name)), mass_number(number), x(value.x()),
           y(value.y()), z(value.z()) {}
 
@@ -31,6 +31,28 @@ struct StatsCSVRow {
         return name + "," + std::to_string(mass_number) + "," +
                std::to_string(x) + "," + std::to_string(y) + "," +
                std::to_string(z) + "\n";
+    }
+};
+
+struct ForceCSVRow {
+    std::string name;
+    int mass_number;
+    float k;
+    float x;
+    float F;
+
+    ForceCSVRow(std::string name, int number, Eigen::Vector3f value)
+        : name(std::move(name)), mass_number(number), k(value.x()),
+          x(value.y()), F(value.z()) {}
+
+    [[nodiscard]] static std::string Headers() {
+        return "name,mass_number,k,x,F\n";
+    }
+
+    [[nodiscard]] std::string to_string() const {
+        return name + "," + std::to_string(mass_number) + "," +
+               std::to_string(k) + "," + std::to_string(x) + "," +
+               std::to_string(F) + "\n";
     }
 };
 
@@ -63,14 +85,17 @@ class Stats : public QObject {
 
     std::shared_ptr<Supervisor> supervisor;
 
-    static void WriteCSVData(const std::vector<StatsCSVRow>& rows,
+    template <typename T>
+    static void WriteCSVData(const std::vector<T>& rows,
                              const std::string& filename);
 
     static bool FileExists(const std::string& name);
 
     static std::string GetCurrentDate();
 
-    static std::vector<StatsCSVRow>
+    template <typename T>
+    static void
     Compress(const std::unordered_map<
-             std::string, std::unordered_map<int, Eigen::Vector3f>>& values);
+                 std::string, std::unordered_map<int, Eigen::Vector3f>>& values,
+             std::vector<T>& output);
 };

@@ -10,8 +10,6 @@ void Spring::Initialize() {
 
     left_mass->AddSpring(shared_from_this());
     right_mass->AddSpring(shared_from_this());
-
-    is_init = true;
 }
 
 void Spring::ComputeVertexPoints() {

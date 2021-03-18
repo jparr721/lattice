@@ -1,17 +1,9 @@
 #include <lattice/gl_widget.h>
 #include <lattice/gl_window.h>
-#include <lattice/mass.h>
-#include <lattice/spring.h>
 
 #include <fstream>
-#include <iostream>
-#include <sstream>
-#include <vector>
 
-#include <QOpenGLContext>
-#include <QOpenGLPaintDevice>
 #include <QOpenGLShaderProgram>
-#include <QPainter>
 
 GLWidget::GLWidget(MSSConfig config, QWidget* parent)
     : config(config), QOpenGLWidget(parent) {

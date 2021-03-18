@@ -1,7 +1,5 @@
 #include <lattice/supervisor.h>
 
-#include <iostream>
-
 Supervisor::Supervisor(const MSSConfig& config) {
     simulations.push_back(std::make_shared<MassSpringSystem>(config));
 

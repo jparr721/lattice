@@ -1,8 +1,5 @@
 #include <lattice/configuration.h>
 
-#include <algorithm>
-#include <utility>
-
 MSSConfig::MSSConfig(std::string _name, int _width, int _height, int _depth)
     : name(std::move(_name)), depth(_depth), height(_height), width(_width) {
     Initialize();
@@ -142,7 +139,6 @@ void MSSConfig::AssignRightAdjacency(MSSConfig::MassNode& node) const {
 }
 
 void MSSConfig::AssignBottomAdjacency(MSSConfig::MassNode& node) const {
-    int mod = width * height;
 
     if (IsTopLayerNode(node)) {
         // The bottom-adjacent node is always <node.number> + width.

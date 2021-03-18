@@ -1,11 +1,6 @@
 #include <lattice/gl_window.h>
-#include <lattice/main_window.h>
 
-#include <QGuiApplication>
-#include <QLabel>
-#include <QScreen>
 #include <QSlider>
-#include <QStringLiteral>
 
 GLWindow::GLWindow(const MSSConfig& config) {
     widget = new GLWidget(config);

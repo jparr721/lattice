@@ -1,7 +1,5 @@
 #include <lattice/mass_spring_system.h>
 
-#include <memory>
-
 MassSpringSystem::MassSpringSystem(const MSSConfig& config) {
     name = config.name;
     const auto mss_masses = config.masses;
@@ -36,8 +34,7 @@ MassSpringSystem::MassSpringSystem(const MSSConfig& config) {
         for (const auto adjacent_node_number : mass_node.adjacencies) {
             auto adjacent_node = masses[mass_map.at(adjacent_node_number)];
 
-            auto spring = std::make_shared<Spring>(Colors::kGreen, center_node,
-                                                   adjacent_node);
+            auto spring = std::make_shared<Spring>(center_node, adjacent_node);
 
             spring->Initialize();
             springs.push_back(std::move(spring));

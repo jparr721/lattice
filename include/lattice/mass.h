@@ -54,17 +54,11 @@ class Mass : public std::enable_shared_from_this<Mass> {
     // Complex Setters
     void Translate(const Eigen::Vector3f& translation_vector);
 
-    // Trivial Getters
-    float Weight() const { return mass_weight; }
-
     std::vector<Eigen::Vector3f> Colors() const { return colors; }
 
     auto size() const { return vertices.size(); }
 
   private:
-    // The initialization status of the fixture object.
-    bool is_init = false;
-
     // The color of the mass object.
     const Eigen::Vector3f kColor;
 
@@ -79,6 +73,4 @@ class Mass : public std::enable_shared_from_this<Mass> {
 
     // The springs that this mass is connected to.
     std::vector<std::shared_ptr<Spring>> springs;
-
-    void CalculateAcceleration();
 };
