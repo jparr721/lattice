@@ -40,3 +40,6 @@ cmake-build-debug/
 
 # Project Runtime Stats
 stats/
+
+# Python-Related Depenendcies
+venv/

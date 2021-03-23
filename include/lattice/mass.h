@@ -5,6 +5,7 @@
 #include <string>
 
 #include <QDebug>
+#include <utility>
 
 class Spring;
 
@@ -13,6 +14,12 @@ class Mass : public std::enable_shared_from_this<Mass> {
     const bool fixed;
     constexpr static float kMinimumMassValue = 0.5f;
     constexpr static float kMaximumMassValue = 50.f;
+
+    // Spring->Mass displacement
+    float displacement = 0.f;
+
+    // The springs that this mass is connected to.
+    std::vector<std::shared_ptr<Spring>> springs;
 
     // The velocity the object is moving at with respect to time.
     Eigen::Vector3f velocity = Eigen::Vector3f::Zero();
@@ -34,7 +41,7 @@ class Mass : public std::enable_shared_from_this<Mass> {
 
     Mass(int number, bool fixed, Eigen::Vector3f color,
          Eigen::Vector3f starting_position)
-        : position(starting_position), kColor(color), fixed(fixed),
+        : position(std::move(starting_position)), kColor(std::move(color)), fixed(fixed),
           mass_weight(kMinimumMassValue), number(number) {}
     ~Mass() = default;
 
@@ -44,7 +51,7 @@ class Mass : public std::enable_shared_from_this<Mass> {
     void ComputeVertexPoints();
     void CalculateMassForces(float dt);
 
-    void AddSpring(std::shared_ptr<Spring> _spring) {
+    void AddSpring(const std::shared_ptr<Spring>& _spring) {
         springs.push_back(_spring);
     }
 
@@ -70,7 +77,4 @@ class Mass : public std::enable_shared_from_this<Mass> {
 
     // Represents the colors mapped to each vertex.
     std::vector<Eigen::Vector3f> colors;
-
-    // The springs that this mass is connected to.
-    std::vector<std::shared_ptr<Spring>> springs;
 };

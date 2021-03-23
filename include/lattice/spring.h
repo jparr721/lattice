@@ -5,6 +5,8 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <unordered_map>
+#include <utility>
 
 class Mass;
 
@@ -17,6 +19,15 @@ class Spring : public std::enable_shared_from_this<Spring> {
     constexpr static float kMaximumSpringConstantValue = 500.0f;
     constexpr static float kMaximumDampingValue = 5.0f;
     constexpr static float kMaximumSpringRestLengthValue = 5.0f;
+
+    // The spring k value.
+    float stiffness = kMinimumSpringConstantValue;
+
+    // The resting length of the spring in the Y direction.
+    float rest_length = kMinimumSpringRestLengthValue;
+
+    // The spring calculation damping constant to prevent explosions.
+    float damping_constant = kMinimumDampingValue;
 
     // Represents the vertices of the fixture.
     std::vector<Eigen::Vector3f> vertices;
@@ -49,15 +60,6 @@ class Spring : public std::enable_shared_from_this<Spring> {
     // Gravitational constant vector, applies -9.81f
     // pounds of negative force
     const Eigen::Vector3f kGravity = Eigen::Vector3f(0.0f, -9.81f, 0.0f);
-
-    // The spring k value.
-    float stiffness = kMinimumSpringConstantValue;
-
-    // The resting length of the spring in the Y direction.
-    float rest_length = kMinimumSpringRestLengthValue;
-
-    // The spring calculation damping constant to prevent explosions.
-    float damping_constant = kMinimumDampingValue;
 
     const Eigen::Vector3f kColor;
 
