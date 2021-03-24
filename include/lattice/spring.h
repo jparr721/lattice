@@ -1,12 +1,13 @@
 #pragma once
 
 #include <lattice/colors.h>
+#include <lattice/socket.h>
 
 #include <iostream>
 #include <memory>
-#include <vector>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 class Mass;
 
@@ -32,10 +33,17 @@ class Spring : public std::enable_shared_from_this<Spring> {
     // Represents the vertices of the fixture.
     std::vector<Eigen::Vector3f> vertices;
 
+    std::shared_ptr<Socket> socket;
+
     Spring(std::shared_ptr<Mass>& _left_mass,
            std::shared_ptr<Mass>& _right_mass)
         : kColor(Colors::kGreen), left_mass(_left_mass),
           right_mass(_right_mass) {}
+
+    Spring(std::shared_ptr<Socket> _socket, std::shared_ptr<Mass>& _left_mass,
+           std::shared_ptr<Mass>& _right_mass)
+        : kColor(Colors::kGreen), left_mass(_left_mass),
+          right_mass(_right_mass), socket(std::move(_socket)) {}
 
     // Class Initializers and Mutators
     void Initialize();

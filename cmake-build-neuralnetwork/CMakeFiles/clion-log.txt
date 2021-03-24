@@ -1,0 +1,18 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_NEURAL_NETWORK=ON -G "CodeBlocks - Unix Makefiles" /Users/jarred/Code/qt_lattice
+CMake Warning (dev) at /opt/homebrew/lib/cmake/assimp-5.0/assimpTargets.cmake:54 (if):
+  if given arguments:
+
+    "ON"
+
+  An argument named "ON" appears in a conditional statement.  Policy CMP0012
+  is not set: if() recognizes numbers and boolean constants.  Run "cmake
+  --help-policy CMP0012" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+Call Stack (most recent call first):
+  /opt/homebrew/lib/cmake/assimp-5.0/assimp-config.cmake:1 (include)
+  CMakeLists.txt:35 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/jarred/Code/qt_lattice/cmake-build-neuralnetwork

@@ -1,9 +1,14 @@
 #include <lattice/mass_spring_system.h>
+#include <lattice/socket.h>
 
 MassSpringSystem::MassSpringSystem(const MSSConfig& config) {
     name = config.name;
     const auto mss_masses = config.masses;
     const auto mss_positions = config.positions;
+
+#ifdef USE_NEURAL_NETWORK
+    const auto socket_conn = std::make_shared<Socket>();
+#endif
 
     assert(mss_masses.size() == mss_positions.size());
 
@@ -34,7 +39,12 @@ MassSpringSystem::MassSpringSystem(const MSSConfig& config) {
         for (const auto adjacent_node_number : mass_node.adjacencies) {
             auto adjacent_node = masses[mass_map.at(adjacent_node_number)];
 
+#ifdef USE_NEURAL_NETWORK
+            auto spring = std::make_shared<Spring>(socket_conn, center_node,
+                                                   adjacent_node);
+#else
             auto spring = std::make_shared<Spring>(center_node, adjacent_node);
+#endif
 
             spring->Initialize();
             springs.push_back(std::move(spring));

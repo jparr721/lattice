@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
 project(lattice LANGUAGES CXX)
 
+# Neural Network Preprocessor Directive
+OPTION(WITH_NEURAL_NETWORK "Neural Network calculator" OFF)
+
 set(CMAKE_SYSTEM_PROCESSOR arm)
 set(triple arm64-apple-macos11)
 
@@ -37,6 +40,10 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS OpenGL REQUIRED)
 find_package(Qt5 COMPONENTS Charts REQUIRED)
 find_package(Qt5 COMPONENTS Quick REQUIRED)
+
+IF(WITH_NEURAL_NETWORK)
+    add_definitions(-DUSE_NEURAL_NETWORK)
+ENDIF(WITH_NEURAL_NETWORK)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 

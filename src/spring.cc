@@ -41,12 +41,13 @@ void Spring::CalculateCurrentForce() {
     const Eigen::Vector3f left_direction = (lr_difference).normalized();
     const Eigen::Vector3f right_direction = -left_direction;
 
-    Eigen::Vector3f spring_force = Eigen::Vector3f::Zero();
-
-    // Cache the force value from the neural network for performance
-
     // F = -kx
-    spring_force = -(stiffness * x) * left_direction;
+#ifdef USE_NEURAL_NETWORK
+    exit(0);
+    const auto spring_force = socket->Predict(stiffness, x) * left_direction;
+#else
+    const auto spring_force = -(stiffness * x) * left_direction;
+#endif
 
     // Record current displacement for NN training...
     left_mass->displacement = x;
