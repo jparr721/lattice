@@ -1,17 +1,18 @@
 #include <lattice/supervisor.h>
 
 Supervisor::Supervisor(const MSSConfig& config) : density(config.Density()) {
-    simulations.push_back(std::make_shared<MassSpringSystem>(config));
+    Initialize(config);
+}
 
-    for (const auto& simulation : simulations) {
-        for (const auto& color : simulation->Colors()) {
-            colors.push_back(color);
-        }
-    }
-
-    shapes =
-        std::vector<Eigen::Vector3f>(colors.size(), Eigen::Vector3f::Zero());
-    RecompileVertexBuffer();
+Supervisor::Supervisor(const MSSConfig& config,
+                       const SupervisorParameters& params)
+    : density(config.Density()) {
+    Initialize(config);
+    SetMassWeight(params.mass);
+    SetSpringConstant(params.k);
+    SetSpringDampingConstant(params.damping);
+    SetSpringRestLength(params.rest_length);
+    SetTimeStep(params.time_step);
 }
 
 void Supervisor::RecompileVertexBuffer() {
@@ -25,7 +26,7 @@ void Supervisor::RecompileVertexBuffer() {
 
 void Supervisor::Update() {
     for (const auto& simulation : simulations) {
-        simulation->Update(timestep_size);
+        simulation->Update(time_step_size);
     }
 
     RecompileVertexBuffer();
@@ -81,4 +82,45 @@ Supervisor::SampleMassForces() {
     }
 
     return current_mass_forces;
+}
+void Supervisor::Initialize(const MSSConfig& config) {
+    simulations.push_back(std::make_shared<MassSpringSystem>(config));
+
+    for (const auto& simulation : simulations) {
+        for (const auto& color : simulation->Colors()) {
+            colors.push_back(color);
+        }
+    }
+
+    shapes =
+        std::vector<Eigen::Vector3f>(colors.size(), Eigen::Vector3f::Zero());
+    RecompileVertexBuffer();
+}
+
+float Supervisor::GetMassWeight() const {
+    return simulations[0]->GetMassWeight();
+}
+
+float Supervisor::GetSpringConstant() const {
+    return simulations[0]->GetSpringConstant();
+}
+
+float Supervisor::GetSpringRestLength() const {
+    return simulations[0]->GetSpringRestLength();
+}
+
+float Supervisor::GetSpringDampingConstant() const {
+    return simulations[0]->GetSpringDampingConstant();
+}
+
+float Supervisor::GetTimeStep() const { return time_step_size; }
+
+SupervisorParameters Supervisor::CurrentParameters() const {
+    return SupervisorParameters{
+        .mass = GetMassWeight(),
+        .k = GetSpringConstant(),
+        .damping = GetSpringDampingConstant(),
+        .rest_length = GetSpringRestLength(),
+        .time_step = GetTimeStep(),
+    };
 }

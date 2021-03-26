@@ -21,16 +21,19 @@ QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
   public:
+    // Simulation Params
+    std::shared_ptr<Supervisor> supervisor;
+
     explicit GLWidget(MSSConfig config, QWidget* parent = nullptr);
     ~GLWidget() override;
 
-    void RestartSimulation();
+    void RestartSimulation() const;
 
     [[nodiscard]] QSize minimumSizeHint() const override;
     [[nodiscard]] QSize sizeHint() const override;
 
   public slots:
-    void Update();
+    void Update() const;
     void SaveCurrentStats();
 
     void Permute();
@@ -68,23 +71,12 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     // 10 Second Permute Timeout Interval
     constexpr static int kPermutationTimeout = 10000;
 
-    // Slider Data
-    float slider_mass_value = Mass::kMinimumMassValue;
-    float slider_spring_constant_value = Spring::kMinimumSpringConstantValue;
-    float slider_damping_constant_value = Spring::kMinimumDampingValue;
-    float slider_rest_length_value = Spring::kMinimumSpringRestLengthValue;
-    float slider_time_step_value =
-        MassSpringSystem::kMinimumTimeStepChangeValue;
-
     // Draw Timers for the sim time step
     QTimer* draw_timer;
     QTimer* update_timer;
 
     // Simulation Timer For Object Permutations
     QTimer* permutation_timeout;
-
-    // Simulation Params
-    std::shared_ptr<Supervisor> supervisor;
 
     // Camera Controller
     Camera camera;

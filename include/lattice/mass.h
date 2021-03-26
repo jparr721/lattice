@@ -11,9 +11,12 @@ class Spring;
 
 class Mass : public std::enable_shared_from_this<Mass> {
   public:
-    const bool fixed;
     constexpr static float kMinimumMassValue = 0.5f;
     constexpr static float kMaximumMassValue = 50.f;
+
+    float weight = kMinimumMassValue;
+
+    const bool fixed;
 
     // Spring->Mass displacement
     float displacement = 0.f;
@@ -41,8 +44,7 @@ class Mass : public std::enable_shared_from_this<Mass> {
 
     Mass(int number, bool fixed, Eigen::Vector3f color,
          Eigen::Vector3f starting_position)
-        : position(std::move(starting_position)), kColor(std::move(color)), fixed(fixed),
-          mass_weight(kMinimumMassValue), number(number) {}
+        : position(std::move(starting_position)), kColor(std::move(color)), fixed(fixed), weight(kMinimumMassValue), number(number) {}
     ~Mass() = default;
 
     // Class Initializers
@@ -55,9 +57,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
         springs.push_back(_spring);
     }
 
-    // Trivial Setters
-    void SetWeight(float value) { mass_weight = value; }
-
     // Complex Setters
     void Translate(const Eigen::Vector3f& translation_vector);
 
@@ -68,9 +67,6 @@ class Mass : public std::enable_shared_from_this<Mass> {
   private:
     // The color of the mass object.
     const Eigen::Vector3f kColor;
-
-    // The mass of the... mass...
-    float mass_weight = kMinimumMassValue;
 
     // The original vertex positions
     std::vector<Eigen::Vector3f> original_positions;

@@ -22,13 +22,13 @@ class Spring : public std::enable_shared_from_this<Spring> {
     constexpr static float kMaximumSpringRestLengthValue = 5.0f;
 
     // The spring k value.
-    float stiffness = kMinimumSpringConstantValue;
+    float k = kMinimumSpringConstantValue;
 
     // The resting length of the spring in the Y direction.
     float rest_length = kMinimumSpringRestLengthValue;
 
     // The spring calculation damping constant to prevent explosions.
-    float damping_constant = kMinimumDampingValue;
+    float damping = kMinimumDampingValue;
 
     // Represents the vertices of the fixture.
     std::vector<Eigen::Vector3f> vertices;
@@ -48,11 +48,6 @@ class Spring : public std::enable_shared_from_this<Spring> {
     // Class Initializers and Mutators
     void Initialize();
     void ComputeVertexPoints();
-
-    // Setters
-    void SetStiffness(float value) { stiffness = value; }
-    void SetRestLength(float value) { rest_length = value; }
-    void SetDampingConstant(float value) { damping_constant = value; }
 
     // Trivial Getters
     auto size() const { return vertices.size(); }

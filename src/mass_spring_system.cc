@@ -137,25 +137,25 @@ void MassSpringSystem::ComputeShapes() {
 
 void MassSpringSystem::SetSpringConstant(float value) {
     for (const auto& spring : springs) {
-        spring->SetStiffness(value);
+        spring->k = value;
     }
 }
 
 void MassSpringSystem::SetSpringRestLength(float value) {
     for (const auto& spring : springs) {
-        spring->SetRestLength(value);
+        spring->rest_length = value;
     }
 }
 
 void MassSpringSystem::SetMassWeight(float value) {
     for (const auto& mass : masses) {
-        mass->SetWeight(value);
+        mass->weight = value;
     }
 }
 
 void MassSpringSystem::SetSpringDampingConstant(float value) {
     for (const auto& spring : springs) {
-        spring->SetDampingConstant(value);
+        spring->damping = value;
     }
 }
 
@@ -170,7 +170,7 @@ std::unordered_map<int, Eigen::Vector3f> MassSpringSystem::GetMassVelocities() {
 std::unordered_map<int, Eigen::Vector3f> MassSpringSystem::GetMassForces() {
     for (const auto& mass : masses) {
         const auto x = mass->displacement;
-        const auto spring_constant = mass->springs[0]->stiffness;
+        const auto spring_constant = mass->springs[0]->k;
         const auto force = mass->force.y();
         mass_forces[mass->number] = Eigen::Vector3f(spring_constant, x, force);
     }
@@ -185,4 +185,20 @@ void MassSpringSystem::PreloadModelData() {
         mass_velocities.insert(
             std::pair(mass->number, Eigen::Vector3f::Zero()));
     }
+}
+
+float MassSpringSystem::GetSpringConstant() const {
+    return springs[0]->k;
+}
+
+float MassSpringSystem::GetSpringRestLength() const {
+    return springs[0]->rest_length;
+}
+
+float MassSpringSystem::GetSpringDampingConstant() const {
+    return springs[0]->damping;
+}
+
+float MassSpringSystem::GetMassWeight() const {
+    return masses[0]->weight;
 }

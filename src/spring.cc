@@ -46,7 +46,7 @@ void Spring::CalculateCurrentForce() {
     exit(0);
     const auto spring_force = socket->Predict(stiffness, x) * left_direction;
 #else
-    const auto spring_force = -(stiffness * x) * left_direction;
+    const auto spring_force = -(k * x) * left_direction;
 #endif
 
     // Record current displacement for NN training...
@@ -60,9 +60,9 @@ void Spring::CalculateCurrentForce() {
     const float right_velocity_dir = right_mass->velocity.dot(right_direction);
 
     const Eigen::Vector3f left_force_difference =
-        -damping_constant * left_direction * left_velocity_dir;
+        -damping * left_direction * left_velocity_dir;
     const Eigen::Vector3f right_force_difference =
-        -damping_constant * right_direction * right_velocity_dir;
+        -damping * right_direction * right_velocity_dir;
 
     left_mass->force += left_force_difference;
     right_mass->force += right_force_difference;

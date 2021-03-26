@@ -9,7 +9,13 @@ GLWidget::GLWidget(MSSConfig config, QWidget* parent)
     : config(config), QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
 
-    supervisor = std::make_shared<Supervisor>(config);
+    const auto initial_parameters = SupervisorParameters{.mass = 0.5,
+                                                         .k = 6,
+                                                         .damping = 0.5,
+                                                         .rest_length = 2,
+                                                         .time_step = .005095};
+
+    supervisor = std::make_shared<Supervisor>(config, initial_parameters);
 
     constexpr int msec_conversion = 1000;
     constexpr int updates_per_second = 120;
@@ -49,51 +55,46 @@ QSize GLWidget::sizeHint() const { return QSize(kWidth, kHeight); }
 
 void GLWidget::SaveCurrentStats() { stats->DropReading(); }
 
-void GLWidget::Update() { supervisor->Update(); }
+void GLWidget::Update() const { supervisor->Update(); }
 
 void GLWidget::SetMass(float value) {
-    slider_mass_value =
-        Interpolate(Mass::kMinimumMassValue, Mass::kMaximumMassValue,
-                    (float)value / 100.0f);
-
-    supervisor->SetMassWeight(slider_mass_value);
+    supervisor->SetMassWeight(Interpolate(Mass::kMinimumMassValue,
+                                          Mass::kMaximumMassValue,
+                                          (float)value / 100.0f));
 
     emit OnMassChange(value);
     RestartSimulation();
 }
 
 void GLWidget::SetSpringConstant(float value) {
-    slider_spring_constant_value =
+    supervisor->SetSpringConstant(
         Interpolate(Spring::kMinimumSpringConstantValue,
-                    Spring::kMaximumSpringConstantValue, (float)value / 100.f);
-    supervisor->SetSpringConstant(slider_spring_constant_value);
+                    Spring::kMaximumSpringConstantValue, (float)value / 100.f));
     emit OnSpringConstantChange(value);
     RestartSimulation();
 }
 
 void GLWidget::SetSpringDampingConstant(float value) {
-    slider_damping_constant_value =
+    supervisor->SetSpringDampingConstant(
         Interpolate(Spring::kMinimumDampingValue, Spring::kMaximumDampingValue,
-                    (float)value / 100.f);
-    supervisor->SetSpringDampingConstant(slider_damping_constant_value);
+                    (float)value / 100.f));
     emit OnSpringDampingChange(value);
     RestartSimulation();
 }
 
 void GLWidget::SetSpringRestLength(float value) {
-    slider_rest_length_value = Interpolate(
+    supervisor->SetSpringRestLength(Interpolate(
         Spring::kMinimumSpringRestLengthValue,
-        Spring::kMaximumSpringRestLengthValue, (float)value / 100.f);
-    supervisor->SetSpringRestLength(value);
+        Spring::kMaximumSpringRestLengthValue, (float)value / 100.f));
     emit OnSpringRestLengthChange(value);
     RestartSimulation();
 }
 
 void GLWidget::SetTimeStep(float value) {
-    slider_time_step_value = Interpolate(
-        MassSpringSystem::kMinimumTimeStepChangeValue,
-        MassSpringSystem::kMaximumTimeStepChangeValue, (float)value / 100.f);
-    supervisor->SetTimeStep(slider_time_step_value);
+    supervisor->SetTimeStep(
+        Interpolate(MassSpringSystem::kMinimumTimeStepChangeValue,
+                    MassSpringSystem::kMaximumTimeStepChangeValue,
+                    (float)value / 100.f));
     emit OnTimeStepChange(value);
     RestartSimulation();
 }
@@ -193,26 +194,25 @@ float GLWidget::Interpolate(float v0, float v1, float t) {
     return v0 + t * (v1 - v0);
 }
 
-void GLWidget::RestartSimulation() { supervisor->Reset(); }
+void GLWidget::RestartSimulation() const { supervisor->Reset(); }
 
 void GLWidget::Permute() {
+    const auto current_parameters = supervisor->CurrentParameters();
+
     config.Permute();
-    supervisor = std::make_shared<Supervisor>(config);
-    supervisor->SetMassWeight(slider_mass_value);
-    supervisor->SetSpringConstant(slider_spring_constant_value);
-    supervisor->SetSpringDampingConstant(slider_damping_constant_value);
-    supervisor->SetSpringRestLength(slider_rest_length_value);
-    supervisor->SetTimeStep(slider_time_step_value);
+    supervisor = std::make_shared<Supervisor>(config, current_parameters);
     stats->supervisor = supervisor;
 }
 
 void GLWidget::PrintParameters() const {
     std::cout << "        Parameters:           " << std::endl;
     std::cout << "==============================" << std::endl;
-    std::cout << "Mass: " << slider_mass_value << std::endl;
-    std::cout << "K: " << slider_spring_constant_value << std::endl;
-    std::cout << "Damping: " << slider_damping_constant_value << std::endl;
-    std::cout << "Rest Length: " << slider_rest_length_value << std::endl;
-    std::cout << "Time Step: " << slider_time_step_value << std::endl;
+    std::cout << "Mass: " << supervisor->GetMassWeight() << std::endl;
+    std::cout << "K: " << supervisor->GetSpringConstant() << std::endl;
+    std::cout << "Damping: " << supervisor->GetSpringDampingConstant()
+              << std::endl;
+    std::cout << "Rest Length: " << supervisor->GetSpringRestLength()
+              << std::endl;
+    std::cout << "Time Step: " << supervisor->GetTimeStep() << std::endl;
     std::cout << "==============================" << std::endl;
 }

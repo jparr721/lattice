@@ -27,13 +27,17 @@ class MassSpringSystem {
     void ComputeShapes();
     void ComputeColors();
 
-    // Spring Mutators
+    // Setters
     void SetSpringConstant(float value);
     void SetSpringRestLength(float value);
     void SetSpringDampingConstant(float value);
-
-    // Mass Mutators
     void SetMassWeight(float value);
+
+    // Getters
+    [[nodiscard]] float GetSpringConstant() const;
+    [[nodiscard]] float GetSpringRestLength() const;
+    [[nodiscard]] float GetSpringDampingConstant() const;
+    [[nodiscard]] float GetMassWeight() const;
 
     // Training Data Signals
     std::unordered_map<int, Eigen::Vector3f> GetMassVelocities();

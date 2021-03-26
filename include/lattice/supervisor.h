@@ -6,11 +6,19 @@
 #include <memory>
 #include <vector>
 
+struct SupervisorParameters {
+    float mass;
+    float k;
+    float damping;
+    float rest_length;
+    float time_step;
+};
+
 class Supervisor {
   public:
     constexpr static float kMinimumTimeStepChangeValue = 0.0001;
 
-    float timestep_size = kMinimumTimeStepChangeValue;
+    float time_step_size = kMinimumTimeStepChangeValue;
 
     // Shape density
     const int density;
@@ -24,14 +32,26 @@ class Supervisor {
     std::vector<std::shared_ptr<MassSpringSystem>> simulations;
 
     explicit Supervisor(const MSSConfig& config);
+    Supervisor(const MSSConfig& config, const SupervisorParameters& params);
     ~Supervisor() = default;
 
+
+
     // Setters
+    void Initialize(const MSSConfig& config);
     void SetMassWeight(float value);
     void SetSpringConstant(float value);
     void SetSpringDampingConstant(float value);
     void SetSpringRestLength(float value);
-    void SetTimeStep(float value) { timestep_size = value; }
+    void SetTimeStep(float value) { time_step_size = value; }
+
+    // Getters
+    [[nodiscard]] SupervisorParameters CurrentParameters() const;
+    [[nodiscard]] float GetMassWeight() const;
+    [[nodiscard]] float GetSpringConstant() const;
+    [[nodiscard]] float GetSpringDampingConstant() const;
+    [[nodiscard]] float GetSpringRestLength() const;
+    [[nodiscard]] float GetTimeStep() const;
 
     // Update
     void Update();
