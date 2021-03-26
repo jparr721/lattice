@@ -81,10 +81,11 @@ class MSSConfig {
     MSSConfig(std::string _name, int _width, int _height, int _depth);
 
     void Initialize();
+    void Permute();
+
+    int Density() const;
 
     static std::vector<int> UniformCoordinateDistribution(int n);
-
-    void Permute();
 
   private:
     constexpr static int kDefaultMidpoint = 0;

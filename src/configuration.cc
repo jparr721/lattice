@@ -1,5 +1,7 @@
 #include <lattice/configuration.h>
 
+#include <numeric>
+
 MSSConfig::MSSConfig(std::string _name, int _width, int _height, int _depth)
     : name(std::move(_name)), depth(_depth), height(_height), width(_width) {
     Initialize();
@@ -240,4 +242,10 @@ bool MSSConfig::IsRightCornerNode(const MSSConfig::MassNode& node) const {
 
 bool MSSConfig::IsLeftCornerNode(const MSSConfig::MassNode& node) const {
     return node.number % width == 0;
+}
+
+int MSSConfig::Density() const {
+    return std::accumulate(
+        masses.begin(), masses.end(), 0,
+        [](int acc, const MassNode& m) { return acc + m.adjacencies.size(); });
 }

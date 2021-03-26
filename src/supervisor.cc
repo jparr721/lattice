@@ -1,6 +1,6 @@
 #include <lattice/supervisor.h>
 
-Supervisor::Supervisor(const MSSConfig& config) {
+Supervisor::Supervisor(const MSSConfig& config) : density(config.Density()) {
     simulations.push_back(std::make_shared<MassSpringSystem>(config));
 
     for (const auto& simulation : simulations) {

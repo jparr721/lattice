@@ -6,10 +6,11 @@ void Stats::DropReading() {
     const auto mass_forces = supervisor->SampleMassForces();
     const auto mass_velocities = supervisor->SampleMassVelocities();
 
-    auto velocity_csv_rows = std::vector<VelocityCSVRow>{};
     auto force_csv_rows = std::vector<ForceCSVRow>{};
-    Compress(mass_velocities, velocity_csv_rows);
-    Compress(mass_forces, force_csv_rows);
+    CompressForceCSVData(mass_forces, force_csv_rows);
+
+    auto velocity_csv_rows = std::vector<VelocityCSVRow>{};
+    CompressVelocityCSVData(mass_velocities, velocity_csv_rows);
 
     WriteCSVData(velocity_csv_rows, velocity_filename);
     WriteCSVData(force_csv_rows, force_filename);
@@ -43,21 +44,34 @@ bool Stats::FileExists(const std::string& filename) {
     return std::filesystem::exists(filename);
 }
 
-std::string Stats::GetCurrentDate() {
+std::string Stats::GetCurrentTimestamp() {
     return QDateTime::currentDateTime()
         .toString(Qt::ISODate)
         .toUtf8()
         .constData();
 }
 
-template <typename T>
-void Stats::Compress(
+void Stats::CompressForceCSVData(
     const std::unordered_map<std::string,
                              std::unordered_map<int, Eigen::Vector3f>>& values,
-    std::vector<T>& output) {
+    std::vector<ForceCSVRow>& output) {
+
+    const int density = supervisor->density;
+
+    for (const auto& [mss_name, forces_by_mass] : values) {
+        for (const auto& [mass_number, force] : forces_by_mass) {
+            output.emplace_back(mss_name, mass_number, density, force);
+        }
+    }
+}
+
+void Stats::CompressVelocityCSVData(
+    const std::unordered_map<std::string,
+                             std::unordered_map<int, Eigen::Vector3f>>& values,
+    std::vector<VelocityCSVRow>& output) {
     for (const auto& [mss_name, velocities_by_mass] : values) {
-        for (const auto& [mass_number, force] : velocities_by_mass) {
-            output.emplace_back(mss_name, mass_number, force);
+        for (const auto& [mass_number, velocity] : velocities_by_mass) {
+            output.emplace_back(mss_name, mass_number, velocity);
         }
     }
 }

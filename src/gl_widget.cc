@@ -203,6 +203,7 @@ void GLWidget::Permute() {
     supervisor->SetSpringDampingConstant(slider_damping_constant_value);
     supervisor->SetSpringRestLength(slider_rest_length_value);
     supervisor->SetTimeStep(slider_time_step_value);
+    stats->supervisor = supervisor;
 }
 
 void GLWidget::PrintParameters() const {

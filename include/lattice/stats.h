@@ -37,22 +37,24 @@ struct VelocityCSVRow {
 struct ForceCSVRow {
     std::string name;
     int mass_number;
+    int density;
     float k;
     float x;
     float F;
 
-    ForceCSVRow(std::string name, int number, Eigen::Vector3f value)
-        : name(std::move(name)), mass_number(number), k(value.x()),
-          x(value.y()), F(value.z()) {}
+    ForceCSVRow(std::string name, int number, int density,
+                Eigen::Vector3f value)
+        : name(std::move(name)), mass_number(number), density(density),
+          k(value.x()), x(value.y()), F(value.z()) {}
 
     [[nodiscard]] static std::string Headers() {
-        return "name,mass_number,k,x,F\n";
+        return "name,mass_number,density,k,x,F\n";
     }
 
     [[nodiscard]] std::string to_string() const {
         return name + "," + std::to_string(mass_number) + "," +
-               std::to_string(k) + "," + std::to_string(x) + "," +
-               std::to_string(F) + "\n";
+               std::to_string(density) + "," + std::to_string(k) + "," +
+               std::to_string(x) + "," + std::to_string(F) + "\n";
     }
 };
 
@@ -60,6 +62,8 @@ class Stats : public QObject {
     Q_OBJECT
 
   public:
+    std::shared_ptr<Supervisor> supervisor;
+
     explicit Stats(std::shared_ptr<Supervisor> supervisor)
         : supervisor(std::move(supervisor)) {
         auto dt = QDateTime::currentDateTime();
@@ -70,10 +74,10 @@ class Stats : public QObject {
         }
 
         velocity_filename = std::string("../../stats/velocity-stats-") +
-                            GetCurrentDate() + std::string(".csv");
+                            GetCurrentTimestamp() + std::string(".csv");
 
         force_filename = std::string("../../stats/force-stats-") +
-                         GetCurrentDate() + std::string(".csv");
+                         GetCurrentTimestamp() + std::string(".csv");
     }
 
   public slots:
@@ -83,7 +87,15 @@ class Stats : public QObject {
     std::string velocity_filename;
     std::string force_filename;
 
-    std::shared_ptr<Supervisor> supervisor;
+    void CompressForceCSVData(
+        const std::unordered_map<
+            std::string, std::unordered_map<int, Eigen::Vector3f>>& values,
+        std::vector<ForceCSVRow>& output);
+
+    static void CompressVelocityCSVData(
+        const std::unordered_map<
+            std::string, std::unordered_map<int, Eigen::Vector3f>>& values,
+        std::vector<VelocityCSVRow>& output);
 
     template <typename T>
     static void WriteCSVData(const std::vector<T>& rows,
@@ -91,11 +103,5 @@ class Stats : public QObject {
 
     static bool FileExists(const std::string& name);
 
-    static std::string GetCurrentDate();
-
-    template <typename T>
-    static void
-    Compress(const std::unordered_map<
-                 std::string, std::unordered_map<int, Eigen::Vector3f>>& values,
-             std::vector<T>& output);
+    static std::string GetCurrentTimestamp();
 };

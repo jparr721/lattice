@@ -12,6 +12,9 @@ class Supervisor {
 
     float timestep_size = kMinimumTimeStepChangeValue;
 
+    // Shape density
+    const int density;
+
     // VBO Shapes
     std::vector<Eigen::Vector3f> shapes;
 
