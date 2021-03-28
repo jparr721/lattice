@@ -124,3 +124,22 @@ SupervisorParameters Supervisor::CurrentParameters() const {
         .time_step = GetTimeStep(),
     };
 }
+
+float Supervisor::ComputeNextK() {
+    return kSineIntervalCoefficient * std::sin(2 * kSineInterval[++sine_step]) +
+           kSineIntervalCoefficient;
+}
+void Supervisor::ReInitialize(const MSSConfig& config,
+                              const SupervisorParameters& params) {
+
+    simulations.clear();
+    shapes.clear();
+    colors.clear();
+
+    Initialize(config);
+    SetMassWeight(params.mass);
+    SetSpringConstant(params.k);
+    SetSpringDampingConstant(params.damping);
+    SetSpringRestLength(params.rest_length);
+    SetTimeStep(params.time_step);
+}

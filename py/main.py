@@ -7,6 +7,7 @@ import logging
 
 import numpy as np
 import tensorflow as tf
+from tensorflow.keras import backend as K
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -66,15 +67,17 @@ class SocketServer(object):
             print("Ctrl-C Pressed, Exiting.")
 
 
-def read_csv(self, filename: str) -> Dict[str, List[float]]:
+def read_csv(filename: str) -> Dict[str, List[float]]:
     with open(filename, "r") as f:
         headers = f.readline().rstrip()
 
-        output = {header: [] for header in headers.split(",")[2:]}
+        output = {header: [] for header in headers.split(",")[1:]}
         lines = f.readlines()[1:]
 
         for line in lines:
-            _, _, k, x, F = line.rstrip().split(",")
+            _, mn, density, k, x, F = line.rstrip().split(",")
+            output["mass_number"].append(float(mn))
+            output["density"].append(float(density))
             output["k"].append(float(k))
             output["x"].append(float(x))
             output["F"].append(float(F))
@@ -82,7 +85,7 @@ def read_csv(self, filename: str) -> Dict[str, List[float]]:
     return output
 
 
-def find_latest_file(self) -> str:
+def find_latest_file() -> str:
     return max(glob.glob("../stats/force-stats-*"), key=os.path.getmtime)
 
 
@@ -98,13 +101,33 @@ class NeuralNetwork(object):
     def predict(self, x: np.array) -> float:
         return self.model.predict(x)[0][0]
 
-    def retrain(self):
-        csv = read_csv(find_latest_file())
-        csv_transposed_np = np.array(list(zip(*[v for v in csv.values()]))[5000:])
-        np.random.shuffle(csv_transposed_np)
+    @staticmethod
+    def polynomial_regression_equality(y_true: float, y_pred: float):
+        """
+        Regression accuracy metrix
+        :param y_true:
+        :param y_pred:
+        :return:
+        """
+        accepted_diff = 0.1
+        diff = K.abs(y_true-y_pred)
+        return K.mean(K.cast(diff < accepted_diff, tf.float32))
 
-        X = csv_transposed_np[:, :2]
-        y = csv_transposed_np[:, 2:]
+    def retrain(self):
+        logging.info("Starting training cycle")
+        csv = read_csv(find_latest_file())
+
+        logging.info("Data loaded")
+        training_data = np.array(list(zip(*[v for v in csv.values()])), dtype=np.float)
+        training_data = training_data[np.where(training_data[:, 0] < 4)]
+        training_data = training_data[~np.isnan(training_data).any(axis=1)]
+        training_data = training_data[~np.isinf(training_data).any(axis=1)]
+        training_data = self._standardize(training_data)
+        np.random.shuffle(training_data)
+        logging.info("Data standardized")
+
+        X = training_data[:, :2]
+        y = training_data[:, 2:]
 
         train_count = int(len(X) * 0.9)
         test_count = len(X) - train_count
@@ -117,14 +140,17 @@ class NeuralNetwork(object):
 
         model = tf.keras.models.Sequential([
             tf.keras.layers.Dense(12, input_dim=2, activation="relu"),
-            tf.keras.layers.Dropout(0.5),
+            # Regularize the middle layer
             tf.keras.layers.Dense(8, activation="relu"),
-            tf.keras.layers.Dense(1, activation="sigmoid")
+                                  # kernel_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4)),
+            tf.keras.layers.Dropout(0.3),
+            # Linear activation because the outputs can be unbounded
+            tf.keras.layers.Dense(1, activation="linear")
         ])
 
         model.compile(optimizer="adam",
                       loss="mean_squared_error",
-                      metrics=["accuracy"])
+                      metrics=[NeuralNetwork.polynomial_regression_equality])
 
         model.fit(X_train, y_train, epochs=10)
         model.evaluate(X_test, y_test)
@@ -132,8 +158,20 @@ class NeuralNetwork(object):
         model.save(self.model_file_name)
         return model
 
+    def _standardize(self, sequence: np.array) -> np.array:
+        """
+        Standardizes all inputs
+        :param sequence:
+        :return:
+        """
+        for i, row in enumerate(sequence):
+            sequence[i] = (row - np.mean(row, axis=0)) / np.std(row, axis=0)
+
+        return sequence
+
 
 if __name__ == "__main__":
-    ss = SocketServer()
-    ss.start()
+    nn = NeuralNetwork()
+    # ss = SocketServer()
+    # ss.start()
     exit(0)

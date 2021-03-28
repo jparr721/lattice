@@ -169,10 +169,12 @@ std::unordered_map<int, Eigen::Vector3f> MassSpringSystem::GetMassVelocities() {
 
 std::unordered_map<int, Eigen::Vector3f> MassSpringSystem::GetMassForces() {
     for (const auto& mass : masses) {
-        const auto x = mass->displacement;
-        const auto spring_constant = mass->springs[0]->k;
-        const auto force = mass->force.y();
-        mass_forces[mass->number] = Eigen::Vector3f(spring_constant, x, force);
+        if (!mass->fixed) {
+            const auto x = mass->displacement;
+            const auto spring_constant = mass->springs[0]->k;
+            const auto force = mass->force.y();
+            mass_forces[mass->number] = Eigen::Vector3f(spring_constant, x, force);
+        }
     }
 
     return mass_forces;

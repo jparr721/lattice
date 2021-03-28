@@ -1,5 +1,6 @@
 #include <lattice/configuration.h>
 
+#include <iostream>
 #include <numeric>
 
 MSSConfig::MSSConfig(std::string _name, int _width, int _height, int _depth)
@@ -126,6 +127,8 @@ void MSSConfig::CompileShapeMutation() {
         break;
     case PermutationStateMachine::PermutationState::DISCONNECTED:
         mass.adjacencies.clear();
+        std::cout << "Terminal state met, exiting..." << std::endl;
+        exit(EXIT_SUCCESS);
         break;
     }
 

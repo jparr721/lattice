@@ -9,11 +9,12 @@ GLWidget::GLWidget(MSSConfig config, QWidget* parent)
     : config(config), QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
 
-    const auto initial_parameters = SupervisorParameters{.mass = 0.5,
-                                                         .k = 6,
-                                                         .damping = 0.5,
-                                                         .rest_length = 2,
-                                                         .time_step = .005095};
+    const auto initial_parameters =
+        SupervisorParameters{.mass = 0.5,
+                             .k = 50,
+                             .damping = 0.5,
+                             .rest_length = 2,
+                             .time_step = .005095};
 
     supervisor = std::make_shared<Supervisor>(config, initial_parameters);
 
@@ -91,10 +92,9 @@ void GLWidget::SetSpringRestLength(float value) {
 }
 
 void GLWidget::SetTimeStep(float value) {
-    supervisor->SetTimeStep(
-        Interpolate(MassSpringSystem::kMinimumTimeStepChangeValue,
-                    MassSpringSystem::kMaximumTimeStepChangeValue,
-                    (float)value / 100.f));
+    supervisor->SetTimeStep(Interpolate(
+        MassSpringSystem::kMinimumTimeStepChangeValue,
+        MassSpringSystem::kMaximumTimeStepChangeValue, (float)value / 100.f));
     emit OnTimeStepChange(value);
     RestartSimulation();
 }
@@ -197,11 +197,16 @@ float GLWidget::Interpolate(float v0, float v1, float t) {
 void GLWidget::RestartSimulation() const { supervisor->Reset(); }
 
 void GLWidget::Permute() {
-    const auto current_parameters = supervisor->CurrentParameters();
+    auto current_parameters = supervisor->CurrentParameters();
 
-    config.Permute();
-    supervisor = std::make_shared<Supervisor>(config, current_parameters);
-    stats->supervisor = supervisor;
+    if (supervisor->sine_step == supervisor->kMaxSineStep) {
+        config.Permute();
+        supervisor->sine_step = 0;
+    } else {
+        current_parameters.k = supervisor->ComputeNextK();
+    }
+
+    supervisor->ReInitialize(config, current_parameters);
 }
 
 void GLWidget::PrintParameters() const {

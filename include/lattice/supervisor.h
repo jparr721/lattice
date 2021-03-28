@@ -3,6 +3,7 @@
 #include <lattice/configuration.h>
 #include <lattice/mass_spring_system.h>
 
+#include <array>
 #include <memory>
 #include <vector>
 
@@ -16,7 +17,10 @@ struct SupervisorParameters {
 
 class Supervisor {
   public:
+    constexpr static int kMaxSineStep = 5;
     constexpr static float kMinimumTimeStepChangeValue = 0.0001;
+
+    int sine_step = 0;
 
     float time_step_size = kMinimumTimeStepChangeValue;
 
@@ -35,10 +39,11 @@ class Supervisor {
     Supervisor(const MSSConfig& config, const SupervisorParameters& params);
     ~Supervisor() = default;
 
-
-
     // Setters
     void Initialize(const MSSConfig& config);
+    void ReInitialize(const MSSConfig& config,
+                      const SupervisorParameters& params);
+    float ComputeNextK();
     void SetMassWeight(float value);
     void SetSpringConstant(float value);
     void SetSpringDampingConstant(float value);
@@ -70,6 +75,10 @@ class Supervisor {
     SampleMassForces();
 
   private:
+    constexpr static float kSineIntervalCoefficient = 50;
+
+    constexpr static std::array<float, 5> kSineInterval{{0, 0.5, 1, 1.5, 2}};
+
     std::unordered_map<std::string, std::unordered_map<int, Eigen::Vector3f>>
         current_mass_velocities;
 

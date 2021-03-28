@@ -83,7 +83,7 @@ class MSSConfig {
     void Initialize();
     void Permute();
 
-    int Density() const;
+    [[nodiscard]] int Density() const;
 
     static std::vector<int> UniformCoordinateDistribution(int n);
 
