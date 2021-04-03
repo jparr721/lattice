@@ -91,10 +91,11 @@ def find_latest_file() -> str:
 
 class NeuralNetwork(object):
     def __init__(self):
-        self.model_file_name = "hookey"
+        self.model_file_name = "nn_force"
 
         if os.path.exists(self.model_file_name):
-            self.model = tf.keras.models.load_model(self.model_file_name)
+            self.model = tf.keras.models.load_model(self.model_file_name, custom_objects={
+                'polynomial_regression_equality': NeuralNetwork.polynomial_regression_equality})
         else:
             self.model = self.retrain()
 
@@ -110,7 +111,7 @@ class NeuralNetwork(object):
         :return:
         """
         accepted_diff = 0.1
-        diff = K.abs(y_true-y_pred)
+        diff = K.abs(y_true - y_pred)
         return K.mean(K.cast(diff < accepted_diff, tf.float32))
 
     def retrain(self):
@@ -142,7 +143,7 @@ class NeuralNetwork(object):
             tf.keras.layers.Dense(12, input_dim=2, activation="relu"),
             # Regularize the middle layer
             tf.keras.layers.Dense(8, activation="relu"),
-                                  # kernel_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4)),
+            # kernel_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4)),
             tf.keras.layers.Dropout(0.3),
             # Linear activation because the outputs can be unbounded
             tf.keras.layers.Dense(1, activation="linear")
@@ -155,7 +156,8 @@ class NeuralNetwork(object):
         model.fit(X_train, y_train, epochs=10)
         model.evaluate(X_test, y_test)
 
-        model.save(self.model_file_name)
+        tf.keras.models.save_model(model, self.model_file_name,
+                                   )
         return model
 
     def _standardize(self, sequence: np.array) -> np.array:
@@ -171,7 +173,6 @@ class NeuralNetwork(object):
 
 
 if __name__ == "__main__":
-    nn = NeuralNetwork()
-    # ss = SocketServer()
-    # ss.start()
+    ss = SocketServer()
+    ss.start()
     exit(0)
