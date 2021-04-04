@@ -196,6 +196,11 @@
 			"/Users/jarred/Code/qt_lattice/include/lattice/supervisor.h",
 			"MU",
 			"2F4KVJRRCK/moc_supervisor.cpp"
+		],
+		[
+			"/Users/jarred/Code/qt_lattice/include/lattice/toolbox/numerics.h",
+			"MU",
+			"D77DKNPYKL/moc_numerics.cpp"
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
@@ -287,6 +292,7 @@
 		[ "/Users/jarred/Code/qt_lattice/src/main_window.cc", "MU" ],
 		[ "/Users/jarred/Code/qt_lattice/src/mass.cc", "MU" ],
 		[ "/Users/jarred/Code/qt_lattice/src/mass_spring_system.cc", "MU" ],
+		[ "/Users/jarred/Code/qt_lattice/src/numerics.cc", "MU" ],
 		[ "/Users/jarred/Code/qt_lattice/src/obj_loader.cc", "MU" ],
 		[ "/Users/jarred/Code/qt_lattice/src/socket.cc", "MU" ],
 		[ "/Users/jarred/Code/qt_lattice/src/spring.cc", "MU" ],

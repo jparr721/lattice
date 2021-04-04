@@ -19,7 +19,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # QT5 Cmake Directory
 set(Qt5_DIR /opt/homebrew/opt/qt/lib/cmake/Qt5)
 
-file(GLOB SOURCES src/*.cc)
 file(GLOB HEADERS include/lattice/*.h)
 
 # Apple Silicon Brew Mac-Hacks
@@ -45,7 +44,43 @@ IF(WITH_NEURAL_NETWORK)
     add_definitions(-DUSE_NEURAL_NETWORK)
 ENDIF(WITH_NEURAL_NETWORK)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_executable(
+        ${PROJECT_NAME}
+        src/camera.cc
+        src/colors.cc
+        src/configuration.cc
+        src/configuration_widget.cc
+        src/gl_widget.cc
+        src/gl_window.cc
+        src/keyboard.cc
+        src/main.cc
+        src/main_window.cc
+        src/mass.cc
+        src/mass_spring_system.cc
+        src/numerics.cc
+        src/obj_loader.cc
+        src/socket.cc
+        src/spring.cc
+        src/stats.cc
+        src/supervisor.cc
+
+        include/lattice/camera.h
+        include/lattice/colors.h
+        include/lattice/configuration.h
+        include/lattice/configuration_widget.h
+        include/lattice/gl_widget.h
+        include/lattice/gl_window.h
+        include/lattice/keyboard.h
+        include/lattice/main_window.h
+        include/lattice/mass.h
+        include/lattice/mass_spring_system.h
+        include/lattice/obj_loader.h
+        include/lattice/socket.h
+        include/lattice/spring.h
+        include/lattice/stats.h
+        include/lattice/supervisor.h
+        include/lattice/toolbox/numerics.h
+)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>

@@ -233,9 +233,22 @@ CMakeFiles/lattice.dir/src/mass_spring_system.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/lattice.dir/src/mass_spring_system.cc.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/jarred/Code/qt_lattice/src/mass_spring_system.cc -o CMakeFiles/lattice.dir/src/mass_spring_system.cc.s
 
+CMakeFiles/lattice.dir/src/numerics.cc.o: CMakeFiles/lattice.dir/flags.make
+CMakeFiles/lattice.dir/src/numerics.cc.o: ../src/numerics.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/lattice.dir/src/numerics.cc.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/lattice.dir/src/numerics.cc.o -c /Users/jarred/Code/qt_lattice/src/numerics.cc
+
+CMakeFiles/lattice.dir/src/numerics.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/lattice.dir/src/numerics.cc.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/jarred/Code/qt_lattice/src/numerics.cc > CMakeFiles/lattice.dir/src/numerics.cc.i
+
+CMakeFiles/lattice.dir/src/numerics.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/lattice.dir/src/numerics.cc.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/jarred/Code/qt_lattice/src/numerics.cc -o CMakeFiles/lattice.dir/src/numerics.cc.s
+
 CMakeFiles/lattice.dir/src/obj_loader.cc.o: CMakeFiles/lattice.dir/flags.make
 CMakeFiles/lattice.dir/src/obj_loader.cc.o: ../src/obj_loader.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/lattice.dir/src/obj_loader.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/lattice.dir/src/obj_loader.cc.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/lattice.dir/src/obj_loader.cc.o -c /Users/jarred/Code/qt_lattice/src/obj_loader.cc
 
 CMakeFiles/lattice.dir/src/obj_loader.cc.i: cmake_force
@@ -248,7 +261,7 @@ CMakeFiles/lattice.dir/src/obj_loader.cc.s: cmake_force
 
 CMakeFiles/lattice.dir/src/socket.cc.o: CMakeFiles/lattice.dir/flags.make
 CMakeFiles/lattice.dir/src/socket.cc.o: ../src/socket.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/lattice.dir/src/socket.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/lattice.dir/src/socket.cc.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/lattice.dir/src/socket.cc.o -c /Users/jarred/Code/qt_lattice/src/socket.cc
 
 CMakeFiles/lattice.dir/src/socket.cc.i: cmake_force
@@ -261,7 +274,7 @@ CMakeFiles/lattice.dir/src/socket.cc.s: cmake_force
 
 CMakeFiles/lattice.dir/src/spring.cc.o: CMakeFiles/lattice.dir/flags.make
 CMakeFiles/lattice.dir/src/spring.cc.o: ../src/spring.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/lattice.dir/src/spring.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/lattice.dir/src/spring.cc.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/lattice.dir/src/spring.cc.o -c /Users/jarred/Code/qt_lattice/src/spring.cc
 
 CMakeFiles/lattice.dir/src/spring.cc.i: cmake_force
@@ -274,7 +287,7 @@ CMakeFiles/lattice.dir/src/spring.cc.s: cmake_force
 
 CMakeFiles/lattice.dir/src/stats.cc.o: CMakeFiles/lattice.dir/flags.make
 CMakeFiles/lattice.dir/src/stats.cc.o: ../src/stats.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/lattice.dir/src/stats.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/lattice.dir/src/stats.cc.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/lattice.dir/src/stats.cc.o -c /Users/jarred/Code/qt_lattice/src/stats.cc
 
 CMakeFiles/lattice.dir/src/stats.cc.i: cmake_force
@@ -287,7 +300,7 @@ CMakeFiles/lattice.dir/src/stats.cc.s: cmake_force
 
 CMakeFiles/lattice.dir/src/supervisor.cc.o: CMakeFiles/lattice.dir/flags.make
 CMakeFiles/lattice.dir/src/supervisor.cc.o: ../src/supervisor.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/lattice.dir/src/supervisor.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/lattice.dir/src/supervisor.cc.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/lattice.dir/src/supervisor.cc.o -c /Users/jarred/Code/qt_lattice/src/supervisor.cc
 
 CMakeFiles/lattice.dir/src/supervisor.cc.i: cmake_force
@@ -312,6 +325,7 @@ lattice_OBJECTS = \
 "CMakeFiles/lattice.dir/src/main_window.cc.o" \
 "CMakeFiles/lattice.dir/src/mass.cc.o" \
 "CMakeFiles/lattice.dir/src/mass_spring_system.cc.o" \
+"CMakeFiles/lattice.dir/src/numerics.cc.o" \
 "CMakeFiles/lattice.dir/src/obj_loader.cc.o" \
 "CMakeFiles/lattice.dir/src/socket.cc.o" \
 "CMakeFiles/lattice.dir/src/spring.cc.o" \
@@ -333,6 +347,7 @@ bin/lattice: CMakeFiles/lattice.dir/src/main.cc.o
 bin/lattice: CMakeFiles/lattice.dir/src/main_window.cc.o
 bin/lattice: CMakeFiles/lattice.dir/src/mass.cc.o
 bin/lattice: CMakeFiles/lattice.dir/src/mass_spring_system.cc.o
+bin/lattice: CMakeFiles/lattice.dir/src/numerics.cc.o
 bin/lattice: CMakeFiles/lattice.dir/src/obj_loader.cc.o
 bin/lattice: CMakeFiles/lattice.dir/src/socket.cc.o
 bin/lattice: CMakeFiles/lattice.dir/src/spring.cc.o
@@ -349,7 +364,7 @@ bin/lattice: /opt/homebrew/opt/qt/lib/QtQml.framework/QtQml
 bin/lattice: /opt/homebrew/opt/qt/lib/QtNetwork.framework/QtNetwork
 bin/lattice: /opt/homebrew/opt/qt/lib/QtCore.framework/QtCore
 bin/lattice: CMakeFiles/lattice.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX executable bin/lattice"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/jarred/Code/qt_lattice/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Linking CXX executable bin/lattice"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/lattice.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

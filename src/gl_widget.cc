@@ -59,44 +59,28 @@ void GLWidget::SaveCurrentStats() { stats->DropReading(); }
 void GLWidget::Update() const { supervisor->Update(); }
 
 void GLWidget::SetMass(float value) {
-    supervisor->SetMassWeight(Interpolate(Mass::kMinimumMassValue,
-                                          Mass::kMaximumMassValue,
-                                          (float)value / 100.0f));
-
+    supervisor->SetMassWeight(value);
     emit OnMassChange(value);
-    RestartSimulation();
 }
 
 void GLWidget::SetSpringConstant(float value) {
-    supervisor->SetSpringConstant(
-        Interpolate(Spring::kMinimumSpringConstantValue,
-                    Spring::kMaximumSpringConstantValue, (float)value / 100.f));
+    supervisor->SetSpringConstant(value);
     emit OnSpringConstantChange(value);
-    RestartSimulation();
 }
 
 void GLWidget::SetSpringDampingConstant(float value) {
-    supervisor->SetSpringDampingConstant(
-        Interpolate(Spring::kMinimumDampingValue, Spring::kMaximumDampingValue,
-                    (float)value / 100.f));
+    supervisor->SetSpringDampingConstant(value);
     emit OnSpringDampingChange(value);
-    RestartSimulation();
 }
 
 void GLWidget::SetSpringRestLength(float value) {
-    supervisor->SetSpringRestLength(Interpolate(
-        Spring::kMinimumSpringRestLengthValue,
-        Spring::kMaximumSpringRestLengthValue, (float)value / 100.f));
+    supervisor->SetSpringRestLength(value);
     emit OnSpringRestLengthChange(value);
-    RestartSimulation();
 }
 
 void GLWidget::SetTimeStep(float value) {
-    supervisor->SetTimeStep(Interpolate(
-        MassSpringSystem::kMinimumTimeStepChangeValue,
-        MassSpringSystem::kMaximumTimeStepChangeValue, (float)value / 100.f));
+    supervisor->SetTimeStep(value);
     emit OnTimeStepChange(value);
-    RestartSimulation();
 }
 
 void GLWidget::initializeGL() {
@@ -194,7 +178,14 @@ float GLWidget::Interpolate(float v0, float v1, float t) {
     return v0 + t * (v1 - v0);
 }
 
-void GLWidget::RestartSimulation() const { supervisor->Reset(); }
+void GLWidget::RestartSimulation() {
+    supervisor->Reset();
+    emit OnMassChange(supervisor->GetMassWeight());
+    emit OnSpringConstantChange(supervisor->GetSpringConstant());
+    emit OnSpringDampingChange(supervisor->GetSpringDampingConstant());
+    emit OnSpringRestLengthChange(supervisor->GetSpringRestLength());
+    emit OnTimeStepChange(supervisor->GetTimeStep());
+}
 
 void GLWidget::Permute() {
     auto current_parameters = supervisor->CurrentParameters();
@@ -207,17 +198,5 @@ void GLWidget::Permute() {
     }
 
     supervisor->ReInitialize(config, current_parameters);
-}
-
-void GLWidget::PrintParameters() const {
-    std::cout << "        Parameters:           " << std::endl;
-    std::cout << "==============================" << std::endl;
-    std::cout << "Mass: " << supervisor->GetMassWeight() << std::endl;
-    std::cout << "K: " << supervisor->GetSpringConstant() << std::endl;
-    std::cout << "Damping: " << supervisor->GetSpringDampingConstant()
-              << std::endl;
-    std::cout << "Rest Length: " << supervisor->GetSpringRestLength()
-              << std::endl;
-    std::cout << "Time Step: " << supervisor->GetTimeStep() << std::endl;
-    std::cout << "==============================" << std::endl;
+    emit OnSpringConstantChange(supervisor->GetSpringConstant());
 }

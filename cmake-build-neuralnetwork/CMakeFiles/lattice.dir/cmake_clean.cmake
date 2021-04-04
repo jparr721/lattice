@@ -14,6 +14,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/lattice.dir/src/main_window.cc.o"
   "CMakeFiles/lattice.dir/src/mass.cc.o"
   "CMakeFiles/lattice.dir/src/mass_spring_system.cc.o"
+  "CMakeFiles/lattice.dir/src/numerics.cc.o"
   "CMakeFiles/lattice.dir/src/obj_loader.cc.o"
   "CMakeFiles/lattice.dir/src/socket.cc.o"
   "CMakeFiles/lattice.dir/src/spring.cc.o"
