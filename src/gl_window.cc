@@ -41,7 +41,8 @@ GLWindow::GLWindow(const MSSConfig& config) {
 
     mass_input->setValue(widget->supervisor->GetMassWeight());
     spring_constant_input->setValue(widget->supervisor->GetSpringConstant());
-    damping_constant_input->setValue(widget->supervisor->GetSpringDampingConstant());
+    damping_constant_input->setValue(
+        widget->supervisor->GetSpringDampingConstant());
     rest_length_input->setValue(widget->supervisor->GetSpringRestLength());
     time_step_input->setValue(widget->supervisor->GetTimeStep());
 

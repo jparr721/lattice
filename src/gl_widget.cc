@@ -9,12 +9,11 @@ GLWidget::GLWidget(MSSConfig config, QWidget* parent)
     : config(config), QOpenGLWidget(parent) {
     setFocusPolicy(Qt::ClickFocus);
 
-    const auto initial_parameters =
-        SupervisorParameters{.mass = 0.5,
-                             .k = 50,
-                             .damping = 0.5,
-                             .rest_length = 2,
-                             .time_step = .005095};
+    const auto initial_parameters = SupervisorParameters{.mass = 0.5,
+                                                         .k = 50,
+                                                         .damping = 0.5,
+                                                         .rest_length = 2,
+                                                         .time_step = .005095};
 
     supervisor = std::make_shared<Supervisor>(config, initial_parameters);
 
@@ -147,12 +146,8 @@ void GLWidget::resizeGL(int width, int height) {}
 void GLWidget::keyPressEvent(QKeyEvent* event) {
     camera.OnKeyPress(event);
     const int key = keyboard.OnKeyPressed(event->key());
-    if (key > 0) {
-        if (key == Keyboard::kPrint) {
-            PrintParameters();
-        } else if (key == Keyboard::kRestart) {
-            RestartSimulation();
-        }
+    if (key == Keyboard::kRestart) {
+        RestartSimulation();
     }
 }
 
@@ -172,10 +167,6 @@ std::string GLWidget::ReadFragmentShader() {
     auto stream = std::ifstream{"../../shaders/core.frag"};
     sstr << stream.rdbuf();
     return sstr.str();
-}
-
-float GLWidget::Interpolate(float v0, float v1, float t) {
-    return v0 + t * (v1 - v0);
 }
 
 void GLWidget::RestartSimulation() {

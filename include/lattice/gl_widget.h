@@ -103,8 +103,4 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
 
     static std::string ReadVertexShader();
     static std::string ReadFragmentShader();
-
-    static float Interpolate(float v0, float v1, float t);
-
-    void PrintParameters() const;
 };
