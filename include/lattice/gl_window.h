@@ -12,13 +12,11 @@
 #include <QVBoxLayout>
 #include <QValueAxis>
 #include <QWidget>
+#include <QPushButton>
+#include <QDoubleSpinBox>
+#include <QSpinBox>
 
 #include <memory>
-
-QT_BEGIN_NAMESPACE
-class QSlider;
-class QPushButton;
-QT_END_NAMESPACE
 
 class GLWidget;
 class MainWindow;
@@ -46,21 +44,19 @@ class GLWindow : public QWidget {
     // Layouts - Controls
     QVBoxLayout* controls_layout = new QVBoxLayout;
 
-    // Slider labels
+    // DoubleSpinBox labels
     QLabel* mass_label{};
     QLabel* spring_constant_label{};
     QLabel* damping_constant_label{};
     QLabel* rest_length_label{};
     QLabel* time_step_label{};
 
-    // All of our slider objects in the mass spring system.
-    QSlider* mass_slider{};
-    QSlider* spring_constant_slider{};
-    QSlider* damping_constant_slider{};
-    QSlider* rest_length_slider{};
-    QSlider* time_step_slider{};
+    // All of our input objects in the mass spring system.
+    QDoubleSpinBox* mass_input = new QDoubleSpinBox();
+    QDoubleSpinBox* spring_constant_input = new QDoubleSpinBox();
+    QDoubleSpinBox* damping_constant_input = new QDoubleSpinBox();
+    QDoubleSpinBox* rest_length_input = new QDoubleSpinBox();
+    QDoubleSpinBox* time_step_input = new QDoubleSpinBox();
 
-    static QSlider* CreateSlider();
-
-    void CreateSliders();
+    void CreateInputFields();
 };

@@ -10,7 +10,7 @@ CMake Warning (dev) at /opt/homebrew/lib/cmake/assimp-5.0/assimpTargets.cmake:54
   set the policy and suppress this warning.
 Call Stack (most recent call first):
   /opt/homebrew/lib/cmake/assimp-5.0/assimp-config.cmake:1 (include)
-  CMakeLists.txt:35 (find_package)
+  CMakeLists.txt:34 (find_package)
 This warning is for project developers.  Use -Wno-dev to suppress it.
 
 -- Configuring done

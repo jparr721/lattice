@@ -14,7 +14,7 @@
 class MassSpringSystem {
   public:
     constexpr static float kMinimumTimeStepChangeValue = 0.0001;
-    constexpr static float kMaximumTimeStepChangeValue = 0.1f;
+    constexpr static float kMaximumTimeStepChangeValue = 1.f;
 
     std::string name;
 

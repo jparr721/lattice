@@ -27,7 +27,7 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     explicit GLWidget(MSSConfig config, QWidget* parent = nullptr);
     ~GLWidget() override;
 
-    void RestartSimulation() const;
+    void RestartSimulation();
 
     [[nodiscard]] QSize minimumSizeHint() const override;
     [[nodiscard]] QSize sizeHint() const override;

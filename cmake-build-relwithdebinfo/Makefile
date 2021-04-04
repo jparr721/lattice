@@ -480,6 +480,33 @@ src/mass_spring_system.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lattice.dir/build.make CMakeFiles/lattice.dir/src/mass_spring_system.cc.s
 .PHONY : src/mass_spring_system.cc.s
 
+src/numerics.o: src/numerics.cc.o
+
+.PHONY : src/numerics.o
+
+# target to build an object file
+src/numerics.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lattice.dir/build.make CMakeFiles/lattice.dir/src/numerics.cc.o
+.PHONY : src/numerics.cc.o
+
+src/numerics.i: src/numerics.cc.i
+
+.PHONY : src/numerics.i
+
+# target to preprocess a source file
+src/numerics.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lattice.dir/build.make CMakeFiles/lattice.dir/src/numerics.cc.i
+.PHONY : src/numerics.cc.i
+
+src/numerics.s: src/numerics.cc.s
+
+.PHONY : src/numerics.s
+
+# target to generate assembly for a file
+src/numerics.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lattice.dir/build.make CMakeFiles/lattice.dir/src/numerics.cc.s
+.PHONY : src/numerics.cc.s
+
 src/obj_loader.o: src/obj_loader.cc.o
 
 .PHONY : src/obj_loader.o
@@ -661,6 +688,9 @@ help:
 	@echo "... src/mass_spring_system.o"
 	@echo "... src/mass_spring_system.i"
 	@echo "... src/mass_spring_system.s"
+	@echo "... src/numerics.o"
+	@echo "... src/numerics.i"
+	@echo "... src/numerics.s"
 	@echo "... src/obj_loader.o"
 	@echo "... src/obj_loader.i"
 	@echo "... src/obj_loader.s"

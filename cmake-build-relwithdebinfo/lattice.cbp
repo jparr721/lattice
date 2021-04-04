@@ -206,6 +206,9 @@
 		<Unit filename="/Users/jarred/Code/qt_lattice/include/lattice/supervisor.h">
 			<Option target="lattice"/>
 		</Unit>
+		<Unit filename="/Users/jarred/Code/qt_lattice/include/lattice/toolbox/numerics.h">
+			<Option target="lattice"/>
+		</Unit>
 		<Unit filename="/Users/jarred/Code/qt_lattice/src/camera.cc">
 			<Option target="lattice"/>
 		</Unit>
@@ -237,6 +240,9 @@
 			<Option target="lattice"/>
 		</Unit>
 		<Unit filename="/Users/jarred/Code/qt_lattice/src/mass_spring_system.cc">
+			<Option target="lattice"/>
+		</Unit>
+		<Unit filename="/Users/jarred/Code/qt_lattice/src/numerics.cc">
 			<Option target="lattice"/>
 		</Unit>
 		<Unit filename="/Users/jarred/Code/qt_lattice/src/obj_loader.cc">
